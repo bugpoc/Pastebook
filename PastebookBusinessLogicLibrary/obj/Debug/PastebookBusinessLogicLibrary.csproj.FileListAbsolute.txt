@@ -1,0 +1,9 @@
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookBusinessLogicLibrary.dll.config
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookBusinessLogicLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookBusinessLogicLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.pdb
