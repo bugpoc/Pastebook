@@ -52,5 +52,6 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.WebPages.Deplo
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.WebPages.Razor.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Antlr3.Runtime.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Newtonsoft.Json.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.pdb

@@ -5,5 +5,6 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.pdb
