@@ -26,5 +26,10 @@ namespace Pastebook.Controllers
 
             return View();
         }
+
+        public ActionResult Notifications()
+        {
+            return View();
+        }
     }
 }

@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,11 +51,72 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="COMMENT.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FRIEND.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LIKE.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NOTIFICATION.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PastebookModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PastebookModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PastebookModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PastebookModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="POST.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REF_COUNTRY.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USER.cs">
+      <DependentUpon>PastebookModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="PastebookModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PastebookModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="PastebookModel.edmx.diagram">
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PastebookModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+      <LastGenOutput>PastebookModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="PastebookModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+      <LastGenOutput>PastebookModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,6 +16,7 @@ namespace Pastebook.ViewModels
 
         [Required]
         [Display(Name = "Last Name")]
+        [RegularExpression(@"[\w\s,.'-]+", ErrorMessage = "Last Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
         public string LastName { get; set; }
 
         [Required]
@@ -30,7 +31,7 @@ namespace Pastebook.ViewModels
         [Required]
         [Display(Name = "Confirm Password")]
         [DataType(DataType.Password)]
-        [Compare("Password",ErrorMessage = "Password do not match")]
+        [Compare("Password", ErrorMessage = "Password do not match")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -38,6 +39,7 @@ namespace Pastebook.ViewModels
 
         public List<string> Country { get; set; }
 
+        [DataType(DataType.PhoneNumber)]
         public string MobileNumber { get; set; }
     }
 }
