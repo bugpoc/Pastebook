@@ -43,8 +43,8 @@
           <Property Name="NOTIF_TYPE" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="SENDER_ID" Type="int" Nullable="false" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
-          <Property Name="COMMENT_ID" Type="int" Nullable="false" />
-          <Property Name="POST_ID" Type="int" Nullable="false" />
+          <Property Name="COMMENT_ID" Type="int" />
+          <Property Name="POST_ID" Type="int" />
           <Property Name="SEEN" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="POST">
@@ -106,7 +106,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_COMMENT_ID">
-          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="1" />
+          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="COMMENT">
@@ -154,7 +154,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_POST_ID">
-          <End Role="POST" Type="Self.POST" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="POST">
@@ -362,8 +362,8 @@
           <Property Name="NOTIF_TYPE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="SENDER_ID" Type="Int32" Nullable="false" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="COMMENT_ID" Type="Int32" Nullable="false" />
-          <Property Name="POST_ID" Type="Int32" Nullable="false" />
+          <Property Name="COMMENT_ID" Type="Int32" />
+          <Property Name="POST_ID" Type="Int32" />
           <Property Name="SEEN" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="COMMENT" Relationship="Self.FK_COMMENT_ID" FromRole="NOTIFICATION" ToRole="COMMENT" />
           <NavigationProperty Name="POST" Relationship="Self.FK_POST_ID" FromRole="NOTIFICATION" ToRole="POST" />
@@ -443,7 +443,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_COMMENT_ID">
-          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="1" />
+          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="COMMENT">
@@ -515,7 +515,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_POST_ID">
-          <End Role="POST" Type="Self.POST" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="POST">
