@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2A4B0630-3123-4921-B770-5798F2466F03}</ProjectGuid>
+    <ProjectGuid>{8765A3BD-610B-4C17-A544-77074C6FD2D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PastebookEntityLibrary</RootNamespace>
-    <AssemblyName>PastebookEntityLibrary</AssemblyName>
+    <RootNamespace>PastebookBusinessLogicLibrary</RootNamespace>
+    <AssemblyName>PastebookBusinessLogicLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
