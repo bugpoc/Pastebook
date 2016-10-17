@@ -7,57 +7,81 @@ using System.Threading.Tasks;
 
 namespace PastebookBusinessLogicLibrary
 {
+    //http://www.codeproject.com/Articles/608860/Understanding-and-Implementing-Password-Hashing
+
+    /// <summary>
+    /// This class contains method for password hashing.
+    /// </summary>
     public class PasswordManager
     {
-        private static RNGCryptoServiceProvider m_cryptoServiceProvider = null;
-        private const int SALT_SIZE = 24;
+        private StringBuilder _sb;
 
-        public string GetPasswordHashAndSalt(string message)
-        {
-            // Let us use SHA256 algorithm to 
-            // generate the hash from this salted password
-            SHA256 sha = new SHA256CryptoServiceProvider();
-            byte[] dataBytes = Utility.GetBytes(message);
-            byte[] resultBytes = sha.ComputeHash(dataBytes);
-
-            // return the hash string to the caller
-            return Utility.GetString(resultBytes);
-        }
-
+        /// <summary>
+        /// This method generates password hash by adding the plain text password and salt. This method also out the salt string.
+        /// </summary>
+        /// <param name="plainTextPassword">Plain text password inputted by the user.</param>
+        /// <param name="salt">The reference where the salt will be stored.</param>
+        /// <returns>Generated Password Hash and out the salt string.</returns>
         public string GeneratePasswordHash(string plainTextPassword, out string salt)
         {
-            salt = SaltGenerator.GetSaltString();
+            salt = GetSaltString();
 
-            string finalString = plainTextPassword + salt;
+            _sb = new StringBuilder(plainTextPassword);
+            _sb.Append(salt);
 
-            return m_hashComputer.GetPasswordHashAndSalt(finalString);
+            return GetPasswordHashAndSalt(_sb.ToString());
         }
 
-        public bool IsPasswordMatch(string password, string salt, string hash)
+        /// <summary>
+        /// This method checks if the username and password of the user match.
+        /// </summary>
+        /// <param name="plainTextPassword">Plain text password inputted by the user.</param>
+        /// <param name="salt">Salt that is retrieve from the database.</param>
+        /// <param name="hash">Password hash that is retrieve from the database.</param>
+        /// <returns>True if the credentials match and False if the credentials did not match.</returns>
+        public bool IsPasswordMatch(string plainTextPassword, string salt, string hash)
         {
-            string finalString = password + salt;
-            return hash == m_hashComputer.GetPasswordHashAndSalt(finalString);
+            _sb = new StringBuilder(plainTextPassword);
+            _sb.Append(salt);
+
+            return hash == GetPasswordHashAndSalt(_sb.ToString());
         }
 
-        static SaltGenerator()
+        private string GetPasswordHashAndSalt(string message)
         {
-            m_cryptoServiceProvider = new RNGCryptoServiceProvider();
+            SHA256 sha = new SHA256CryptoServiceProvider();
+            byte[] dataBytes = GetBytes(message);
+            byte[] resultBytes = sha.ComputeHash(dataBytes);
+
+            return GetString(resultBytes);
         }
 
-        public string GetSaltString()
+        private string GetSaltString()
         {
-            // Lets create a byte array to store the salt bytes
-            byte[] saltBytes = new byte[SALT_SIZE];
+            RNGCryptoServiceProvider cryptoServiceProvider = new RNGCryptoServiceProvider();
+            const int saltSize = 24;
 
-            // lets generate the salt in the byte array
-            m_cryptoServiceProvider.GetNonZeroBytes(saltBytes);
+            // Create a byte array to store the salt bytes
+            byte[] saltBytes = new byte[saltSize];
 
-            // Let us get some string representation for this salt
-            string saltString = Utility.GetString(saltBytes);
+            // Generate the salt in the byte array
+            cryptoServiceProvider.GetNonZeroBytes(saltBytes);
 
-            // Now we have our salt string ready lets return it to the caller
+            string saltString = GetString(saltBytes);
+
             return saltString;
         }
 
+        private static byte[] GetBytes(string message)
+        {
+            //Convert string to byte
+            return Encoding.ASCII.GetBytes(message);
+        }
+
+        private static string GetString(byte[] resultBytes)
+        {
+            //Convert byte to string
+            return Encoding.ASCII.GetString(resultBytes);
+        }
     }
 }

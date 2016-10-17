@@ -49,12 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CountryDataAccess.cs" />
     <Compile Include="PasswordManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserDataAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PastebookEntityLibrary\PastebookEntityLibrary.csproj">
+      <Project>{2a4b0630-3123-4921-b770-5798f2466f03}</Project>
+      <Name>PastebookEntityLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

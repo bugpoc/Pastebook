@@ -1,0 +1,97 @@
+﻿@model Pastebook.ViewModels.RegisterViewModel
+
+@using (Html.BeginForm("RegisterUser", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>RegisterViewModel</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Birthday, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Birthday)
+            </div>
+        </div>
+        @{
+            <div class="form-group">
+                @Html.LabelFor(model => model.Country, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Country, (IEnumerable<SelectListItem>)ViewBag.CountryList, "Select Country", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Country)
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobileNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobileNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

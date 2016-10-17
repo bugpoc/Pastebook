@@ -99,24 +99,22 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PastebookModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="PastebookModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+      <LastGenOutput>PastebookModel.Context.cs</LastGenOutput>
+    </None>
     <None Include="PastebookModel.edmx.diagram">
       <DependentUpon>PastebookModel.edmx</DependentUpon>
+    </None>
+    <None Include="PastebookModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PastebookModel.edmx</DependentUpon>
+      <LastGenOutput>PastebookModel.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PastebookModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PastebookModel.edmx</DependentUpon>
-      <LastGenOutput>PastebookModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="PastebookModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PastebookModel.edmx</DependentUpon>
-      <LastGenOutput>PastebookModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
