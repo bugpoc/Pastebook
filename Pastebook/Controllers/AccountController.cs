@@ -82,7 +82,7 @@ namespace Pastebook.Controllers
 
             if (ModelState.IsValid)
             {
-                user = userDataAccess.GetUser(model.EmailAddress, null);
+                user = userDataAccess.GetUser(model.EmailAddress);
                 if (user != null)
                 {
                     if (passwordManager.IsPasswordMatch(model.Password, user.SALT, user.PASSWORD))
@@ -93,6 +93,8 @@ namespace Pastebook.Controllers
                     }
                 }
             }
+
+            ModelState.AddModelError("Username", "Username/Password is incorrect.");
 
             return View("Index", model);
         }

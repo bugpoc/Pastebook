@@ -17,7 +17,7 @@ namespace Pastebook
             routes.MapRoute(
                 "Pastebook",
                 "Pastebook/{username}",
-                new { controller = "Pastebook", action = "Index" },
+                new { controller = "Pastebook", action = "UserProfile" },
                 new { username = @"\w*" }
             );
 

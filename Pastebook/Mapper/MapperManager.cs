@@ -41,5 +41,23 @@ namespace Pastebook.Mapper
 
             return listOfFriends.OrderBy(l => l.FullName).ToList();
         }
+
+        public ProfileViewModel USERToProfileViewModel(USER user)
+        {
+            return new ProfileViewModel()
+            {
+                AboutMe = user.ABOUT_ME,
+                Birthday = user.BIRTHDAY,
+                Country = user.REF_COUNTRY.COUNTRY,
+                DateCreated = user.DATE_CREATED,
+                EmailAddress = user.EMAIL_ADDRESS,
+                FirstName = user.FIRST_NAME,
+                Gender = user.GENDER,
+                ID = user.ID,
+                LastName = user.LAST_NAME,
+                MobileNumber = user.MOBILE_NO,
+                Username = user.USER_NAME
+            };
+        }
     }
 }

@@ -166,6 +166,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\FriendViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Pastebook\Index.cshtml" />
     <Content Include="Views\Pastebook\Friends.cshtml" />
+    <Content Include="Views\Pastebook\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

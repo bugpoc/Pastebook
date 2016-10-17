@@ -40,7 +40,7 @@ namespace PastebookBusinessLogicLibrary
         /// </summary>
         /// <param name="email">Email that is inputted by the user.</param>
         /// <returns>User information.</returns>
-        public USER GetUser(string email, string username)
+        public USER GetUser(string email)
         {
             var selectedUser = new USER();
 
@@ -48,7 +48,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    selectedUser = context.USERs.FirstOrDefault(u => u.EMAIL_ADDRESS == email || u.USER_NAME == username);
+                    selectedUser = context.USERs.FirstOrDefault(u => u.EMAIL_ADDRESS == email);
                 }
             }
             catch (Exception)
@@ -106,6 +106,32 @@ namespace PastebookBusinessLogicLibrary
             }
 
             return result;
+        }
+
+        public USER GetProfile(string username)
+        {
+            //var user = new USER();
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    //var user = (from u in context.USERs
+                    //        join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
+                    //        where u.USER_NAME == username
+                    //        select u).FirstOrDefault();
+
+                    var user = (from u in context.USERs
+                                join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
+                                where u.USER_NAME == username
+                                select new { USER = u, REF_COUNTRY = c }).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return user;
         }
     }
 }

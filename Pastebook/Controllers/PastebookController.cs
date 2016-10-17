@@ -12,12 +12,19 @@ namespace Pastebook.Controllers
     public class PastebookController : Controller
     {
         FriendDataAccess friendDataAccess = new FriendDataAccess();
+        UserDataAccess userDataAccess = new UserDataAccess();
         MapperManager mapperManager = new MapperManager();
-
-        public ActionResult Index(string username)
+        
+        public ActionResult Index()
         {
-            ViewBag.Username = username;
+
+            //userDataAccess.GetUser(null, username);
             return View();
+        }
+
+        public ActionResult UserProfile(string username)
+        {
+            return View(mapperManager.USERToProfileViewModel(userDataAccess.GetProfile(username)));
         }
 
         public ActionResult Friends()
