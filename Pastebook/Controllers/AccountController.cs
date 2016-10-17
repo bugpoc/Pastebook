@@ -75,7 +75,7 @@ namespace Pastebook.Controllers
                 }
             }
 
-            return View("Index");
+            return View("Index", model);
         }
 
         public JsonResult CheckUsername(string username)

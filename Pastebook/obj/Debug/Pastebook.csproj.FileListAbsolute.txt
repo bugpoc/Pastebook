@@ -177,3 +177,7 @@ C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\Pastebook\bin\Ne
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\Pastebook\obj\Debug\Pastebook.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\Pastebook\obj\Debug\Pastebook.dll
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\Pastebook\obj\Debug\Pastebook.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookBusinessLogicLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookEntityLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookBusinessLogicLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookEntityLibrary.pdb

@@ -22,7 +22,8 @@ namespace Pastebook.Mapper
                 LAST_NAME = model.LastName,
                 USER_NAME = model.Username,
                 PASSWORD = model.Password,
-                SALT = model.Salt
+                SALT = model.Salt,
+                MOBILE_NO = model.MobileNumber
             };
         }
     }

@@ -31,3 +31,6 @@ C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\PastebookBusines
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.dll
 C:\Users\Bootcamp\Desktop\10-16-2016\PastebookUpdated\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookEntityLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookEntityLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\obj\Debug\PastebookBusinessLogicLibrary.csprojResolveAssemblyReference.cache
