@@ -40,7 +40,7 @@ namespace PastebookBusinessLogicLibrary
         /// </summary>
         /// <param name="email">Email that is inputted by the user.</param>
         /// <returns>User information.</returns>
-        public USER GetUser(string email)
+        public USER GetUser(string email, string username)
         {
             var selectedUser = new USER();
 
@@ -48,7 +48,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    selectedUser = context.USERs.FirstOrDefault(u => u.EMAIL_ADDRESS == email);
+                    selectedUser = context.USERs.FirstOrDefault(u => u.EMAIL_ADDRESS == email || u.USER_NAME == username);
                 }
             }
             catch (Exception)

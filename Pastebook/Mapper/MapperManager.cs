@@ -26,5 +26,20 @@ namespace Pastebook.Mapper
                 MOBILE_NO = model.MobileNumber
             };
         }
+
+        public List<FriendViewModel> ListOfUSERsToListOfFriendsViewModel(List<USER> listOfUser)
+        {
+            var listOfFriends = new List<FriendViewModel>();
+            foreach (var item in listOfUser)
+            {
+                listOfFriends.Add(new FriendViewModel()
+                {
+                    ID = item.ID,
+                    FullName = item.FIRST_NAME + " " + item.LAST_NAME
+                });
+            }
+
+            return listOfFriends.OrderBy(l => l.FullName).ToList();
+        }
     }
 }

@@ -13,11 +13,25 @@ namespace Pastebook
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //http://stackoverflow.com/questions/7618037/asp-net-mvc-routing-by-string-id
+            routes.MapRoute(
+                "Pastebook",
+                "Pastebook/{username}",
+                new { controller = "Pastebook", action = "Index" },
+                new { username = @"\w*" }
+            );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Account", action = "Index", id = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //    name: "Pastebook",
+            //    url: "{controller}/{action}/{username}",
+            //    defaults: new { controller = "Pastebook", action = "Index", username = UrlParameter.Optional }
+            //);
         }
     }
 }
