@@ -13,7 +13,7 @@ namespace Pastebook.ViewModels
         public string EmailAddress { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

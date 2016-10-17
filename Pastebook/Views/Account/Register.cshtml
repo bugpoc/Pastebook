@@ -1,10 +1,10 @@
 ﻿@model Pastebook.ViewModels.RegisterViewModel
 
 
-@using (Html.BeginForm("RegisterUser","Account",FormMethod.Post)) 
+@using (Html.BeginForm("RegisterUser", "Account", FormMethod.Post, new { id = "formRegister" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>RegisterViewModel</h4>
         <hr />
@@ -12,8 +12,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", id = "txtUsername" } })
                 @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                <span id="msgForUsername" class="text-danger"></span>
             </div>
         </div>
 
@@ -36,8 +37,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", id = "txtEmail" } })
                 @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                <span id="msgForEmail" class="text-danger"></span>
             </div>
         </div>
 
@@ -74,7 +76,6 @@
                 </div>
             </div>
         }
-
         <div class="form-group">
             @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -89,7 +90,7 @@
             </div>
         </div>
     </div>
-}
+            }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -97,4 +98,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/register.js"></script>
 }

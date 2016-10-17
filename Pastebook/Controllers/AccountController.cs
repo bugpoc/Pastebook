@@ -34,13 +34,22 @@ namespace Pastebook.Controllers
             });
 
             ViewBag.CountryList = countryListItems;
-
             return View();
         }
 
         [HttpPost]
         public ActionResult RegisterUser(RegisterViewModel model)
         {
+            if (userDataAccess.CheckUsername(model.Username))
+            {
+                ModelState.AddModelError("Username", "Username already exists.");
+            }
+
+            if (userDataAccess.CheckEmail(model.EmailAddress))
+            {
+                ModelState.AddModelError("EmailAddress", "Email Address already exists.");
+            }
+
             if (ModelState.IsValid)
             {
                 string salt = null;
@@ -53,7 +62,17 @@ namespace Pastebook.Controllers
                 return RedirectToAction("Register");
             }
 
-            return RedirectToAction("Register");
+            IEnumerable<SelectListItem> countryListItems;
+
+            countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
+            {
+                Value = i.ID.ToString(),
+                Text = i.COUNTRY
+            });
+
+            ViewBag.CountryList = countryListItems;
+
+            return View("Register", model);
         }
 
         [HttpPost]
@@ -83,6 +102,13 @@ namespace Pastebook.Controllers
             bool result = userDataAccess.CheckUsername(username);
 
             return Json(new {Result = result}, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CheckEmail(string email)
+        {
+            bool result = userDataAccess.CheckEmail(email);
+
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -83,5 +83,29 @@ namespace PastebookBusinessLogicLibrary
 
             return result;
         }
+
+        /// <summary>
+        /// This method checks the database if the email address was already existing.
+        /// </summary>
+        /// <param name="email">Email Address that is inputted by the user.</param>
+        /// <returns>True if the email address exists, false if it is available.</returns>
+        public bool CheckEmail(string email)
+        {
+            bool result = false;
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    result = context.USERs.Any(u => u.EMAIL_ADDRESS == email);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
+        }
     }
 }
