@@ -18,6 +18,7 @@ namespace PastebookEntityLibrary
         public PastebookEntities()
             : base("name=PastebookEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

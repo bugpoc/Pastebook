@@ -3,26 +3,36 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProfileOwnerID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PosterID)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
+@foreach (var item in Model)
+{
+    <div>
+        <p>Name: @item.FullName</p>
+        <p>This is the content: @item.Content</p>
+        <p>Number of Likes: @item.Likes.Count</p>
+        @if (item.Likes.Count > 0)
+        {
+            <p>Liked By:</p>
+            <div>
+                @foreach (var element in item.Likes)
+                {
+                    <p>@element.FullName</p>
+                }
+            </div>
+        }
+        @if (item.Comments.Count > 0)
+        {
+            <p>Comments:</p>
+            <div>
+                @foreach (var element in item.Comments)
+                {
+                    <p>@element.FullName : @element.Content</p>
+                }
+            </div>
+        }
+    </div>
+    <br/>
+    @*<td>
             @Html.DisplayFor(modelItem => item.CreatedDate)
         </td>
         <td>
@@ -33,13 +43,5 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PosterID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+        </td>*@
 }
-
-</table>

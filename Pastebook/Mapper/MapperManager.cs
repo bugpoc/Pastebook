@@ -63,15 +63,46 @@ namespace Pastebook.Mapper
         public List<PostViewModel> ListOfPOSTsToListOfPostViewModel(List<POST> listOfPosts)
         {
             var listOfPostsViewModel = new List<PostViewModel>();
+
             foreach (var item in listOfPosts)
             {
+                var listOfComments = new List<CommentViewModel>();
+                var listOfLikes = new List<LikeViewModel>();
+
+                foreach (var element in item.COMMENTs)
+                {
+                    listOfComments.Add(new CommentViewModel()
+                    {
+                        ID = element.ID,
+                        FullName = element.USER.FIRST_NAME + " " + element.USER.LAST_NAME,
+                        Content = element.CONTENT,
+                        DateCreated = element.DATE_CREATED,
+                        PosterID = element.POSTER_ID,
+                        PostID = element.POST_ID
+                    });
+                }
+
+                foreach (var element in item.LIKEs)
+                {
+                    listOfLikes.Add(new LikeViewModel()
+                    {
+                        ID = element.ID,
+                        FullName = element.USER.FIRST_NAME + " " + element.USER.LAST_NAME,
+                        LikedBY = element.LIKED_BY,
+                        PostID = element.POST_ID
+                    });
+                }
+
                 listOfPostsViewModel.Add(new PostViewModel()
                 {
                     ID = item.ID,
+                    FullName = item.USER.FIRST_NAME + " " + item.USER.LAST_NAME,
                     Content = item.CONTENT,
                     CreatedDate = item.CREATED_DATE,
                     PosterID = item.POSTER_ID,
-                    ProfileOwnerID = item.PROFILE_OWNER_ID
+                    ProfileOwnerID = item.PROFILE_OWNER_ID,
+                    Comments = listOfComments,
+                    Likes = listOfLikes
                 });
             }
 

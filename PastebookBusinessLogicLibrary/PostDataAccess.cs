@@ -17,7 +17,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfPosts = context.POSTs.Include("LIKEs").Where(p => p.PROFILE_OWNER_ID == id).OrderBy(d => d.CREATED_DATE).ToList();
+                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.PROFILE_OWNER_ID == id).OrderByDescending(d => d.CREATED_DATE).ToList();
                 }
             }
             catch (Exception)
