@@ -56,5 +56,21 @@ namespace PastebookBusinessLogicLibrary
 
             return listOfPosts;
         }
+
+        //public int SavePost(POST post)
+        //{
+        //    try
+        //    {
+        //        using (var con)
+        //        {
+
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

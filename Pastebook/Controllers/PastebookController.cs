@@ -1,4 +1,5 @@
 ﻿using Pastebook.Mapper;
+using Pastebook.ViewModels;
 using PastebookBusinessLogicLibrary;
 using PastebookEntityLibrary;
 using System;
@@ -54,9 +55,13 @@ namespace Pastebook.Controllers
 
         public ActionResult NewsFeed()
         {
+            return View();
+        }
+
+        public ActionResult NewsFeedPartial()
+        {
             var listOfUsers = new List<USER>();
-            listOfUsers = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
-            return View(mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUsers, (int)Session["user_id"])));
+            return PartialView("NewsFeedPartialView", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUsers, (int)Session["user_id"])));
         }
     }
 }

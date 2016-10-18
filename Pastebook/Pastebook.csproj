@@ -231,6 +231,7 @@
     <Content Include="Views\Pastebook\Friends.cshtml" />
     <Content Include="Views\Pastebook\UserProfile.cshtml" />
     <Content Include="Views\Pastebook\Timeline.cshtml" />
+    <Content Include="Views\Pastebook\NewsFeedPartialView.cshtml" />
     <Content Include="Views\Pastebook\NewsFeed.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Pastebook.ViewModels.PostViewModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@foreach (var item in Model)
+{
+    <div>
+        <p>Name: @item.FullName</p>
+        <p>This is the content: @item.Content</p>
+        <p>Number of Likes: @item.Likes.Count</p>
+        @if (item.Likes.Count > 0)
+        {
+            <p>Liked By:</p>
+            <div>
+                @foreach (var element in item.Likes)
+                {
+                    <p>@element.FullName</p>
+                }
+            </div>
+        }
+        @if (item.Comments.Count > 0)
+        {
+            <p>Comments:</p>
+            <div>
+                @foreach (var element in item.Comments)
+                {
+                    <p>@element.FullName : @element.Content</p>
+                }
+            </div>
+        }
+    </div>
+    <br />
+}
