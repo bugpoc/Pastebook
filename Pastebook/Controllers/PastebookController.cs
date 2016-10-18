@@ -1,8 +1,10 @@
 ﻿using Pastebook.Mapper;
 using PastebookBusinessLogicLibrary;
+using PastebookEntityLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,7 +26,17 @@ namespace Pastebook.Controllers
 
         public ActionResult UserProfile(string username)
         {
-            return View(mapperManager.USERToProfileViewModel(userDataAccess.GetProfile(username)));
+            var user = new USER();
+
+            user = userDataAccess.GetUser(null, username);
+            if (user != null)
+            {
+                return View(mapperManager.USERToProfileViewModel(user));
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
         }
 
         public ActionResult Friends()

@@ -586,7 +586,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PastebookEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="PastebookEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="COMMENTs" EntityType="Self.COMMENT" />
           <EntitySet Name="FRIENDs" EntityType="Self.FRIEND" />
           <EntitySet Name="LIKEs" EntityType="Self.LIKE" />

@@ -82,7 +82,7 @@ namespace Pastebook.Controllers
 
             if (ModelState.IsValid)
             {
-                user = userDataAccess.GetUser(model.EmailAddress);
+                user = userDataAccess.GetUser(model.EmailAddress, null);
                 if (user != null)
                 {
                     if (passwordManager.IsPasswordMatch(model.Password, user.SALT, user.PASSWORD))

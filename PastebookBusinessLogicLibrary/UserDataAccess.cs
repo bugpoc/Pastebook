@@ -22,7 +22,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    context.USERs.Add((user));
+                    context.USERs.Add(user);
                     result = context.SaveChanges();
                 }
             }
@@ -40,7 +40,7 @@ namespace PastebookBusinessLogicLibrary
         /// </summary>
         /// <param name="email">Email that is inputted by the user.</param>
         /// <returns>User information.</returns>
-        public USER GetUser(string email)
+        public USER GetUser(string email, string username)
         {
             var selectedUser = new USER();
 
@@ -48,7 +48,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    selectedUser = context.USERs.FirstOrDefault(u => u.EMAIL_ADDRESS == email);
+                    selectedUser = context.USERs.Include("REF_COUNTRY").FirstOrDefault(u => u.EMAIL_ADDRESS == email || u.USER_NAME == username);
                 }
             }
             catch (Exception)
@@ -110,7 +110,7 @@ namespace PastebookBusinessLogicLibrary
 
         public USER GetProfile(string username)
         {
-            //var user = new USER();
+            var user = new USER();
             try
             {
                 using (var context = new PastebookEntities())
@@ -120,10 +120,10 @@ namespace PastebookBusinessLogicLibrary
                     //        where u.USER_NAME == username
                     //        select u).FirstOrDefault();
 
-                    var user = (from u in context.USERs
-                                join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
-                                where u.USER_NAME == username
-                                select new { USER = u, REF_COUNTRY = c }).FirstOrDefault();
+                     //user = (from u in context.USERs
+                     //           join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
+                     //           where u.USER_NAME == username
+                     //           select new { USER = u, REF_COUNTRY = c }).FirstOrDefault();
                 }
             }
             catch (Exception)
