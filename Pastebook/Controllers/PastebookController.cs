@@ -20,8 +20,17 @@ namespace Pastebook.Controllers
 
         public ActionResult Index(string username)
         {
-            var user = new USER();
+            return View();
+        }
 
+        public ActionResult UserProfile(string username)
+        {
+            if (username == "Friends")
+            {
+                return RedirectToAction("Friends");
+            }
+
+            var user = new USER();
             user = userDataAccess.GetUser(null, username);
             if (user != null)
             {
@@ -33,20 +42,6 @@ namespace Pastebook.Controllers
             }
         }
 
-        //public ActionResult UserProfile(string username)
-        //{
-        //    var user = new USER();
-        //    user = userDataAccess.GetUser(null, username);
-        //    if (user != null)
-        //    {
-        //        return View(mapperManager.USERToProfileViewModel(user));
-        //    }
-        //    else
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //}
-
         public ActionResult Friends()
         {
             return View(mapperManager.ListOfUSERsToListOfFriendViewModel(friendDataAccess.GetListOfFriends((int)Session["user_id"])));
@@ -55,6 +50,13 @@ namespace Pastebook.Controllers
         public ActionResult Timeline()
         {
             return View(mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserTimeline((int)Session["user_id"])));
+        }
+
+        public ActionResult NewsFeed()
+        {
+            var listOfUsers = new List<USER>();
+            listOfUsers = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
+            return View(mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUsers, (int)Session["user_id"])));
         }
     }
 }
