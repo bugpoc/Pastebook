@@ -12,12 +12,11 @@ namespace PastebookBusinessLogicLibrary
         public List<USER> GetListOfFriends(int id)
         {
             var listOfFriendsInformation = new List<USER>();
-            var listOfFriendsID = new List<int>();
             try
             {
                 using (var context = new PastebookEntities())
                 {
-                    var listOfFriends = context.FRIENDs.Where(f => f.USER_ID == id || f.FRIEND_ID == id).ToList();
+                    var listOfFriends = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id || f.FRIEND_ID == id).ToList();
                     foreach (var item in listOfFriends)
                     {
                         if (item.USER_ID == id)

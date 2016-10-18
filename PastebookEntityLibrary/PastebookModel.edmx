@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PastebookModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PastebookModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="COMMENT">
           <Key>
             <PropertyRef Name="ID" />
@@ -93,18 +93,6 @@
           <Property Name="ABOUT_ME" Type="varchar" MaxLength="2000" />
           <Property Name="EMAIL_ADDRESS" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK_COMMENT_COMMENT">
-          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="1" />
-          <End Role="COMMENT1" Type="Self.COMMENT" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="COMMENT">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="COMMENT1">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_COMMENT_ID">
           <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
@@ -114,6 +102,18 @@
             </Principal>
             <Dependent Role="NOTIFICATION">
               <PropertyRef Name="COMMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_POST_ID">
+          <End Role="POST" Type="Self.POST" Multiplicity="1" />
+          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMMENT">
+              <PropertyRef Name="POST_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -258,13 +258,13 @@
           <EntitySet Name="REF_COUNTRY" EntityType="Self.REF_COUNTRY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_COMMENT_COMMENT" Association="Self.FK_COMMENT_COMMENT">
-            <End Role="COMMENT" EntitySet="COMMENT" />
-            <End Role="COMMENT1" EntitySet="COMMENT" />
-          </AssociationSet>
           <AssociationSet Name="FK_COMMENT_ID" Association="Self.FK_COMMENT_ID">
             <End Role="COMMENT" EntitySet="COMMENT" />
             <End Role="NOTIFICATION" EntitySet="NOTIFICATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_POST_ID" Association="Self.FK_COMMENT_POST_ID">
+            <End Role="POST" EntitySet="POST" />
+            <End Role="COMMENT" EntitySet="COMMENT" />
           </AssociationSet>
           <AssociationSet Name="FK_COUNTRY_ID" Association="Self.FK_COUNTRY_ID">
             <End Role="REF_COUNTRY" EntitySet="REF_COUNTRY" />
@@ -315,7 +315,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PastebookModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="PastebookModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="COMMENT">
           <Key>
             <PropertyRef Name="ID" />
@@ -325,9 +325,8 @@
           <Property Name="POSTER_ID" Type="Int32" Nullable="false" />
           <Property Name="CONTENT" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="COMMENT1" Relationship="Self.FK_COMMENT_COMMENT" FromRole="COMMENT" ToRole="COMMENT1" />
-          <NavigationProperty Name="COMMENT2" Relationship="Self.FK_COMMENT_COMMENT" FromRole="COMMENT1" ToRole="COMMENT" />
           <NavigationProperty Name="NOTIFICATIONs" Relationship="Self.FK_COMMENT_ID" FromRole="COMMENT" ToRole="NOTIFICATION" />
+          <NavigationProperty Name="POST" Relationship="Self.FK_COMMENT_POST_ID" FromRole="COMMENT" ToRole="POST" />
           <NavigationProperty Name="USER" Relationship="Self.FK_POSTER_POSTER_ID" FromRole="COMMENT" ToRole="USER" />
         </EntityType>
         <EntityType Name="FRIEND">
@@ -379,6 +378,7 @@
           <Property Name="CONTENT" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PROFILE_OWNER_ID" Type="Int32" Nullable="false" />
           <Property Name="POSTER_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="COMMENTs" Relationship="Self.FK_COMMENT_POST_ID" FromRole="POST" ToRole="COMMENT" />
           <NavigationProperty Name="LIKEs" Relationship="Self.FK_POST_POST_ID" FromRole="POST" ToRole="LIKE" />
           <NavigationProperty Name="NOTIFICATIONs" Relationship="Self.FK_POST_ID" FromRole="POST" ToRole="NOTIFICATION" />
           <NavigationProperty Name="USER" Relationship="Self.FK_POSTER_ID" FromRole="POST" ToRole="USER" />
@@ -430,18 +430,6 @@
           <NavigationProperty Name="POSTs1" Relationship="Self.FK_PROFILE_OWNER_ID" FromRole="USER" ToRole="POST" />
           <NavigationProperty Name="REF_COUNTRY" Relationship="Self.FK_COUNTRY_ID" FromRole="USER" ToRole="REF_COUNTRY" />
         </EntityType>
-        <Association Name="FK_COMMENT_COMMENT">
-          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="1" />
-          <End Role="COMMENT1" Type="Self.COMMENT" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="COMMENT">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="COMMENT1">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_COMMENT_ID">
           <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="0..1" />
           <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
@@ -451,6 +439,18 @@
             </Principal>
             <Dependent Role="NOTIFICATION">
               <PropertyRef Name="COMMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMMENT_POST_ID">
+          <End Role="POST" Type="Self.POST" Multiplicity="1" />
+          <End Role="COMMENT" Type="Self.COMMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="POST">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="COMMENT">
+              <PropertyRef Name="POST_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -586,7 +586,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PastebookEntities" annotation:LazyLoadingEnabled="false">
+        <EntityContainer Name="PastebookEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="COMMENTs" EntityType="Self.COMMENT" />
           <EntitySet Name="FRIENDs" EntityType="Self.FRIEND" />
           <EntitySet Name="LIKEs" EntityType="Self.LIKE" />
@@ -595,13 +595,13 @@
           <EntitySet Name="REF_COUNTRY" EntityType="Self.REF_COUNTRY" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="USERs" EntityType="Self.USER" />
-          <AssociationSet Name="FK_COMMENT_COMMENT" Association="Self.FK_COMMENT_COMMENT">
-            <End Role="COMMENT" EntitySet="COMMENTs" />
-            <End Role="COMMENT1" EntitySet="COMMENTs" />
-          </AssociationSet>
           <AssociationSet Name="FK_COMMENT_ID" Association="Self.FK_COMMENT_ID">
             <End Role="COMMENT" EntitySet="COMMENTs" />
             <End Role="NOTIFICATION" EntitySet="NOTIFICATIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMMENT_POST_ID" Association="Self.FK_COMMENT_POST_ID">
+            <End Role="POST" EntitySet="POSTs" />
+            <End Role="COMMENT" EntitySet="COMMENTs" />
           </AssociationSet>
           <AssociationSet Name="FK_POSTER_POSTER_ID" Association="Self.FK_POSTER_POSTER_ID">
             <End Role="USER" EntitySet="USERs" />

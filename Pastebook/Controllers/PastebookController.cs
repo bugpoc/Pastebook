@@ -15,16 +15,10 @@ namespace Pastebook.Controllers
     {
         FriendDataAccess friendDataAccess = new FriendDataAccess();
         UserDataAccess userDataAccess = new UserDataAccess();
+        PostDataAccess postDataAccess = new PostDataAccess();
         MapperManager mapperManager = new MapperManager();
-        
-        public ActionResult Index()
-        {
 
-            //userDataAccess.GetUser(null, username);
-            return View();
-        }
-
-        public ActionResult UserProfile(string username)
+        public ActionResult Index(string username)
         {
             var user = new USER();
 
@@ -39,9 +33,28 @@ namespace Pastebook.Controllers
             }
         }
 
+        //public ActionResult UserProfile(string username)
+        //{
+        //    var user = new USER();
+        //    user = userDataAccess.GetUser(null, username);
+        //    if (user != null)
+        //    {
+        //        return View(mapperManager.USERToProfileViewModel(user));
+        //    }
+        //    else
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //}
+
         public ActionResult Friends()
         {
-            return View(mapperManager.ListOfUSERsToListOfFriendsViewModel(friendDataAccess.GetListOfFriends((int)Session["user_id"])));
+            return View(mapperManager.ListOfUSERsToListOfFriendViewModel(friendDataAccess.GetListOfFriends((int)Session["user_id"])));
+        }
+
+        public ActionResult Timeline()
+        {
+            return View(mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserTimeline((int)Session["user_id"])));
         }
     }
 }

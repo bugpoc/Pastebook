@@ -14,8 +14,10 @@ namespace PastebookEntityLibrary
     
     public partial class POST
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public POST()
         {
+            this.COMMENTs = new HashSet<COMMENT>();
             this.LIKEs = new HashSet<LIKE>();
             this.NOTIFICATIONs = new HashSet<NOTIFICATION>();
         }
@@ -26,7 +28,11 @@ namespace PastebookEntityLibrary
         public int PROFILE_OWNER_ID { get; set; }
         public int POSTER_ID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<COMMENT> COMMENTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIKE> LIKEs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICATION> NOTIFICATIONs { get; set; }
         public virtual USER USER { get; set; }
         public virtual USER USER1 { get; set; }

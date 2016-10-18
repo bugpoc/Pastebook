@@ -14,6 +14,7 @@ namespace PastebookEntityLibrary
     
     public partial class REF_COUNTRY
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public REF_COUNTRY()
         {
             this.USERs = new HashSet<USER>();
@@ -22,6 +23,7 @@ namespace PastebookEntityLibrary
         public int ID { get; set; }
         public string COUNTRY { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USER> USERs { get; set; }
     }
 }

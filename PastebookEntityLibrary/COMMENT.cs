@@ -14,6 +14,7 @@ namespace PastebookEntityLibrary
     
     public partial class COMMENT
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COMMENT()
         {
             this.NOTIFICATIONs = new HashSet<NOTIFICATION>();
@@ -25,9 +26,9 @@ namespace PastebookEntityLibrary
         public string CONTENT { get; set; }
         public System.DateTime DATE_CREATED { get; set; }
     
-        public virtual COMMENT COMMENT1 { get; set; }
-        public virtual COMMENT COMMENT2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICATION> NOTIFICATIONs { get; set; }
+        public virtual POST POST { get; set; }
         public virtual USER USER { get; set; }
     }
 }

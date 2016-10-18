@@ -27,10 +27,10 @@ namespace Pastebook.Mapper
             };
         }
 
-        public List<FriendViewModel> ListOfUSERsToListOfFriendsViewModel(List<USER> listOfUser)
+        public List<FriendViewModel> ListOfUSERsToListOfFriendViewModel(List<USER> listOfUsers)
         {
             var listOfFriends = new List<FriendViewModel>();
-            foreach (var item in listOfUser)
+            foreach (var item in listOfUsers)
             {
                 listOfFriends.Add(new FriendViewModel()
                 {
@@ -58,6 +58,24 @@ namespace Pastebook.Mapper
                 MobileNumber = user.MOBILE_NO,
                 Username = user.USER_NAME
             };
+        }
+
+        public List<PostViewModel> ListOfPOSTsToListOfPostViewModel(List<POST> listOfPosts)
+        {
+            var listOfPostsViewModel = new List<PostViewModel>();
+            foreach (var item in listOfPosts)
+            {
+                listOfPostsViewModel.Add(new PostViewModel()
+                {
+                    ID = item.ID,
+                    Content = item.CONTENT,
+                    CreatedDate = item.CREATED_DATE,
+                    PosterID = item.POSTER_ID,
+                    ProfileOwnerID = item.PROFILE_OWNER_ID
+                });
+            }
+
+            return listOfPostsViewModel;
         }
     }
 }
