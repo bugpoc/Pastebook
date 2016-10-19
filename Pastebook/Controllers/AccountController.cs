@@ -20,6 +20,7 @@ namespace Pastebook.Controllers
         // GET: /Account/
         public ActionResult Index()
         {
+            Session["user_id"] = 1;
             return View();
         }
 

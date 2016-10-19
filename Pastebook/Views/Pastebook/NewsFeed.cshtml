@@ -1,6 +1,14 @@
-﻿
-<textarea id="txtAreaContent" cols="50"></textarea>
-<button type="button">Post</button>
+﻿<div>
+    <textarea id="content"></textarea>
+    <span id="contentMessage"></span>
+    <button type="button" id="btnPost">Post</button>
+</div>
+<div id="newsFeedPartial">
+    @{Html.RenderAction("NewsFeedPartial", "Pastebook");}
+</div>
 
-@{Html.RenderAction("NewsFeedPartial", "Pastebook");}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/newsfeed.js"></script>
 
+}

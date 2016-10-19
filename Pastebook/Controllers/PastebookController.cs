@@ -60,8 +60,16 @@ namespace Pastebook.Controllers
 
         public ActionResult NewsFeedPartial()
         {
-            var listOfUsers = new List<USER>();
-            return PartialView("NewsFeedPartialView", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUsers, (int)Session["user_id"])));
+            var listOfUserFriends = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
+
+            return PartialView("NewsFeedPartialView", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUserFriends, (int)Session["user_id"])));
+        }
+
+        public JsonResult SaveNewsFeedPost(string content)
+        {
+            int result = postDataAccess.SavePost(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = (int)Session["user_id"], CREATED_DATE = DateTime.Now });
+
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace PastebookBusinessLogicLibrary
             return listOfPosts;
         }
 
-        public List<POST> GetUserNewsFeed(List<USER> listOfUsers, int id)
+        public List<POST> GetUserNewsFeed(List<USER> listOfUserFriends, int id)
         {
             var listOfPosts = new List<POST>();
 
@@ -41,7 +41,7 @@ namespace PastebookBusinessLogicLibrary
 
                     foreach (var item in result)
                     {
-                        if (listOfUsers.Any(u => (u.ID == item.POSTER_ID && u.ID == item.PROFILE_OWNER_ID)) || item.PROFILE_OWNER_ID == id)
+                        if (listOfUserFriends.Any(u => (u.ID == item.POSTER_ID && u.ID == item.PROFILE_OWNER_ID)) || item.PROFILE_OWNER_ID == id)
                         {
                             listOfPosts.Add(item);
                         }
@@ -57,20 +57,23 @@ namespace PastebookBusinessLogicLibrary
             return listOfPosts;
         }
 
-        //public int SavePost(POST post)
-        //{
-        //    try
-        //    {
-        //        using (var con)
-        //        {
+        public int SavePost(POST post)
+        {
+            int result = 0;
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    context.POSTs.Add(post);
+                    result = context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
 
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+            return result;
+        }
     }
 }

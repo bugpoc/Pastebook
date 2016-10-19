@@ -19,23 +19,26 @@ namespace PastebookBusinessLogicLibrary
                     var listOfFriends = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id || f.FRIEND_ID == id).ToList();
                     foreach (var item in listOfFriends)
                     {
-                        if (item.USER_ID == id)
+                        if (item.REQUEST == "N")
                         {
-                            listOfFriendsInformation.Add(new USER()
+                            if (item.USER_ID == id)
                             {
-                                ID = item.FRIEND_ID,
-                                FIRST_NAME = item.USER.FIRST_NAME,
-                                LAST_NAME = item.USER.LAST_NAME
-                            });
-                        }
-                        else
-                        {
-                            listOfFriendsInformation.Add(new USER()
+                                listOfFriendsInformation.Add(new USER()
+                                {
+                                    ID = item.FRIEND_ID,
+                                    FIRST_NAME = item.USER.FIRST_NAME,
+                                    LAST_NAME = item.USER.LAST_NAME
+                                });
+                            }
+                            else
                             {
-                                ID = item.USER_ID,
-                                FIRST_NAME = item.USER1.FIRST_NAME,
-                                LAST_NAME = item.USER1.LAST_NAME
-                            });
+                                listOfFriendsInformation.Add(new USER()
+                                {
+                                    ID = item.USER_ID,
+                                    FIRST_NAME = item.USER1.FIRST_NAME,
+                                    LAST_NAME = item.USER1.LAST_NAME
+                                });
+                            }
                         }
                     }
                 }
@@ -46,6 +49,6 @@ namespace PastebookBusinessLogicLibrary
                 throw;
             }
             return listOfFriendsInformation;
-        } 
+        }
     }
 }

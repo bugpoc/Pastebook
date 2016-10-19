@@ -3,33 +3,48 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-@foreach (var item in Model)
-{
-    <div>
-        <p>Name: @item.FullName</p>
-        <p>This is the content: @item.Content</p>
-        <p>Number of Likes: @item.Likes.Count</p>
-        @if (item.Likes.Count > 0)
+@{ if (Model != null)
+    {
+        foreach (var item in Model)
         {
-            <p>Liked By:</p>
             <div>
-                @foreach (var element in item.Likes)
+                @if (item.ProfileOwnerID != item.PosterID)
                 {
-                    <p>@element.FullName</p>
+                    <p>@item.FullName posted to You</p>
+                }
+                else
+                {
+                    <p>@item.FullName</p>
+                }
+                <p>This is the content: @item.Content</p>
+                <p>Number of Likes: @item.Likes.Count</p>
+                @if (item.Likes.Count > 0)
+                {
+                    <p>Liked By:</p>
+                    <div>
+                        @foreach (var element in item.Likes)
+                        {
+                            <p>@element.FullName</p>
+                        }
+                    </div>
+                }
+                @if (item.Comments.Count > 0)
+                {
+                    <p>Comments:</p>
+                    <div>
+                        @foreach (var element in item.Comments)
+                        {
+                            <p>@element.FullName : @element.Content</p>
+                        }
+                    </div>
                 }
             </div>
+            <br />
         }
-        @if (item.Comments.Count > 0)
-        {
-            <p>Comments:</p>
-            <div>
-                @foreach (var element in item.Comments)
-                {
-                    <p>@element.FullName : @element.Content</p>
-                }
-            </div>
-        }
-    </div>
-    <br />
+    }
+    else
+    {
+        <div>There are no post.</div>
+    }
 }
+
