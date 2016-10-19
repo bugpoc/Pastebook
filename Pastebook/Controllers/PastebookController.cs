@@ -33,7 +33,18 @@ namespace Pastebook.Controllers
         {
             var user = new USER();
             user = userDataAccess.GetUser(null, username);
-
+            if(user.GENDER == "M")
+            {
+                user.GENDER = "Male";
+            }
+            else if (user.GENDER == "F")
+            {
+                user.GENDER = "Female";
+            }
+            else
+            {
+                user.GENDER = "Unspecified";
+            }
             return PartialView("CredentialPartialView", mapperManager.USERToProfileViewModel(user));
         }
 
