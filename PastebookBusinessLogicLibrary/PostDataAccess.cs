@@ -9,7 +9,7 @@ namespace PastebookBusinessLogicLibrary
 {
     public class PostDataAccess
     {
-        public List<POST> GetUserTimeline(int id)
+        public List<POST> GetUserTimeline(string username)
         {
             var listOfPosts = new List<POST>();
 
@@ -17,7 +17,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.PROFILE_OWNER_ID == id).OrderByDescending(d => d.CREATED_DATE).ToList();
+                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.USER1.USER_NAME == username).OrderByDescending(d => d.CREATED_DATE).ToList();
                 }
             }
             catch (Exception)

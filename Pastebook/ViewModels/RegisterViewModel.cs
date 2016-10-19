@@ -46,6 +46,8 @@ namespace Pastebook.ViewModels
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
 
+        public string Gender { get; set; }
+
         public int? Country { get; set; }
 
         [Display(Name = "Mobile Number")]

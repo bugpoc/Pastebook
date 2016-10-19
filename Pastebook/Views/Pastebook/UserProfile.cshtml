@@ -1,92 +1,106 @@
-﻿@model Pastebook.ViewModels.ProfileViewModel
+﻿<input id="hiddenUsername" type="hidden" value="@Request.QueryString["username"]" />
+@{
+    var sessionUsername = Session["username"].ToString();
+    if (sessionUsername == Request.QueryString["username"])
+    {
+        <div>
+            <textarea id="txtAreaAboutMe"></textarea>
+            <span id="aboutMeMessage"></span>
+            <button type="button" id="btnAboutMe">Update</button>
+        </div>
+    }
+}
+<div id="credentialPartial">
+    @{ Html.RenderAction("Credential", "Pastebook");}
+</div>
 
 <div>
-    <h4>ProfileViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MobileNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MobileNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AboutMe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AboutMe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmailAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmailAddress)
-        </dd>
-
-    </dl>
+    <textarea id="txtAreacontent"></textarea>
+    <span id="contentMessage"></span>
+    <button type="button" id="btnPost">Post</button>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div id="timelinePartial">
+    @{ Html.RenderAction("Timeline", "Pastebook");}
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#btnPost').click(function () {
+                var varContent = $.trim($('#txtAreacontent').val());
+                var data = {
+                    content: varContent,
+                    username: $('#hiddenUsername').val()
+                };
+                if (varContent.length != 0) {
+                    $.ajax({
+                        url: '/Pastebook/SavePost',
+                        data: data,
+                        type: 'GET',
+                        success: function (data) {
+                            CheckResultForPost(data);
+                        },
+                        error: function () {
+                            alert('Something went wrong')
+                        }
+
+                    });
+                }
+                else {
+                    $('#contentMessage').text('You cannot post an empty content.');
+                }
+            });
+
+            $('#btnAboutMe').click(function () {
+                var varAboutMe = $.trim($('#txtAreaAboutMe').val());
+                var data = {
+                    aboutMe: varAboutMe,
+                    username: $('#hiddenUsername').val()
+                };
+                if (varAboutMe.length != 0) {
+                    $.ajax({
+                        url: '/Pastebook/UpdateAboutMe',
+                        data: data,
+                        type: 'GET',
+                        success: function (data) {
+                            CheckResultForAboutMe(data);
+                        },
+                        error: function () {
+                            alert('Something went wrong')
+                        }
+
+                    });
+                }
+                else {
+                    $('#aboutMeMessage').text('You cannot update about me with an empty content.');
+                }
+            });
+
+            function CheckResultForAboutMe(data) {
+                var hiddenUsername = $('#hiddenUsername').val()
+                if (data.Result == 1) {
+                    $('#credentialPartial').load('/Pastebook/Credential?username=' + hiddenUsername);
+                    $('#txtAreaAboutMe').val('');
+                    $('#aboutMeMessage').text('');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            function CheckResultForPost(data) {
+                var hiddenUsername = $('#hiddenUsername').val()
+                if (data.Result == 1) {
+                    $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
+                    $('#txtAreacontent').val('');
+                    $('#contentMessage').text('');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+        });
+    </script>
+}
+

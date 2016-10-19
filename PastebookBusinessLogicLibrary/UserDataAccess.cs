@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PastebookEntityLibrary;
+using System.Data.Entity;
 
 namespace PastebookBusinessLogicLibrary
 {
@@ -108,22 +109,15 @@ namespace PastebookBusinessLogicLibrary
             return result;
         }
 
-        public USER GetProfile(string username)
+        public int UpdateAboutMe(USER user)
         {
-            var user = new USER();
+            int result = 0;
             try
             {
                 using (var context = new PastebookEntities())
                 {
-                    //var user = (from u in context.USERs
-                    //        join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
-                    //        where u.USER_NAME == username
-                    //        select u).FirstOrDefault();
-
-                     //user = (from u in context.USERs
-                     //           join c in context.REF_COUNTRY on u.COUNTRY_ID equals c.ID
-                     //           where u.USER_NAME == username
-                     //           select new { USER = u, REF_COUNTRY = c }).FirstOrDefault();
+                    context.Entry(user).State = EntityState.Modified;
+                    result = context.SaveChanges();
                 }
             }
             catch (Exception)
@@ -131,7 +125,8 @@ namespace PastebookBusinessLogicLibrary
 
                 throw;
             }
-            return user;
+
+            return result;
         }
     }
 }

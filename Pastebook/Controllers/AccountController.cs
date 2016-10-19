@@ -21,6 +21,7 @@ namespace Pastebook.Controllers
         public ActionResult Index()
         {
             Session["user_id"] = 1;
+            Session["username"] = "jayquiambao";
             return View();
         }
 
@@ -89,6 +90,7 @@ namespace Pastebook.Controllers
                     if (passwordManager.IsPasswordMatch(model.Password, user.SALT, user.PASSWORD))
                     {
                         Session["user_id"] = user.ID;
+                        Session["username"] = user.USER_NAME;
 
                         return RedirectToAction("Index", "Pastebook");
                     }

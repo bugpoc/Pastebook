@@ -18,7 +18,7 @@ namespace Pastebook.Mapper
                 DATE_CREATED = DateTime.Now,
                 EMAIL_ADDRESS = model.EmailAddress,
                 FIRST_NAME = model.FirstName,
-                GENDER = "U",
+                GENDER = model.Gender,
                 LAST_NAME = model.LastName,
                 USER_NAME = model.Username,
                 PASSWORD = model.Password,

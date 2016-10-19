@@ -1,12 +1,13 @@
 ﻿$(document).ready(function () {
     $('#btnPost').click(function () {
-        var varContent = $.trim($('#content').val());
+        var varContent = $.trim($('#txtAreacontent').val());
         var data = {
-            content: varContent
+            content: varContent,
+            username: ""
         };
         if (varContent.length != 0) {
             $.ajax({
-                url: '/Pastebook/SaveNewsFeedPost',
+                url: '/Pastebook/SavePost',
                 data: data,
                 type: 'GET',
                 success: function (data) {
@@ -26,7 +27,7 @@
     function CheckResult(data) {
         if (data.Result == 1) {
             $('#newsFeedPartial').load('/Pastebook/NewsFeedPartial');
-            $('#content').val('');
+            $('#txtAreacontent').val('');
             $('#contentMessage').text('');
         }
         else {

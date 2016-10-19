@@ -26,21 +26,15 @@ namespace Pastebook.Controllers
 
         public ActionResult UserProfile(string username)
         {
-            if (username == "Friends")
-            {
-                return RedirectToAction("Friends");
-            }
+            return View();
+        }
 
+        public ActionResult Credential(string username)
+        {
             var user = new USER();
             user = userDataAccess.GetUser(null, username);
-            if (user != null)
-            {
-                return View(mapperManager.USERToProfileViewModel(user));
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
+            return PartialView("CredentialPartialView", mapperManager.USERToProfileViewModel(user));
         }
 
         public ActionResult Friends()
@@ -48,9 +42,9 @@ namespace Pastebook.Controllers
             return View(mapperManager.ListOfUSERsToListOfFriendViewModel(friendDataAccess.GetListOfFriends((int)Session["user_id"])));
         }
 
-        public ActionResult Timeline()
+        public ActionResult Timeline(string username)
         {
-            return View(mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserTimeline((int)Session["user_id"])));
+            return PartialView("Timeline",mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserTimeline(username)));
         }
 
         public ActionResult NewsFeed()
@@ -65,10 +59,31 @@ namespace Pastebook.Controllers
             return PartialView("NewsFeedPartialView", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUserFriends, (int)Session["user_id"])));
         }
 
-        public JsonResult SaveNewsFeedPost(string content)
+        public JsonResult SavePost(string content, string username)
         {
-            int result = postDataAccess.SavePost(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = (int)Session["user_id"], CREATED_DATE = DateTime.Now });
+            var user = new USER();
 
+            if(username!="")
+            { 
+            user = userDataAccess.GetUser(null, username);
+            }
+            else
+            {
+                user.ID = (int)Session["user_id"];
+            }
+
+            int result = postDataAccess.SavePost(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = user.ID, CREATED_DATE = DateTime.Now});
+
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult UpdateAboutMe(string aboutMe, string username)
+        {
+            var user = new USER();
+            user = userDataAccess.GetUser(null, username);
+            user.ABOUT_ME = aboutMe;
+
+            int result = userDataAccess.UpdateAboutMe(user);
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }
