@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PastebookDataAccess;
 
 namespace Pastebook.Controllers
 {
@@ -17,6 +18,8 @@ namespace Pastebook.Controllers
         FriendDataAccess friendDataAccess = new FriendDataAccess();
         UserDataAccess userDataAccess = new UserDataAccess();
         PostDataAccess postDataAccess = new PostDataAccess();
+        LikeDataAccess likeDataAccess = new LikeDataAccess();
+        CommentDataAccess commentDataAccess = new CommentDataAccess();
         MapperManager mapperManager = new MapperManager();
 
         public ActionResult Index(string username)
@@ -95,6 +98,23 @@ namespace Pastebook.Controllers
             user.ABOUT_ME = aboutMe;
 
             int result = userDataAccess.UpdateAboutMe(user);
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LikePost(int postID)
+        {
+            LIKE like = new LIKE();
+            like.LIKED_BY = (int)Session["user_id"];
+            like.POST_ID = postID;
+            DataAccess<LIKE> dataAccesslIKE = new DataAccess<LIKE>();
+            int result = dataAccesslIKE.Create(like);
+            //int result = likeDataAccess.SaveLike(postID, (int)Session["user_id"]);
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CommentToPost(string content, int postID )
+        {
+            int result = commentDataAccess.SaveComment(content, postID, (int)Session["user_id"]);
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }

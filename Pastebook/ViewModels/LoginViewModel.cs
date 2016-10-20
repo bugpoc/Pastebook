@@ -9,7 +9,7 @@ namespace Pastebook.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email Address")]
+        [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
         [Required]

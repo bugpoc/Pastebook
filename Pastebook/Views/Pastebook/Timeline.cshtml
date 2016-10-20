@@ -10,6 +10,7 @@
         <p>Name: @item.FullName</p>
         <p>This is the content: @item.Content</p>
         <p>Number of Likes: @item.Likes.Count</p>
+        <button type="button" class="btnLike" value="@item.ID">Like</button>
         @if (item.Likes.Count > 0)
         {
             <p>Liked By:</p>
@@ -30,6 +31,8 @@
                 }
             </div>
         }
+        <textarea id="@item.ID"></textarea>
+        <button type="button" class="btnComment" value="@item.ID">COMMENT</button>
     </div>
     <br/>
 }

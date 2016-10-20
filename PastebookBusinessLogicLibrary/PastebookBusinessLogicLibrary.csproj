@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommentDataAccess.cs" />
     <Compile Include="CountryDataAccess.cs" />
     <Compile Include="FriendDataAccess.cs" />
+    <Compile Include="LikeDataAccess.cs" />
     <Compile Include="PasswordManager.cs" />
     <Compile Include="PostDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

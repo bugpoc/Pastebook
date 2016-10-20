@@ -181,3 +181,5 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Newtonsoft.Json.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.pdb

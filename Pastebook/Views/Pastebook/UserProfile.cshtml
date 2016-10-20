@@ -28,6 +28,9 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
+
+            var hiddenUsername = $('#hiddenUsername').val();
+
             $('#btnPost').click(function () {
                 var varContent = $.trim($('#txtAreacontent').val());
                 var data = {
@@ -78,8 +81,48 @@
                 }
             });
 
+            $(document).on('click', ".btnLike", function () {
+                alert($(this).val())
+                var data = {
+                    postID: $(this).val()
+                };
+                $.ajax({
+                    url: '/Pastebook/LikePost',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForLike(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            $(document).on('click', ".btnComment", function () {
+                var id = $(this).val();
+                var comment = $('#' + id).val();
+
+                var data = {
+                    postID: $(this).val(),
+                    content: comment
+                };
+                $.ajax({
+                    url: '/Pastebook/CommentToPost',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForComment(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
             function CheckResultForAboutMe(data) {
-                var hiddenUsername = $('#hiddenUsername').val()
                 if (data.Result == 1) {
                     $('#credentialPartial').load('/Pastebook/Credential?username=' + hiddenUsername);
                     $('#txtAreaAboutMe').val('');
@@ -91,11 +134,28 @@
             };
 
             function CheckResultForPost(data) {
-                var hiddenUsername = $('#hiddenUsername').val()
                 if (data.Result == 1) {
                     $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
                     $('#txtAreacontent').val('');
                     $('#contentMessage').text('');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            function CheckResultForLike(data) {
+                if (data.Result == 1) {
+                    $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            function CheckResultForComment(data) {
+                if (data.Result == 1) {
+                    $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
                 }
                 else {
                     alert("Fail Inserting");
