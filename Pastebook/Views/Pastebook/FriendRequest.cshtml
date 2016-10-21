@@ -1,0 +1,57 @@
+﻿<div id="friendRequestPartial">
+    @{ Html.RenderAction("FriendRequestPartial", "Pastebook"); }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', ".btnConfirm", function () {
+                var data = {
+                    friendID: $(this).val(),
+                    status: "Confirm"
+                };
+                $.ajax({
+                    url: '/Pastebook/AcceptRejectRequest',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForRequest(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            $(document).on('click', ".btnReject", function () {
+                var data = {
+                    friendID: $(this).val(),
+                    status: "Reject"
+                };
+                $.ajax({
+                    url: '/Pastebook/AcceptRejectRequest',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForRequest(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            function CheckResultForRequest(data) {
+                if (data.Result == 1) {
+                    $('#friendRequestPartial').load('/Pastebook/FriendRequestPartial');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+        });
+    </script>
+}

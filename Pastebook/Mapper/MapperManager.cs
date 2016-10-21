@@ -35,7 +35,8 @@ namespace Pastebook.Mapper
                 listOfFriends.Add(new FriendViewModel()
                 {
                     ID = item.ID,
-                    FullName = item.FIRST_NAME + " " + item.LAST_NAME
+                    FullName = item.FIRST_NAME + " " + item.LAST_NAME,
+                    Username = item.USER_NAME
                 });
             }
 

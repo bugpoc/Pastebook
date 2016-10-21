@@ -248,6 +248,9 @@
     <Content Include="Views\Pastebook\NewsFeedPartialView.cshtml" />
     <Content Include="Views\Pastebook\NewsFeed.cshtml" />
     <Content Include="Views\Pastebook\CredentialPartialView.cshtml" />
+    <Content Include="Views\Pastebook\AddFriendPartialView.cshtml" />
+    <Content Include="Views\Pastebook\FriendRequest.cshtml" />
+    <Content Include="Views\Pastebook\FriendRequestPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

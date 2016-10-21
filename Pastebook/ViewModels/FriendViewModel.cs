@@ -10,5 +10,7 @@ namespace Pastebook.ViewModels
         public int ID { get; set; }
 
         public string FullName { get; set; }
+
+        public string Username { get; set; }
     }
 }

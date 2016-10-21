@@ -1,0 +1,12 @@
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\PastebookDataAccess.dll.config
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\PastebookDataAccess.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\PastebookDataAccess.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\EntityFramework.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\PastebookEntityLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\PastebookEntityLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\EntityFramework.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\obj\Debug\PastebookDataAccessLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\obj\Debug\PastebookDataAccess.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookDataAccess\obj\Debug\PastebookDataAccess.pdb

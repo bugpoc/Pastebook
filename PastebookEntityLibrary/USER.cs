@@ -11,7 +11,8 @@ namespace PastebookEntityLibrary
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -28,6 +29,9 @@ namespace PastebookEntityLibrary
         }
     
         public int ID { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "The Userame maximum length is 50 characters only")]
         public string USER_NAME { get; set; }
         public string PASSWORD { get; set; }
         public string SALT { get; set; }

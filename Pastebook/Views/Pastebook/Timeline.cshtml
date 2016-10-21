@@ -10,7 +10,14 @@
         <p>Name: @item.FullName</p>
         <p>This is the content: @item.Content</p>
         <p>Number of Likes: @item.Likes.Count</p>
-        <button type="button" class="btnLike" value="@item.ID">Like</button>
+        @if (item.Likes.Any(l => l.LikedBY == (int)Session["user_id"] && l.PostID == item.ID))
+        {
+            <button id="unlike" type="button" class="btnLike" value="@item.ID">Unlike</button>
+        }
+        else
+        {
+            <button id="like" type="button" class="btnLike" value="@item.ID">Like</button>
+        }
         @if (item.Likes.Count > 0)
         {
             <p>Liked By:</p>

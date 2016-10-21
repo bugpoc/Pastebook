@@ -13,12 +13,14 @@ namespace Pastebook
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapPageRoute("", "Pastebook/Friends", "~/Friends.cshtml");
+
             //http://stackoverflow.com/questions/7618037/asp-net-mvc-routing-by-string-id
             //routes.MapRoute(
             //    "Pastebook",
             //    "Pastebook/{username}",
             //    new { controller = "Pastebook", action = "UserProfile" },
-            //    new { username = @"\w*" }
+            //    new { username = @"\w\.*" }
             //);
 
             routes.MapRoute(

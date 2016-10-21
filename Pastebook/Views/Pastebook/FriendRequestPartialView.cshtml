@@ -1,0 +1,8 @@
+﻿@model IEnumerable<PastebookEntityLibrary.USER>
+
+@foreach (var item in Model)
+{
+    <p>
+        @item.FIRST_NAME @item.LAST_NAME <button class="btnConfirm" value="@item.ID">Confirm</button><button class="btnReject" value="@item.ID">Reject</button>
+    </p>
+}

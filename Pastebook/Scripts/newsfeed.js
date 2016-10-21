@@ -3,7 +3,7 @@
         var varContent = $.trim($('#txtAreacontent').val());
         var data = {
             content: varContent,
-            username: ""
+            username: $('#hiddenUsername').val()
         };
         if (varContent.length != 0) {
             $.ajax({

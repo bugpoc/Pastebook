@@ -1,0 +1,14 @@
+﻿@model IEnumerable<PastebookEntityLibrary.FRIEND>
+
+@if (Request.QueryString["username"] != Session["username"].ToString())
+{
+    var user = Model.FirstOrDefault(f => f.USER1.USER_NAME == Request.QueryString["username"] || f.USER.USER_NAME == Request.QueryString["username"]);
+    if (user == null)
+    {
+        <button type="button" id="btnAddFriend">Add Friend</button>
+    }
+    else if (user.REQUEST == "Y")
+    {
+        <button type="button" id="btnCancelRequest">Cancel Request</button>
+    }
+}

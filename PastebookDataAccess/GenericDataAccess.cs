@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PastebookDataAccess
 {
-    public class DataAccess<T> where T : class
+    public class GenericDataAccess<T> where T : class
     {
         public int Create(T items)
         {
@@ -28,24 +28,6 @@ namespace PastebookDataAccess
             }
 
             return result;
-        }
-
-        public List<T> Retrieve()
-        {
-            List<T> list = new List<T>();
-
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    list = context.Set<T>().ToList();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return list;
         }
 
         public int Update(T items)

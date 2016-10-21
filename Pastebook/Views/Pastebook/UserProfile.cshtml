@@ -1,7 +1,8 @@
 ﻿<input id="hiddenUsername" type="hidden" value="@Request.QueryString["username"]" />
 @{
     var sessionUsername = Session["username"].ToString();
-    if (sessionUsername == Request.QueryString["username"])
+    var queryStringUsername = Request.QueryString["username"];
+    if (sessionUsername == queryStringUsername)
     {
         <div>
             <textarea id="txtAreaAboutMe"></textarea>
@@ -10,7 +11,12 @@
         </div>
     }
 }
-<button type="button" id="btnAddFriend">Add Friend</button>
+@*not sure*@
+@*add variable to querystring*@
+<div id="addFriendPartial">
+    @{ Html.RenderAction("AddFriendPartial", "Pastebook");}
+</div>
+@*hide from not friend*@
 <div id="credentialPartial">
     @{ Html.RenderAction("Credential", "Pastebook");}
 </div>
@@ -82,9 +88,10 @@
             });
 
             $(document).on('click', ".btnLike", function () {
-                alert($(this).val())
+                var likeUnlike = $(this).attr('id');
                 var data = {
-                    postID: $(this).val()
+                    postID: $(this).val(),
+                    status: likeUnlike
                 };
                 $.ajax({
                     url: '/Pastebook/LikePost',
@@ -122,6 +129,25 @@
                 });
             });
 
+            $('#btnAddFriend').click(function () {
+                var varAboutMe = $.trim($('#txtAreaAboutMe').val());
+                var data = {
+                    username: $('#hiddenUsername').val()
+                };
+                    $.ajax({
+                        url: '/Pastebook/AddFriend',
+                        data: data,
+                        type: 'GET',
+                        success: function (data) {
+                            CheckResultForAddFriend(data);
+                        },
+                        error: function () {
+                            alert('Something went wrong')
+                        }
+
+                    });
+            });
+
             function CheckResultForAboutMe(data) {
                 if (data.Result == 1) {
                     $('#credentialPartial').load('/Pastebook/Credential?username=' + hiddenUsername);
@@ -156,6 +182,15 @@
             function CheckResultForComment(data) {
                 if (data.Result == 1) {
                     $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            function CheckResultForAddFriend(data) {
+                if (data.Result == 1) {
+                    $('#addFriendPartial').load('/Pastebook/AddfriendPartial?username=' + hiddenUsername);
                 }
                 else {
                     alert("Fail Inserting");
