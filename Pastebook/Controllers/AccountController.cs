@@ -40,26 +40,30 @@ namespace Pastebook.Controllers
         }
 
         [HttpPost]
-        public ActionResult RegisterUser(RegisterViewModel model)
+        public ActionResult RegisterUser(USER model, string CONFIRM_PASSWORD)
         {
-            if (userDataAccess.CheckUsername(model.Username))
+            if (model.PASSWORD != CONFIRM_PASSWORD)
             {
-                ModelState.AddModelError("Username", "Username already exists.");
+                ModelState.AddModelError("PASSWORD", "Password do not match");
+            }
+            if (userDataAccess.CheckUsername(model.USER_NAME))
+            {
+                ModelState.AddModelError("USER_NAME", "Username already exists.");
             }
 
-            if (userDataAccess.CheckEmail(model.EmailAddress))
+            if (userDataAccess.CheckEmail(model.EMAIL_ADDRESS))
             {
-                ModelState.AddModelError("EmailAddress", "Email Address already exists.");
+                ModelState.AddModelError("EMAIL_ADDRESS", "Email Address already exists.");
             }
 
             if (ModelState.IsValid)
             {
                 string salt = null;
 
-                model.Password = passwordManager.GeneratePasswordHash(model.Password, out salt);
-                model.Salt = salt;
+                model.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD, out salt);
+                model.SALT = salt;
 
-                userDataAccess.SaveUser(mapperManager.RegisterViewModelToUSER(model));
+                //userDataAccess.SaveUser(mapperManager.RegisterViewModelToUSER(model));
 
                 return RedirectToAction("Register");
             }
@@ -72,6 +76,7 @@ namespace Pastebook.Controllers
                 Text = i.COUNTRY
             });
 
+            model.PASSWORD = null;
             ViewBag.CountryList = countryListItems;
 
             return View("Register", model);
@@ -106,7 +111,7 @@ namespace Pastebook.Controllers
         {
             bool result = userDataAccess.CheckUsername(username);
 
-            return Json(new {Result = result}, JsonRequestBehavior.AllowGet);
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CheckEmail(string email)

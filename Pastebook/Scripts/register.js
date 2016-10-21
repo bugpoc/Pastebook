@@ -51,6 +51,17 @@
         }
     });
 
+    $('#txtConfirmPassword').blur(function () {
+        var password = $('#txtPassword').val();
+        var confirmPassword = $(this).val();
+        if (password != confirmPassword) {
+            $('#confirmPasswordMessage').text("Password do not match");
+        }
+        else {
+            $('#confirmPasswordMessage').text("");
+        }
+    });
+
     function CheckUsername(data) {
         if (data.Result == true) {
             $('#msgForUsername').text('Username already exists.');

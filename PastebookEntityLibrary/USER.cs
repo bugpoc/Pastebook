@@ -31,19 +31,51 @@ namespace PastebookEntityLibrary
         public int ID { get; set; }
 
         [Required]
+        [Display(Name = "Username")]
         [StringLength(50, ErrorMessage = "The Userame maximum length is 50 characters only")]
         public string USER_NAME { get; set; }
+
+        [Required]
+        [Display(Name = "Password")]
+        [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 8, ErrorMessage = "The Password must contain at least 8 characters up to 50 characters")]
         public string PASSWORD { get; set; }
+
         public string SALT { get; set; }
+
+        [Display(Name = "First Name")]
+        [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The First Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
+        [StringLength(50, ErrorMessage = "The First Name maximum length is 50 characters only")]
+        [Required]
         public string FIRST_NAME { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The Last Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
+        [StringLength(50, ErrorMessage = "The Last Name maximum length is 50 characters only")]
         public string LAST_NAME { get; set; }
-        public System.DateTime BIRTHDAY { get; set; }
-        public Nullable<int> COUNTRY_ID { get; set; }
+
+        [Required]
+        [Display(Name = "Birthday")]
+        [DataType(DataType.Date)]
+        public DateTime BIRTHDAY { get; set; }
+
+        public int? COUNTRY_ID { get; set; }
+
+        [Display(Name = "Mobile Number")]
+        [DataType(DataType.PhoneNumber)]
+        [StringLength(50, ErrorMessage = "The Mobile Number maximum length is 50 characters only")]
         public string MOBILE_NO { get; set; }
+
         public string GENDER { get; set; }
         public byte[] PROFILE_PIC { get; set; }
-        public System.DateTime DATE_CREATED { get; set; }
+        public DateTime DATE_CREATED { get; set; }
         public string ABOUT_ME { get; set; }
+
+        [Required]
+        [Display(Name = "Email Address")]
+        [DataType(DataType.EmailAddress)]
+        [StringLength(50, ErrorMessage = "The Email Address maximum length is 50 characters only")]
         public string EMAIL_ADDRESS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
