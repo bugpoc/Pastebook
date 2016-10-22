@@ -92,7 +92,7 @@ namespace Pastebook.Controllers
         {
             var user = new USER();
 
-            if (username != "")
+            if (username != null)
             {
                 user = userDataAccess.GetUser(null, username);
             }
@@ -180,6 +180,11 @@ namespace Pastebook.Controllers
                 result = dataAccessFriend.Delete(friend);
             }
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Test()
+        {
+            return View();
         }
     }
 }

@@ -1,1 +1,98 @@
-﻿Hello
+﻿<div>
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Newsfeed</h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Update Status</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <textarea id="txtAreacontent" class="content-status"></textarea>
+                    <div>
+                        <span id="contentMessage"></span>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="newsFeedPartial">
+        @{Html.RenderAction("NewsFeedPartial", "Pastebook");}
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/newsfeed.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', ".btnLike", function () {
+                var likeUnlike = $(this).attr('id');
+                var data = {
+                    postID: $(this).val(),
+                    status: likeUnlike
+                };
+                $.ajax({
+                    url: '/Pastebook/LikePost',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForLike(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            function CheckResultForLike(data) {
+                if (data.Result == 1) {
+                    $('#newsFeedPartial').load('/Pastebook/NewsFeedPartial');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            $(document).on('click', ".btnComment", function () {
+                var id = $(this).val();
+                var comment = $('#' + id).val();
+
+                var data = {
+                    postID: $(this).val(),
+                    content: comment
+                };
+                $.ajax({
+                    url: '/Pastebook/CommentToPost',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForComment(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            function CheckResultForComment(data) {
+                if (data.Result == 1) {
+                    $('#newsFeedPartial').load('/Pastebook/NewsFeedPartial');
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+        });
+    </script>
+}

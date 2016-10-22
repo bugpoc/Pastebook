@@ -23,23 +23,11 @@ namespace PastebookBusinessLogicLibrary
                         {
                             if (item.USER_ID == id)
                             {
-                                listOfFriendsInformation.Add(new USER()
-                                {
-                                    ID = item.FRIEND_ID,
-                                    FIRST_NAME = item.USER.FIRST_NAME,
-                                    LAST_NAME = item.USER.LAST_NAME,
-                                    USER_NAME = item.USER.USER_NAME,
-                                });
+                                listOfFriendsInformation.Add(item.USER);
                             }
                             else
                             {
-                                listOfFriendsInformation.Add(new USER()
-                                {
-                                    ID = item.USER_ID,
-                                    FIRST_NAME = item.USER1.FIRST_NAME,
-                                    LAST_NAME = item.USER1.LAST_NAME,
-                                    USER_NAME = item.USER1.USER_NAME
-                                });
+                                listOfFriendsInformation.Add(item.USER1);
                             }
                         }
                     }

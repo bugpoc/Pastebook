@@ -27,15 +27,15 @@ namespace PastebookEntityLibrary
             this.POSTs = new HashSet<POST>();
             this.POSTs1 = new HashSet<POST>();
         }
-    
+
         public int ID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Username field is required")]
         [Display(Name = "Username")]
         [StringLength(50, ErrorMessage = "The Userame maximum length is 50 characters only")]
         public string USER_NAME { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Password field is required")]
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 8, ErrorMessage = "The Password must contain at least 8 characters up to 50 characters")]
@@ -43,23 +43,24 @@ namespace PastebookEntityLibrary
 
         public string SALT { get; set; }
 
+        [Required(ErrorMessage = "The First Name field is required")]
         [Display(Name = "First Name")]
         [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The First Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
         [StringLength(50, ErrorMessage = "The First Name maximum length is 50 characters only")]
-        [Required]
         public string FIRST_NAME { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Last Name field is required")]
         [Display(Name = "Last Name")]
         [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The Last Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
         [StringLength(50, ErrorMessage = "The Last Name maximum length is 50 characters only")]
         public string LAST_NAME { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Birthday field is required")]
         [Display(Name = "Birthday")]
         [DataType(DataType.Date)]
         public DateTime BIRTHDAY { get; set; }
 
+        [Display(Name = "Country")]
         public int? COUNTRY_ID { get; set; }
 
         [Display(Name = "Mobile Number")]
@@ -67,17 +68,19 @@ namespace PastebookEntityLibrary
         [StringLength(50, ErrorMessage = "The Mobile Number maximum length is 50 characters only")]
         public string MOBILE_NO { get; set; }
 
+        [Display(Name = "Gender")]
         public string GENDER { get; set; }
+
         public byte[] PROFILE_PIC { get; set; }
         public DateTime DATE_CREATED { get; set; }
         public string ABOUT_ME { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Email Address field is required")]
         [Display(Name = "Email Address")]
         [DataType(DataType.EmailAddress)]
         [StringLength(50, ErrorMessage = "The Email Address maximum length is 50 characters only")]
         public string EMAIL_ADDRESS { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COMMENT> COMMENTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

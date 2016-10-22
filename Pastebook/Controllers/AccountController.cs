@@ -83,16 +83,16 @@ namespace Pastebook.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(USER model)
         {
             var user = new USER();
 
-            if (ModelState.IsValid)
+            if (model.EMAIL_ADDRESS!=null && model.PASSWORD!=null)
             {
-                user = userDataAccess.GetUser(model.EmailAddress, null);
+                user = userDataAccess.GetUser(model.EMAIL_ADDRESS, null);
                 if (user != null)
                 {
-                    if (passwordManager.IsPasswordMatch(model.Password, user.SALT, user.PASSWORD))
+                    if (passwordManager.IsPasswordMatch(model.PASSWORD, user.SALT, user.PASSWORD))
                     {
                         Session["user_id"] = user.ID;
                         Session["username"] = user.USER_NAME;

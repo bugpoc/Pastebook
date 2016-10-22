@@ -1,3 +1,25 @@
-﻿.error{
-    margin-bottom: 5px;
+﻿.highlight {
+    color: #337ab7;
+}
+
+.align-label {
+    padding-top: 7px;
+    text-align: right;
+}
+
+.register-form {
+    min-width: 500px;
+}
+
+textarea {
+   resize: none;
+   width: 100%;
+}
+
+.btn-post {
+   float: right;
+}
+
+.date-align {
+    float: right;
 }
