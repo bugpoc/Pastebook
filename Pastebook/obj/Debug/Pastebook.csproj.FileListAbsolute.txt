@@ -150,6 +150,7 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Microsoft.CodeDom.Provide
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Newtonsoft.Json.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookBusinessLogicLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookEntityLibrary.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.Helpers.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.Mvc.dll
@@ -160,6 +161,7 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.WebPages.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\System.Web.WebPages.Razor.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\WebGrease.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookBusinessLogicLibrary.pdb
+C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookEntityLibrary.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\EntityFramework.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\EntityFramework.SqlServer.xml
@@ -181,5 +183,3 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\Newtonsoft.Json.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.csprojResolveAssemblyReference.cache
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\obj\Debug\Pastebook.pdb
-C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.dll
-C:\Users\Bootcamp\Source\Repos\Pastebook\Pastebook\bin\PastebookDataAccess.pdb

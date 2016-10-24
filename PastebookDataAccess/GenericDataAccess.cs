@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PastebookDataAccess
+namespace PastebookDataAccessLibrary
 {
     public class GenericDataAccess<T> where T : class
     {

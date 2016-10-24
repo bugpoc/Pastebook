@@ -6,36 +6,10 @@ using System.Threading.Tasks;
 using PastebookEntityLibrary;
 using System.Data.Entity;
 
-namespace PastebookBusinessLogicLibrary
+namespace PastebookDataAccessLibrary
 {
     public class UserDataAccess
     {
-        /// <summary>
-        /// This method save the user information to the database.
-        /// </summary>
-        /// <param name="user">User Information Model.</param>
-        /// <returns>1 if the insert into the database is success, 0 if the insert fails.</returns>
-        public int SaveUser(USER user)
-        {
-            int result = 0;
-
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    context.USERs.Add(user);
-                    result = context.SaveChanges();
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// This method get the user from the database.
         /// </summary>
@@ -98,26 +72,6 @@ namespace PastebookBusinessLogicLibrary
                 using (var context = new PastebookEntities())
                 {
                     result = context.USERs.Any(u => u.EMAIL_ADDRESS == email);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return result;
-        }
-
-        public int UpdateAboutMe(USER user)
-        {
-            int result = 0;
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    context.Entry(user).State = EntityState.Modified;
-                    result = context.SaveChanges();
                 }
             }
             catch (Exception)

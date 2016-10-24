@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PastebookEntityLibrary;
 
-namespace PastebookBusinessLogicLibrary
+namespace PastebookDataAccessLibrary
 {
     public class CountryDataAccess
     {

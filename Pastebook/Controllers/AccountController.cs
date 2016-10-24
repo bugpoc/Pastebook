@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Pastebook.Mapper;
-using Pastebook.ViewModels;
 using PastebookBusinessLogicLibrary;
 using PastebookEntityLibrary;
+using PastebookDataAccessLibrary;
 
 namespace Pastebook.Controllers
 {
@@ -15,9 +12,7 @@ namespace Pastebook.Controllers
         PasswordManager passwordManager = new PasswordManager();
         UserDataAccess userDataAccess = new UserDataAccess();
         CountryDataAccess countryDataAccess = new CountryDataAccess();
-        MapperManager mapperManager = new MapperManager();
-        //
-        // GET: /Account/
+
         public ActionResult Index()
         {
             Session["user_id"] = 1;
@@ -42,6 +37,8 @@ namespace Pastebook.Controllers
         [HttpPost]
         public ActionResult RegisterUser(USER model, string CONFIRM_PASSWORD)
         {
+            GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+
             if (model.PASSWORD != CONFIRM_PASSWORD)
             {
                 ModelState.AddModelError("PASSWORD", "Password do not match");
@@ -63,7 +60,7 @@ namespace Pastebook.Controllers
                 model.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD, out salt);
                 model.SALT = salt;
 
-                //userDataAccess.SaveUser(mapperManager.RegisterViewModelToUSER(model));
+                dataAccessUser.Create(model);
 
                 return RedirectToAction("Register");
             }

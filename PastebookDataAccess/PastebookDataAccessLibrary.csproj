@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommentDataAccess.cs" />
     <Compile Include="CountryDataAccess.cs" />
     <Compile Include="FriendDataAccess.cs" />
     <Compile Include="GenericDataAccess.cs" />

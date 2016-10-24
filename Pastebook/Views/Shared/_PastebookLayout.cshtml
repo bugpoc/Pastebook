@@ -1,5 +1,23 @@
-﻿<!DOCTYPE html>
-
+﻿@using PastebookEntityLibrary
+@using PastebookDataAccessLibrary
+@{ 
+    var sessionUsername = Session["username"].ToString();
+    USER user = new USER();
+    UserDataAccess userDataAccess = new UserDataAccess();
+    user = userDataAccess.GetUser(null, sessionUsername);
+    var queryStringUsername = Request.QueryString["username"];
+    string imgSrc = null;
+    if (user.PROFILE_PIC !=null)
+    {
+        var base64 = Convert.ToBase64String(user.PROFILE_PIC);
+        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+    }
+    else
+    {
+        imgSrc = "/Content/Images/default.jpg";
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -18,11 +36,11 @@
                     <!-- menu profile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="~/Content/Images/img.jpg" alt="..." class="img-circle profile_img">
+                            <img src="@imgSrc" alt="Profile Picture" class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <h2>@user.FIRST_NAME @user.LAST_NAME</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -61,7 +79,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/Content/Images/img.jpg" alt="">John Doe
+                                    <img src="@imgSrc" alt="Profile Picture">@user.FIRST_NAME @user.LAST_NAME
                                     <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">

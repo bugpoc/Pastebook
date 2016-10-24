@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PastebookBusinessLogicLibrary
+namespace PastebookDataAccessLibrary
 {
     public class PostDataAccess
     {
@@ -17,7 +17,7 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.USER1.USER_NAME == username).OrderByDescending(d => d.CREATED_DATE).ToList();
+                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.USER1.USER_NAME == username).OrderByDescending(d => d.CREATED_DATE).Take(100).ToList();
                 }
             }
             catch (Exception)
@@ -37,11 +37,11 @@ namespace PastebookBusinessLogicLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    var result = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").OrderByDescending(d => d.CREATED_DATE).ToList();
+                    var result = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").OrderByDescending(d => d.CREATED_DATE).ToList();
 
                     foreach (var item in result)
                     {
-                        if (listOfUserFriends.Any(u => (u.ID == item.POSTER_ID && u.ID == item.PROFILE_OWNER_ID)) || item.PROFILE_OWNER_ID == id)
+                        if (listOfUserFriends.Any(u => u.ID == item.POSTER_ID || item.PROFILE_OWNER_ID == id))
                         {
                             listOfPosts.Add(item);
                         }
@@ -55,25 +55,6 @@ namespace PastebookBusinessLogicLibrary
             }
 
             return listOfPosts;
-        }
-
-        public int SavePost(POST post)
-        {
-            int result = 0;
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    context.POSTs.Add(post);
-                    result = context.SaveChanges();
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return result;
         }
     }
 }

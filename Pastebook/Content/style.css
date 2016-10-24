@@ -23,3 +23,12 @@ textarea {
 .date-align {
     float: right;
 }
+
+.avatar-view {
+    display: block;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    cursor: pointer;
+    overflow: hidden;
+}

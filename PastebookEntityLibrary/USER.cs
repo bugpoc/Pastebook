@@ -72,7 +72,11 @@ namespace PastebookEntityLibrary
         public string GENDER { get; set; }
 
         public byte[] PROFILE_PIC { get; set; }
+
+        [Display(Name = "Date Created")]
         public DateTime DATE_CREATED { get; set; }
+
+        [Display(Name = "About Me")]
         public string ABOUT_ME { get; set; }
 
         [Required(ErrorMessage = "The Email Address field is required")]

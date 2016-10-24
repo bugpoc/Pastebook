@@ -1,26 +1,18 @@
-﻿using Pastebook.Mapper;
-using Pastebook.ViewModels;
-using PastebookBusinessLogicLibrary;
-using PastebookEntityLibrary;
+﻿using PastebookEntityLibrary;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using PastebookDataAccess;
+using PastebookDataAccessLibrary;
 
 namespace Pastebook.Controllers
 {
 
     public class PastebookController : Controller
     {
-        FriendDataAccess friendDataAccess = new FriendDataAccess();
-        UserDataAccess userDataAccess = new UserDataAccess();
-        PostDataAccess postDataAccess = new PostDataAccess();
-        LikeDataAccess likeDataAccess = new LikeDataAccess();
-        CommentDataAccess commentDataAccess = new CommentDataAccess();
-        MapperManager mapperManager = new MapperManager();
+        private FriendDataAccess friendDataAccess = new FriendDataAccess();
+        private UserDataAccess userDataAccess = new UserDataAccess();
+        private PostDataAccess postDataAccess = new PostDataAccess();
+        private LikeDataAccess likeDataAccess = new LikeDataAccess();
 
         public ActionResult Index(string username)
         {
@@ -29,12 +21,13 @@ namespace Pastebook.Controllers
 
         public ActionResult UserProfile(string username)
         {
-            return View();
+            return View(userDataAccess.GetUser(null, username));
         }
 
-        public ActionResult Credential(string username)
+        public ActionResult CredentialPartial(string username)
         {
             var user = new USER();
+
             user = userDataAccess.GetUser(null, username);
             if (user.GENDER == "M")
             {
@@ -48,17 +41,18 @@ namespace Pastebook.Controllers
             {
                 user.GENDER = "Unspecified";
             }
-            return PartialView("CredentialPartialView", mapperManager.USERToProfileViewModel(user));
+
+            return PartialView("CredentialPartialView", user);
         }
 
         public ActionResult Friends()
         {
-            return View(mapperManager.ListOfUSERsToListOfFriendViewModel(friendDataAccess.GetListOfFriends((int)Session["user_id"])));
+            return View(friendDataAccess.GetListOfFriends((int)Session["user_id"]));
         }
 
-        public ActionResult Timeline(string username)
+        public ActionResult TimelinePartial(string username)
         {
-            return PartialView("Timeline", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserTimeline(username)));
+            return PartialView("TimelinePartialView", postDataAccess.GetUserTimeline(username));
         }
 
         public ActionResult NewsFeed()
@@ -70,7 +64,7 @@ namespace Pastebook.Controllers
         {
             var listOfUserFriends = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
 
-            return PartialView("NewsFeedPartialView", mapperManager.ListOfPOSTsToListOfPostViewModel(postDataAccess.GetUserNewsFeed(listOfUserFriends, (int)Session["user_id"])));
+            return PartialView("NewsFeedPartialView", postDataAccess.GetUserNewsFeed(listOfUserFriends, (int)Session["user_id"]));
         }
 
         public ActionResult AddFriendPartial(string username)
@@ -88,9 +82,24 @@ namespace Pastebook.Controllers
             return PartialView("FriendRequestPartialView", friendDataAccess.GetPendingFriends((int)Session["user_id"]));
         }
 
+        public ActionResult UploadPhoto(string username, HttpPostedFileBase file)
+        {
+            USER user = new USER();
+            user = userDataAccess.GetUser(null, username);
+            if (file.ContentLength > 0)
+            {
+                user.PROFILE_PIC = new byte[file.ContentLength];
+                file.InputStream.Read(user.PROFILE_PIC, 0, file.ContentLength);
+                GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+                dataAccessUser.Update(user);
+            }
+            return RedirectToAction("UserProfile", "Pastebook", new { username = username });
+        }
+
         public JsonResult SavePost(string content, string username)
         {
             var user = new USER();
+            GenericDataAccess<POST> dataAccessPost = new GenericDataAccess<POST>();
 
             if (username != null)
             {
@@ -101,7 +110,7 @@ namespace Pastebook.Controllers
                 user.ID = (int)Session["user_id"];
             }
 
-            int result = postDataAccess.SavePost(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = user.ID, CREATED_DATE = DateTime.Now });
+            int result = dataAccessPost.Create(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = user.ID, CREATED_DATE = DateTime.Now });
 
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
@@ -109,10 +118,13 @@ namespace Pastebook.Controllers
         public JsonResult UpdateAboutMe(string aboutMe, string username)
         {
             var user = new USER();
+            GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+
             user = userDataAccess.GetUser(null, username);
             user.ABOUT_ME = aboutMe;
 
-            int result = userDataAccess.UpdateAboutMe(user);
+            int result = dataAccessUser.Update(user);
+
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -120,6 +132,7 @@ namespace Pastebook.Controllers
         {
             int result = 0;
             GenericDataAccess<LIKE> dataAccessLike = new GenericDataAccess<LIKE>();
+
             LIKE like = new LIKE()
             {
                 LIKED_BY = (int)Session["user_id"],
@@ -140,24 +153,32 @@ namespace Pastebook.Controllers
 
         public JsonResult CommentToPost(string content, int postID)
         {
-            int result = commentDataAccess.SaveComment(content, postID, (int)Session["user_id"]);
+            GenericDataAccess<COMMENT> dataAccessComment = new GenericDataAccess<COMMENT>();
+
+            int result = dataAccessComment.Create(new COMMENT()
+            {
+                CONTENT = content,
+                DATE_CREATED = DateTime.Now,
+                POST_ID = postID,
+                POSTER_ID = (int)Session["user_id"]
+            });
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddFriend(string username)
         {
             USER user = new USER();
-            user = userDataAccess.GetUser(null, username);
             GenericDataAccess<FRIEND> dataAccessFriend = new GenericDataAccess<FRIEND>();
-            FRIEND friend = new FRIEND()
+
+            user = userDataAccess.GetUser(null, username);
+            int result = dataAccessFriend.Create(new FRIEND()
             {
                 USER_ID = (int)Session["user_id"],
                 FRIEND_ID = user.ID,
                 REQUEST = "Y",
                 CREATED_DATE = DateTime.Now,
                 BLOCKED = "N"
-            };
-            int result = dataAccessFriend.Create(friend);
+            });
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -165,6 +186,7 @@ namespace Pastebook.Controllers
         {
             FRIEND friend = new FRIEND();
             GenericDataAccess<FRIEND> dataAccessFriend = new GenericDataAccess<FRIEND>();
+
             int result = 0;
 
             friend = friendDataAccess.GetFriendID(friendID, (int)Session["user_id"]);
@@ -172,19 +194,15 @@ namespace Pastebook.Controllers
             if (status == "Confirm")
             {
                 friend.REQUEST = "N";
-                
+
                 result = dataAccessFriend.Update(friend);
             }
             else
             {
                 result = dataAccessFriend.Delete(friend);
             }
-            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
-        }
 
-        public ActionResult Test()
-        {
-            return View();
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }
 }

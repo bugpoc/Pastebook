@@ -1,34 +1,111 @@
-﻿<input id="hiddenUsername" type="hidden" value="@Request.QueryString["username"]" />
+﻿@model PastebookEntityLibrary.USER
+
 @{
     var sessionUsername = Session["username"].ToString();
     var queryStringUsername = Request.QueryString["username"];
-    if (sessionUsername == queryStringUsername)
+    string imgSrc = null;
+    if (Model.PROFILE_PIC != null)
     {
-        <div>
-            <textarea id="txtAreaAboutMe"></textarea>
-            <span id="aboutMeMessage"></span>
-            <button type="button" id="btnAboutMe">Update</button>
-        </div>
+        var base64 = Convert.ToBase64String(Model.PROFILE_PIC);
+        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+    }
+    else
+    {
+        imgSrc = "/Content/Images/default.jpg";
     }
 }
-@*not sure*@
-@*add variable to querystring*@
-<div id="addFriendPartial">
-    @{ Html.RenderAction("AddFriendPartial", "Pastebook");}
-</div>
-@*hide from not friend*@
-<div id="credentialPartial">
-    @{ Html.RenderAction("Credential", "Pastebook");}
-</div>
+<input id="hiddenUsername" type="hidden" value="@queryStringUsername" />
 
 <div>
-    <textarea id="txtAreacontent"></textarea>
-    <span id="contentMessage"></span>
-    <button type="button" id="btnPost">Post</button>
-</div>
+    <div class="page-title">
+        <div class="title_left">
+            <h3>User Profile</h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12 profile_left">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>@Model.FIRST_NAME @Model.LAST_NAME</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="profile-img">
+                        <div>
+                            <img class="img-responsive avatar-view" src="@imgSrc" alt="Profile Picture" />
+                            <div class="ln_solid"></div>
+                            @using (Html.BeginForm("UploadPhoto", "Pastebook", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                            {
+                                <input type="hidden" name="username" value="@queryStringUsername" />
+                                <div class="form-group">
+                                    <input type="file" name="file" />
+                                </div>
 
-<div id="timelinePartial">
-    @{ Html.RenderAction("Timeline", "Pastebook");}
+                                <div class="form-group">
+                                    <input type="submit" value="Upload" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Profile Information</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="credentialPartial">
+                        @{ Html.RenderAction("CredentialPartial", "Pastebook");}
+                        @if (sessionUsername == queryStringUsername)
+                        {
+                            <button id="btnUpdateAboutMe" type="button" class="btn btn-primary">Update About Me</button>
+                        }
+                        @Html.Partial("AboutMeModal")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*not sure*@
+    @*add variable to querystring*@
+    <div id="addFriendPartial">
+        @{ Html.RenderAction("AddFriendPartial", "Pastebook");}
+    </div>
+    @*hide from not friend*@
+
+
+    @*<div>
+        <textarea id="txtAreacontent"></textarea>
+        <span id="contentMessage"></span>
+        <button type="button" id="btnPost">Post</button>
+    </div>*@
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Update Status</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <textarea id="txtAreacontent" class="content-status"></textarea>
+                    <div>
+                        <span id="contentMessage"></span>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="timelinePartial">
+        @{ Html.RenderAction("TimelinePartial", "Pastebook");}
+    </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -36,6 +113,10 @@
         $(document).ready(function () {
 
             var hiddenUsername = $('#hiddenUsername').val();
+
+            $('#btnUpdateAboutMe').click(function () {
+                $('#myModal').modal('show');
+            })
 
             $('#btnPost').click(function () {
                 var varContent = $.trim($('#txtAreacontent').val());
@@ -134,25 +215,23 @@
                 var data = {
                     username: $('#hiddenUsername').val()
                 };
-                    $.ajax({
-                        url: '/Pastebook/AddFriend',
-                        data: data,
-                        type: 'GET',
-                        success: function (data) {
-                            CheckResultForAddFriend(data);
-                        },
-                        error: function () {
-                            alert('Something went wrong')
-                        }
+                $.ajax({
+                    url: '/Pastebook/AddFriend',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForAddFriend(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
 
-                    });
+                });
             });
 
             function CheckResultForAboutMe(data) {
                 if (data.Result == 1) {
-                    $('#credentialPartial').load('/Pastebook/Credential?username=' + hiddenUsername);
-                    $('#txtAreaAboutMe').val('');
-                    $('#aboutMeMessage').text('');
+                    $(location).attr('href', '/Pastebook/Userprofile?username=' + hiddenUsername);
                 }
                 else {
                     alert("Fail Inserting");
@@ -161,7 +240,7 @@
 
             function CheckResultForPost(data) {
                 if (data.Result == 1) {
-                    $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
+                    $('#timelinePartial').load('/Pastebook/TimelinePartial?username=' + hiddenUsername);
                     $('#txtAreacontent').val('');
                     $('#contentMessage').text('');
                 }
@@ -172,7 +251,7 @@
 
             function CheckResultForLike(data) {
                 if (data.Result == 1) {
-                    $('#timelinePartial').load('/Pastebook/Timeline?username=' + hiddenUsername);
+                    $('#timelinePartial').load('/Pastebook/TimelinePartial?username=' + hiddenUsername);
                 }
                 else {
                     alert("Fail Inserting");
