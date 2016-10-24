@@ -41,24 +41,14 @@ namespace PastebookDataAccessLibrary
             return listOfFriendsInformation;
         }
 
-        public List<USER> GetPendingFriends(int id)
+        public List<FRIEND> GetPendingFriends(int id)
         {
-            var listOfFriendsInformation = new List<USER>();
+            var listOfFriendsInformation = new List<FRIEND>();
             try
             {
                 using (var context = new PastebookEntities())
                 {
-                    var listOfFriends = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.FRIEND_ID == id && f.REQUEST == "Y").ToList();
-                    foreach (var item in listOfFriends)
-                    {
-                        listOfFriendsInformation.Add(new USER()
-                        {
-                            ID = item.USER_ID,
-                            FIRST_NAME = item.USER1.FIRST_NAME,
-                            LAST_NAME = item.USER1.LAST_NAME,
-                            USER_NAME = item.USER1.USER_NAME
-                        });
-                    }
+                     listOfFriendsInformation = context.FRIENDs.Include("USER1").Where(f => f.FRIEND_ID == id && f.REQUEST == "Y").ToList();
                 }
             }
             catch (Exception)
@@ -69,14 +59,14 @@ namespace PastebookDataAccessLibrary
             return listOfFriendsInformation;
         }
 
-        public List<FRIEND> GetPendingAndApprovedFriends(int id)
+        public FRIEND GetPendingAndApprovedFriends(int userID, int friendID)
         {
-            var listOfFriends = new List<FRIEND>();
+            var friend = new FRIEND();
             try
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfFriends = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id || f.FRIEND_ID == id).ToList();
+                    friend = context.FRIENDs.Include("USER1").Include("USER").FirstOrDefault(f => (f.USER_ID == userID && f.FRIEND_ID == friendID) || (f.USER_ID == friendID && f.FRIEND_ID == userID));
                 }
             }
             catch (Exception)
@@ -84,17 +74,18 @@ namespace PastebookDataAccessLibrary
 
                 throw;
             }
-            return listOfFriends;
+            return friend;
         }
 
-        public FRIEND GetFriendID(int friendID, int userID)
+        public FRIEND GetFriendRelationship(int id)
         {
             FRIEND getSpecificFriend = new FRIEND();
+
             try
             {
                 using (var context = new PastebookEntities())
                 {
-                    getSpecificFriend = context.FRIENDs.FirstOrDefault(f => (f.FRIEND_ID == friendID && f.USER_ID == userID) || (f.USER_ID == friendID && f.FRIEND_ID == userID));
+                    getSpecificFriend = context.FRIENDs.FirstOrDefault(f => f.ID == id);
                 }
             }
             catch (Exception)

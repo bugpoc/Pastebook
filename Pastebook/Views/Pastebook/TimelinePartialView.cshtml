@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<PastebookEntityLibrary.POST>
 
-
 @if (Model != null)
 {
     foreach (var item in Model)
@@ -18,31 +17,31 @@
                         <p><span class="fa fa-thumbs-up"></span> @item.LIKEs.Count</p>
                         @if (item.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == item.ID))
                         {
-                            <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
+                            <button id="@item.PROFILE_OWNER_ID" type="button" class="btnUnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
                         }
                         else
                         {
-                            <button id="like" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
+                            <button id="@item.PROFILE_OWNER_ID" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
                         }
                         @if (item.LIKEs.Count > 0)
                         {
                             <p>Liked By:</p>
-                            <div>
-                                @foreach (var element in item.LIKEs)
-                                {
-                                    <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
-                                }
-                            </div>
+                                <div>
+                                    @foreach (var element in item.LIKEs)
+                                    {
+                                        <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
+                                    }
+                                </div>
                         }
                         @if (item.COMMENTs.Count > 0)
                         {
                             <p>Comments:</p>
-                            <div>
-                                @foreach (var element in item.COMMENTs)
-                                {
-                                    <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME : @element.CONTENT</p>
-                                }
-                            </div>
+                                <div>
+                                    @foreach (var element in item.COMMENTs)
+                                    {
+                                        <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME : @element.CONTENT</p>
+                                    }
+                                </div>
                         }
                         <textarea id="@item.ID"></textarea>
                         <div class="ln_solid"></div>
@@ -57,51 +56,3 @@ else
 {
     <div> There are no post.</div>
 }
-
-
-@*@if (Model != null)
-    {
-        foreach (var item in Model)
-        {
-            <div>
-                <p>@item.FullName</p>
-                <p>This is the content: @item.Content</p>
-                <p>Number of Likes: @item.Likes.Count</p>
-                @if (item.Likes.Any(l => l.LikedBY == (int)Session["user_id"] && l.PostID == item.ID))
-                {
-                    <button id="unlike" type="button" class="btnLike" value="@item.ID">Unlike</button>
-                }
-                else
-                {
-                    <button id="like" type="button" class="btnLike" value="@item.ID">Like</button>
-                }
-                @if (item.Likes.Count > 0)
-                {
-                    <p>Liked By:</p>
-                    <div>
-                        @foreach (var element in item.Likes)
-                        {
-                            <p>@element.FullName</p>
-                        }
-                    </div>
-                }
-                @if (item.Comments.Count > 0)
-                {
-                    <p>Comments:</p>
-                    <div>
-                        @foreach (var element in item.Comments)
-                        {
-                            <p>@element.FullName : @element.Content</p>
-                        }
-                    </div>
-                }
-                <textarea id="@item.ID"></textarea>
-                <button type="button" class="btnComment" value="@item.ID">COMMENT</button>
-            </div>
-            <br />
-        }
-    }
-    else
-    {
-        <div> There are no post.</div>
-    }*@

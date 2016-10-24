@@ -17,7 +17,7 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Where(p => p.USER1.USER_NAME == username).OrderByDescending(d => d.CREATED_DATE).Take(100).ToList();
+                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("COMMENTs.USER").Include("LIKEs.USER").Where(p => p.USER1.USER_NAME == username).OrderByDescending(d => d.CREATED_DATE).Take(100).ToList();
                 }
             }
             catch (Exception)
@@ -37,7 +37,7 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    var result = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").OrderByDescending(d => d.CREATED_DATE).ToList();
+                    var result = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").Include("LIKEs.USER").OrderByDescending(d => d.CREATED_DATE).ToList();
 
                     foreach (var item in result)
                     {

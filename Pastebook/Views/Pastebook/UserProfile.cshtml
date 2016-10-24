@@ -1,6 +1,11 @@
 ﻿@model PastebookEntityLibrary.USER
+@using PastebookDataAccessLibrary
+@using PastebookEntityLibrary
 
 @{
+    List<USER> listOfUsers = new List<USER>();
+    FriendDataAccess friendDataAccess = new FriendDataAccess();
+    listOfUsers = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
     var sessionUsername = Session["username"].ToString();
     var queryStringUsername = Request.QueryString["username"];
     string imgSrc = null;
@@ -20,6 +25,9 @@
     <div class="page-title">
         <div class="title_left">
             <h3>User Profile</h3>
+            <div id="addFriendPartial">
+                @{ Html.RenderAction("AddFriendPartial", "Pastebook");}
+            </div>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -35,16 +43,19 @@
                         <div>
                             <img class="img-responsive avatar-view" src="@imgSrc" alt="Profile Picture" />
                             <div class="ln_solid"></div>
-                            @using (Html.BeginForm("UploadPhoto", "Pastebook", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                            @if (sessionUsername == queryStringUsername)
                             {
-                                <input type="hidden" name="username" value="@queryStringUsername" />
-                                <div class="form-group">
-                                    <input type="file" name="file" />
-                                </div>
+                                using (Html.BeginForm("UploadPhoto", "Pastebook", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                                {
+                                    <input type="hidden" name="username" value="@queryStringUsername" />
+                                    <div class="form-group">
+                                        <input type="file" name="file" />
+                                    </div>
 
-                                <div class="form-group">
-                                    <input type="submit" value="Upload" class="btn btn-primary" />
-                                </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Upload" class="btn btn-primary" />
+                                    </div>
+                                }
                             }
                         </div>
                     </div>
@@ -70,42 +81,30 @@
             </div>
         </div>
     </div>
-    @*not sure*@
-    @*add variable to querystring*@
-    <div id="addFriendPartial">
-        @{ Html.RenderAction("AddFriendPartial", "Pastebook");}
-    </div>
-    @*hide from not friend*@
-
-
-    @*<div>
-        <textarea id="txtAreacontent"></textarea>
-        <span id="contentMessage"></span>
-        <button type="button" id="btnPost">Post</button>
-    </div>*@
-
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Update Status</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <textarea id="txtAreacontent" class="content-status"></textarea>
-                    <div>
-                        <span id="contentMessage"></span>
+    @if (listOfUsers.Any(u => u.USER_NAME == Request.QueryString["username"]) || Session["username"].ToString() == Request.QueryString["username"])
+    {
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>What's on your mind?</h2>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="ln_solid"></div>
-                    <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
+                    <div class="x_content">
+                        <textarea id="txtAreacontent" class="content-status"></textarea>
+                        <div>
+                            <span id="contentMessage"></span>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="timelinePartial">
-        @{ Html.RenderAction("TimelinePartial", "Pastebook");}
-    </div>
+        <div id="timelinePartial">
+            @{ Html.RenderAction("TimelinePartial", "Pastebook");}
+        </div>
+                }
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -169,10 +168,31 @@
             });
 
             $(document).on('click', ".btnLike", function () {
+                var data = {
+                    postID: $(this).val(),
+                    status: 'like',
+                    profileOwnerID: $(this).attr('id')
+                };
+                $.ajax({
+                    url: '/Pastebook/LikePost',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForLike(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            $(document).on('click', ".btnUnLike", function () {
                 var likeUnlike = $(this).attr('id');
                 var data = {
                     postID: $(this).val(),
-                    status: likeUnlike
+                    status: 'unlike',
+                    profileOwnerID: $(this).attr('id')
                 };
                 $.ajax({
                     url: '/Pastebook/LikePost',
@@ -229,6 +249,44 @@
                 });
             });
 
+            $(document).on('click', ".btnConfirm", function () {
+                var data = {
+                    relationshipID: $(this).val(),
+                    status: "Confirm"
+                };
+                $.ajax({
+                    url: '/Pastebook/AcceptRejectRequest',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForRequest(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
+            $(document).on('click', ".btnReject", function () {
+                var data = {
+                    relationshipID: $(this).val(),
+                    status: "Reject"
+                };
+                $.ajax({
+                    url: '/Pastebook/AcceptRejectRequest',
+                    data: data,
+                    type: 'GET',
+                    success: function (data) {
+                        CheckResultForRequest(data);
+                    },
+                    error: function () {
+                        alert('Something went wrong')
+                    }
+
+                });
+            });
+
             function CheckResultForAboutMe(data) {
                 if (data.Result == 1) {
                     $(location).attr('href', '/Pastebook/Userprofile?username=' + hiddenUsername);
@@ -270,6 +328,15 @@
             function CheckResultForAddFriend(data) {
                 if (data.Result == 1) {
                     $('#addFriendPartial').load('/Pastebook/AddfriendPartial?username=' + hiddenUsername);
+                }
+                else {
+                    alert("Fail Inserting");
+                }
+            };
+
+            function CheckResultForRequest(data) {
+                if (data.Result == 1) {
+                    $(location).attr('href', '/Pastebook/UserProfile/?username=' + hiddenUsername);
                 }
                 else {
                     alert("Fail Inserting");

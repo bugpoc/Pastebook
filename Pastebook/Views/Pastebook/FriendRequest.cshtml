@@ -8,7 +8,7 @@
         $(document).ready(function () {
             $(document).on('click', ".btnConfirm", function () {
                 var data = {
-                    friendID: $(this).val(),
+                    relationshipID: $(this).val(),
                     status: "Confirm"
                 };
                 $.ajax({
@@ -27,7 +27,7 @@
 
             $(document).on('click', ".btnReject", function () {
                 var data = {
-                    friendID: $(this).val(),
+                    relationshipID: $(this).val(),
                     status: "Reject"
                 };
                 $.ajax({

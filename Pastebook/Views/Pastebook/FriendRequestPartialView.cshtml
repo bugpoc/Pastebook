@@ -1,8 +1,8 @@
-﻿@model IEnumerable<PastebookEntityLibrary.USER>
+﻿@model IEnumerable<PastebookEntityLibrary.FRIEND>
 
 @foreach (var item in Model)
 {
     <p>
-        @item.FIRST_NAME @item.LAST_NAME <button class="btnConfirm" value="@item.ID">Confirm</button><button class="btnReject" value="@item.ID">Reject</button>
+        @item.USER1.FIRST_NAME @item.USER1.LAST_NAME <button class="btnConfirm" value="@item.ID">Accept</button><button class="btnReject" value="@item.ID">Reject</button>
     </p>
 }

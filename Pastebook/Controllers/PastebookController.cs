@@ -13,7 +13,7 @@ namespace Pastebook.Controllers
         private UserDataAccess userDataAccess = new UserDataAccess();
         private PostDataAccess postDataAccess = new PostDataAccess();
         private LikeDataAccess likeDataAccess = new LikeDataAccess();
-
+        
         public ActionResult Index(string username)
         {
             return View();
@@ -69,7 +69,19 @@ namespace Pastebook.Controllers
 
         public ActionResult AddFriendPartial(string username)
         {
-            return PartialView("AddFriendPartialView", friendDataAccess.GetPendingAndApprovedFriends((int)Session["user_id"]));
+            USER user = new USER();
+            FRIEND friend = new FRIEND();
+
+            user = userDataAccess.GetUser(null, username);
+
+            if(user.ID==(int)Session["user_id"])
+            {
+                return PartialView("AddFriendPartialView", friend);
+            }
+            else
+            {
+                return PartialView("AddFriendPartialView", friendDataAccess.GetPendingAndApprovedFriends((int)Session["user_id"], user.ID));
+            }
         }
 
         public ActionResult FriendRequest()
@@ -128,10 +140,23 @@ namespace Pastebook.Controllers
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult LikePost(int postID, string status)
+        public JsonResult LikePost(int postID, string status, int profileOwnerID)
         {
             int result = 0;
+
             GenericDataAccess<LIKE> dataAccessLike = new GenericDataAccess<LIKE>();
+            GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
+
+            NOTIFICATION notification = new NOTIFICATION()
+            {
+                NOTIF_TYPE = "L",
+                POST_ID = postID,
+                RECEIVER_ID = profileOwnerID,
+                SENDER_ID = (int)Session["user_id"],
+                CREATED_DATE = DateTime.Now,
+                SEEN = "N"
+            };
+
 
             LIKE like = new LIKE()
             {
@@ -142,10 +167,19 @@ namespace Pastebook.Controllers
             if (status == "like")
             {
                 result = dataAccessLike.Create(like);
+                if(result==1)
+                {
+                    //add catcher
+                    dataAccessNotification.Create(notification);
+                }
             }
             else
             {
                 result = dataAccessLike.Delete(likeDataAccess.GetLike(like));
+                if(result==1)
+                {
+                    //remove notif and like
+                }
             }
 
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
@@ -155,6 +189,7 @@ namespace Pastebook.Controllers
         {
             GenericDataAccess<COMMENT> dataAccessComment = new GenericDataAccess<COMMENT>();
 
+            COMMENT comment = new COMMENT();
             int result = dataAccessComment.Create(new COMMENT()
             {
                 CONTENT = content,
@@ -162,6 +197,7 @@ namespace Pastebook.Controllers
                 POST_ID = postID,
                 POSTER_ID = (int)Session["user_id"]
             });
+
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -182,14 +218,13 @@ namespace Pastebook.Controllers
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AcceptRejectRequest(int friendID, string status)
+        public JsonResult AcceptRejectRequest(int relationshipID, string status)
         {
             FRIEND friend = new FRIEND();
             GenericDataAccess<FRIEND> dataAccessFriend = new GenericDataAccess<FRIEND>();
-
             int result = 0;
 
-            friend = friendDataAccess.GetFriendID(friendID, (int)Session["user_id"]);
+            friend = friendDataAccess.GetFriendRelationship(relationshipID);
 
             if (status == "Confirm")
             {

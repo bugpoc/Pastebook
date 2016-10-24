@@ -1,14 +1,18 @@
-﻿@model IEnumerable<PastebookEntityLibrary.FRIEND>
+﻿@model PastebookEntityLibrary.FRIEND
 
 @if (Request.QueryString["username"] != Session["username"].ToString())
 {
-    var user = Model.FirstOrDefault(f => f.USER1.USER_NAME == Request.QueryString["username"] || f.USER.USER_NAME == Request.QueryString["username"]);
-    if (user == null)
+    if (Model == null)
     {
-        <button type="button" id="btnAddFriend">Add Friend</button>
+        <button id="btnAddFriend" type="button" class="btn btn-primary btn-post">Add Friend</button>
     }
-    else if (user.REQUEST == "Y")
+    else if (Model.USER1.USER_NAME == Session["username"].ToString() && Model.REQUEST == "Y")
     {
-        <button type="button" id="btnCancelRequest">Cancel Request</button>
+        <h5 class="text-right">Pending Request</h5>
+    }
+    else if (Model.USER1.USER_NAME != Session["username"].ToString() && Model.REQUEST == "Y")
+    {
+        <button id="Accept" type="button" class="btn btn-primary btn-post btnConfirm" value="@Model.ID">Accept</button>
+        <button id="Reject" type="button" class="btn btn-danger btnReject" value="@Model.ID">Reject</button>
     }
 }
