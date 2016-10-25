@@ -170,12 +170,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
-    <Content Include="Content\flat-admin.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Images\default.jpg" />
     <Content Include="Content\style.css" />
-    <Content Include="Content\vendor.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -200,7 +198,6 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom.js" />
@@ -220,7 +217,6 @@
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\vendor.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -232,13 +228,14 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Pastebook\Index.cshtml" />
     <Content Include="Views\Pastebook\Friends.cshtml" />
-    <Content Include="Views\Pastebook\UserProfile.cshtml" />
+    <Content Include="Views\Pastebook\UserProfile.cshtml">
+      <BrowseToURL>~/Pastebook/UserProfile</BrowseToURL>
+    </Content>
     <Content Include="Views\Pastebook\TimelinePartialView.cshtml" />
     <Content Include="Views\Pastebook\NewsFeedPartialView.cshtml" />
     <Content Include="Views\Pastebook\NewsFeed.cshtml" />
@@ -249,6 +246,8 @@
     <Content Include="Views\Shared\_AccountLayout.cshtml" />
     <Content Include="Views\Shared\_PastebookLayout.cshtml" />
     <Content Include="Views\Pastebook\AboutMeModal.cshtml" />
+    <Content Include="Views\Pastebook\NotificationPartialView.cshtml" />
+    <Content Include="Views\Pastebook\SearchUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

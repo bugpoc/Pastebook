@@ -3977,3 +3977,16 @@ ul.notifications {
     background: #34495E; }
 .calendar-exibit .calendar-table {
   padding: 0 0 4px 0; }
+
+.search-bar {
+    border-radius: 25px 0px 0px 25px;
+}
+
+.search-button {
+    border-radius: 0px 25px 25px 0px;
+}
+
+.search-div {
+    margin-top: 11px;
+    margin-bottom: -60px;
+}

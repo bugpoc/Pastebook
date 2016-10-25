@@ -53,6 +53,7 @@
     <Compile Include="FriendDataAccess.cs" />
     <Compile Include="GenericDataAccess.cs" />
     <Compile Include="LikeDataAccess.cs" />
+    <Compile Include="NotificationDataAccess.cs" />
     <Compile Include="PostDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDataAccess.cs" />

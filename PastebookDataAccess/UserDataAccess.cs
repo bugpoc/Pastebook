@@ -82,5 +82,25 @@ namespace PastebookDataAccessLibrary
 
             return result;
         }
+
+        public List<USER> GetListOfUsers(string name, int id)
+        {
+            List<USER> listOfUsers = new List<USER>();
+
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    listOfUsers = context.USERs.Where(u => (u.FIRST_NAME.Contains(name) || u.LAST_NAME.Contains(name)) && (u.ID!= id)).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return listOfUsers;
+        }
     }
 }

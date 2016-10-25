@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PastebookEntityLibrary.NOTIFICATION>
+
+@{
+    string message = "";
+}
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li>
+            <a>
+                <span>
+                    <span>@item.USER1.FIRST_NAME @item.USER1.LAST_NAME</span>
+                    <span class="time">@item.CREATED_DATE</span>
+                </span>
+                @if (item.NOTIF_TYPE == "L")
+                {
+                    message = "has \'liked\' one of your posts";
+                }
+                else if (item.NOTIF_TYPE == "F")
+                {
+                    message = "has sent you a friend request";
+                }
+                else
+                {
+                    message = "has commented on one of your posts";
+                }
+                <span class="message">@message</span>
+            </a>
+        </li>
+    }
+}

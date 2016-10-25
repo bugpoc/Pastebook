@@ -76,6 +76,14 @@
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
+                        <div class="col-md-3">
+                            <div class="input-group search-div">
+                                <input id="txtName" type="text" class="form-control search-bar" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button id="searchUser" class="btn btn-default search-button" type="button">Go!</button>
+                                </span>
+                            </div>
+                        </div>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -95,69 +103,14 @@
                                 </ul>
                             </li>
                             <li role="presentation" class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <a id="viewNotifications" href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-globe"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="notifCount" class="badge bg-green"></span>
                                 </a>
                                 <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                    <li>
-                                        <a>
-                                            <span class="image"><img src="@imgSrc" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image"><img src="@imgSrc" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image"><img src="@imgSrc" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image"><img src="@imgSrc" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="text-center">
-                                            <a>
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                    @{ Html.RenderAction("NotificationPartial", "Pastebook");}
                                 </ul>
-                            </li>
+</li>
                         </ul>
                     </nav>
                 </div>
@@ -182,5 +135,55 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/custom.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+
+            window.onload = reloadBadge;
+
+            setInterval(reloadBadge, 60000);
+
+            function reloadBadge() {
+                $.ajax({
+                    url: '/Pastebook/GetCountOfNotification',
+                    type: 'GET',
+                    success: function (data) {
+                        ChangeBadgeCount(data);
+                    },
+                    error: function () {
+                        alert('Badge went wrong')
+                    }
+                });
+            }
+
+            function ChangeBadgeCount(data) {
+                $('#notifCount').text(data.Count);
+            }
+
+            $('#viewNotifications').click(function () {
+                $.ajax({
+                    url: '/Pastebook/GetCountOfNotification',
+                    type: 'GET',
+                    success: function (data) {
+                        LoadNotificationContent(data);
+                    },
+                    error: function () {
+                        alert('Notification went wrong')
+                    }
+                });
+            });
+
+            function LoadNotificationContent(data)
+            {
+                if(data.Count>0)
+                {
+                    $('#menu1').load('/Pastebook/NotificationPartial');
+                }
+            }
+
+            $('#searchUser').click(function () {
+                $(location).attr('href', '/Pastebook/SearchUser?name=' + $('#txtName').val());
+            });
+        });
+    </script>
 </body>
 </html>

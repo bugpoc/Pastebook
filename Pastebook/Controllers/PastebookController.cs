@@ -13,7 +13,8 @@ namespace Pastebook.Controllers
         private UserDataAccess userDataAccess = new UserDataAccess();
         private PostDataAccess postDataAccess = new PostDataAccess();
         private LikeDataAccess likeDataAccess = new LikeDataAccess();
-        
+        private NotificationDataAccess notificationDataAccess = new NotificationDataAccess();
+
         public ActionResult Index(string username)
         {
             return View();
@@ -74,7 +75,7 @@ namespace Pastebook.Controllers
 
             user = userDataAccess.GetUser(null, username);
 
-            if(user.ID==(int)Session["user_id"])
+            if (user.ID == (int)Session["user_id"])
             {
                 return PartialView("AddFriendPartialView", friend);
             }
@@ -106,6 +107,16 @@ namespace Pastebook.Controllers
                 dataAccessUser.Update(user);
             }
             return RedirectToAction("UserProfile", "Pastebook", new { username = username });
+        }
+
+        public ActionResult NotificationPartial()
+        {
+            return PartialView("NotificationPartialView", notificationDataAccess.GetListOfNotifications((int)Session["user_id"]));
+        }
+
+        public ActionResult SearchUser(string name)
+        {
+            return View(userDataAccess.GetListOfUsers(name, (int)Session["user_id"]));
         }
 
         public JsonResult SavePost(string content, string username)
@@ -140,23 +151,13 @@ namespace Pastebook.Controllers
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult LikePost(int postID, string status, int profileOwnerID)
+        public JsonResult LikePost(int postID, string status)
         {
             int result = 0;
 
             GenericDataAccess<LIKE> dataAccessLike = new GenericDataAccess<LIKE>();
             GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
-
-            NOTIFICATION notification = new NOTIFICATION()
-            {
-                NOTIF_TYPE = "L",
-                POST_ID = postID,
-                RECEIVER_ID = profileOwnerID,
-                SENDER_ID = (int)Session["user_id"],
-                CREATED_DATE = DateTime.Now,
-                SEEN = "N"
-            };
-
+            int profileOwnerID = postDataAccess.GetProfileOwnerID(postID);
 
             LIKE like = new LIKE()
             {
@@ -167,8 +168,18 @@ namespace Pastebook.Controllers
             if (status == "like")
             {
                 result = dataAccessLike.Create(like);
-                if(result==1)
+                if (result == 1 && (int)Session["user_id"] != profileOwnerID)
                 {
+                    NOTIFICATION notification = new NOTIFICATION()
+                    {
+                        NOTIF_TYPE = "L",
+                        POST_ID = postID,
+                        RECEIVER_ID = profileOwnerID,
+                        SENDER_ID = (int)Session["user_id"],
+                        CREATED_DATE = DateTime.Now,
+                        SEEN = "N"
+                    };
+
                     //add catcher
                     dataAccessNotification.Create(notification);
                 }
@@ -176,9 +187,9 @@ namespace Pastebook.Controllers
             else
             {
                 result = dataAccessLike.Delete(likeDataAccess.GetLike(like));
-                if(result==1)
+                if (result == 1 && (int)Session["user_id"] != profileOwnerID)
                 {
-                    //remove notif and like
+                    //remove notif
                 }
             }
 
@@ -188,16 +199,33 @@ namespace Pastebook.Controllers
         public JsonResult CommentToPost(string content, int postID)
         {
             GenericDataAccess<COMMENT> dataAccessComment = new GenericDataAccess<COMMENT>();
+            GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
+            int profileOwnerID = postDataAccess.GetProfileOwnerID(postID);
 
             COMMENT comment = new COMMENT();
-            int result = dataAccessComment.Create(new COMMENT()
-            {
-                CONTENT = content,
-                DATE_CREATED = DateTime.Now,
-                POST_ID = postID,
-                POSTER_ID = (int)Session["user_id"]
-            });
 
+            comment.POSTER_ID = (int)Session["user_id"];
+            comment.POST_ID = postID;
+            comment.DATE_CREATED = DateTime.Now;
+            comment.CONTENT = content;
+
+            int result = dataAccessComment.Create(comment);
+
+            if (result == 1)
+            {
+                NOTIFICATION notification = new NOTIFICATION()
+                {
+                    NOTIF_TYPE = "C",
+                    POST_ID = postID,
+                    COMMENT_ID = comment.ID,
+                    RECEIVER_ID = profileOwnerID,
+                    SENDER_ID = (int)Session["user_id"],
+                    CREATED_DATE = DateTime.Now,
+                    SEEN = "N"
+                };
+
+                dataAccessNotification.Create(notification);
+            }
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -205,8 +233,10 @@ namespace Pastebook.Controllers
         {
             USER user = new USER();
             GenericDataAccess<FRIEND> dataAccessFriend = new GenericDataAccess<FRIEND>();
+            GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
 
             user = userDataAccess.GetUser(null, username);
+
             int result = dataAccessFriend.Create(new FRIEND()
             {
                 USER_ID = (int)Session["user_id"],
@@ -215,6 +245,21 @@ namespace Pastebook.Controllers
                 CREATED_DATE = DateTime.Now,
                 BLOCKED = "N"
             });
+
+            if (result == 1)
+            {
+                NOTIFICATION notification = new NOTIFICATION()
+                {
+                    NOTIF_TYPE = "F",
+                    RECEIVER_ID = user.ID,
+                    SENDER_ID = (int)Session["user_id"],
+                    CREATED_DATE = DateTime.Now,
+                    SEEN = "N"
+                };
+
+                dataAccessNotification.Create(notification);
+            }
+
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -238,6 +283,13 @@ namespace Pastebook.Controllers
             }
 
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCountOfNotification()
+        {
+            int count = notificationDataAccess.GetListOfNotifications((int)Session["user_id"]).Count;
+
+            return Json(new { Count = count }, JsonRequestBehavior.AllowGet);
         }
     }
 }

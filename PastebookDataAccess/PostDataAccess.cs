@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PastebookDataAccessLibrary
 {
@@ -55,6 +53,26 @@ namespace PastebookDataAccessLibrary
             }
 
             return listOfPosts;
+        }
+
+        public int GetProfileOwnerID(int postID)
+        {
+            POST post = new POST();
+
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    post = context.POSTs.FirstOrDefault(p => p.ID == postID);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return post.PROFILE_OWNER_ID;
         }
     }
 }

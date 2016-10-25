@@ -17,11 +17,11 @@
                         <p><span class="fa fa-thumbs-up"></span> @item.LIKEs.Count</p>
                         @if (item.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == item.ID))
                         {
-                            <button id="@item.PROFILE_OWNER_ID" type="button" class="btnUnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
+                            <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
                         }
                         else
                         {
-                            <button id="@item.PROFILE_OWNER_ID" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
+                            <button id="like" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
                         }
                         @if (item.LIKEs.Count > 0)
                         {
