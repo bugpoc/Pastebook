@@ -3,6 +3,10 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using PastebookDataAccessLibrary;
+using System.Collections.Generic;
+using System.Linq;
+using PastebookBusinessLogicLibrary;
+using Pastebook.ViewModels;
 
 namespace Pastebook.Controllers
 {
@@ -14,8 +18,10 @@ namespace Pastebook.Controllers
         private PostDataAccess postDataAccess = new PostDataAccess();
         private LikeDataAccess likeDataAccess = new LikeDataAccess();
         private NotificationDataAccess notificationDataAccess = new NotificationDataAccess();
+        private CountryDataAccess countryDataAccess = new CountryDataAccess();
+        private PasswordManager passwordManager = new PasswordManager();
 
-        public ActionResult Index(string username)
+        public ActionResult Index()
         {
             return View();
         }
@@ -119,6 +125,129 @@ namespace Pastebook.Controllers
             return View(userDataAccess.GetListOfUsers(name, (int)Session["user_id"]));
         }
 
+        [HttpGet]
+        public ActionResult EditInformation()
+        {
+            IEnumerable<SelectListItem> countryListItems;
+
+            countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
+            {
+                Value = i.ID.ToString(),
+                Text = i.COUNTRY
+            });
+
+            ViewBag.CountryList = countryListItems;
+
+            return View(new SettingsViewModel
+            {
+                USER = userDataAccess.GetUser(null, Session["username"].ToString())
+            });
+        }
+
+        public ActionResult EditEmail()
+        {
+            SettingsViewModel settings = new SettingsViewModel();
+            settings.USER = userDataAccess.GetUser(null, Session["username"].ToString());
+            settings.USER.PASSWORD = null;
+
+            return View(settings);
+        }
+
+        public ActionResult EditPassword()
+        {
+            SettingsViewModel settings = new SettingsViewModel();
+            settings.USER = userDataAccess.GetUser(null, Session["username"].ToString());
+            settings.USER.PASSWORD = null;
+
+            return View(settings);
+        }
+
+        public ActionResult UpdateUser(SettingsViewModel model, string Action)
+        {
+            USER user = new USER();
+            GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+
+            if(Action=="EditInformation")
+            {
+                user = userDataAccess.GetUser(model.USER.EMAIL_ADDRESS, null);
+
+                if (userDataAccess.CheckUsername(model.USER.USER_NAME) && user.USER_NAME != model.USER.USER_NAME)
+                {
+                    ModelState.AddModelError("USER.USER_NAME", "Username already exists.");
+
+                    IEnumerable<SelectListItem> countryListItems;
+
+                    countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
+                    {
+                        Value = i.ID.ToString(),
+                        Text = i.COUNTRY
+                    });
+
+                    ViewBag.CountryList = countryListItems;
+
+                    Session["username"] = model.USER.USER_NAME;
+                }
+                else
+                {
+                    model.USER.PASSWORD = user.PASSWORD;
+                    model.USER.SALT = user.SALT;
+                    dataAccessUser.Update(model.USER);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            else if(Action=="EditEmail")
+            {
+                user = userDataAccess.GetUser(null, model.USER.USER_NAME);
+
+                if (userDataAccess.CheckEmail(model.USER.EMAIL_ADDRESS) && user.EMAIL_ADDRESS != model.USER.EMAIL_ADDRESS)
+                {
+                    ModelState.AddModelError("USER.EMAIL_ADDRESS", "Email Address already exists.");
+                }
+
+                if(!passwordManager.IsPasswordMatch(model.USER.PASSWORD, user.SALT, user.PASSWORD))
+                {
+                    ModelState.AddModelError("USER.PASSWORD", "Password is incorrect.");
+                }
+
+                if(ModelState.IsValidField("USER.EMAIL_ADDRESS") && ModelState.IsValidField("USER.PASSWORD"))
+                {
+                    user.EMAIL_ADDRESS = model.USER.EMAIL_ADDRESS;
+                    dataAccessUser.Update(user);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                user = userDataAccess.GetUser(model.USER.EMAIL_ADDRESS, null);
+
+                if(passwordManager.IsPasswordMatch(model.PASSWORD.NewPassword, user.SALT, user.PASSWORD))
+                {
+                    ModelState.AddModelError("PASSWORD.NewPassword", "Password and New Password is still the same.");
+                }
+
+                if (!passwordManager.IsPasswordMatch(model.USER.PASSWORD, user.SALT, user.PASSWORD))
+                {
+                    ModelState.AddModelError("USER.PASSWORD", "Password is incorrect.");
+                }
+
+                if (ModelState.IsValidField("PASSWORD.NewPassword") && ModelState.IsValidField("USER.PASSWORD"))
+                {
+                    string salt = null;
+
+                    user.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD.NewPassword, out salt);
+                    user.SALT = salt;
+
+                    dataAccessUser.Update(user);
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(Action, model);
+        }
+        
         public JsonResult SavePost(string content, string username)
         {
             var user = new USER();

@@ -57,6 +57,7 @@ namespace PastebookEntityLibrary
 
         [Required(ErrorMessage = "The Birthday field is required")]
         [Display(Name = "Birthday")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime BIRTHDAY { get; set; }
 
@@ -66,6 +67,7 @@ namespace PastebookEntityLibrary
         [Display(Name = "Mobile Number")]
         [DataType(DataType.PhoneNumber)]
         [StringLength(50, ErrorMessage = "The Mobile Number maximum length is 50 characters only")]
+        [Phone]
         public string MOBILE_NO { get; set; }
 
         [Display(Name = "Gender")]
@@ -74,6 +76,8 @@ namespace PastebookEntityLibrary
         public byte[] PROFILE_PIC { get; set; }
 
         [Display(Name = "Date Created")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime DATE_CREATED { get; set; }
 
         [Display(Name = "About Me")]

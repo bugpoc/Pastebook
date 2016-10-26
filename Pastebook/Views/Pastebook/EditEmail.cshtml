@@ -1,0 +1,48 @@
+﻿@model Pastebook.ViewModels.SettingsViewModel
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Edit Email Address</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm("UpdateUser", "Pastebook", FormMethod.Post, new { @class = "form-horizontal form-label-left" }))
+                {
+
+                    @Html.Hidden("Action", "EditEmail")
+                    @Html.HiddenFor(model => model.USER.USER_NAME)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.USER.EMAIL_ADDRESS, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.EditorFor(model => model.USER.EMAIL_ADDRESS, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                            @Html.ValidationMessageFor(model => model.USER.EMAIL_ADDRESS, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.USER.PASSWORD, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.EditorFor(model => model.USER.PASSWORD, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                            @Html.ValidationMessageFor(model => model.USER.PASSWORD, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

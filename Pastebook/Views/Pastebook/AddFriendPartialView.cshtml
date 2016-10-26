@@ -4,15 +4,15 @@
 {
     if (Model == null)
     {
-        <button id="btnAddFriend" type="button" class="btn btn-primary btn-post">Add Friend</button>
+        <button id="btnAddFriend" type="button" class="btn btn-primary">Add Friend</button>
     }
     else if (Model.USER1.USER_NAME == Session["username"].ToString() && Model.REQUEST == "Y")
     {
-        <h5 class="text-right">Pending Request</h5>
+        <h5>Pending Request</h5>
     }
     else if (Model.USER1.USER_NAME != Session["username"].ToString() && Model.REQUEST == "Y")
     {
-        <button id="Accept" type="button" class="btn btn-primary btn-post btnConfirm" value="@Model.ID">Accept</button>
+        <button id="Accept" type="button" class="btn btn-primary btnConfirm" value="@Model.ID">Accept</button>
         <button id="Reject" type="button" class="btn btn-danger btnReject" value="@Model.ID">Reject</button>
     }
 }
