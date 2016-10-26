@@ -21,16 +21,19 @@ namespace Pastebook.Controllers
         private CountryDataAccess countryDataAccess = new CountryDataAccess();
         private PasswordManager passwordManager = new PasswordManager();
 
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult UserProfile(string username)
         {
             return View(userDataAccess.GetUser(null, username));
         }
 
+        [HttpGet]
         public ActionResult CredentialPartial(string username)
         {
             var user = new USER();
@@ -52,21 +55,25 @@ namespace Pastebook.Controllers
             return PartialView("CredentialPartialView", user);
         }
 
+        [HttpGet]
         public ActionResult Friends()
         {
             return View(friendDataAccess.GetListOfFriends((int)Session["user_id"]));
         }
 
+        [HttpGet]
         public ActionResult TimelinePartial(string username)
         {
             return PartialView("TimelinePartialView", postDataAccess.GetUserTimeline(username));
         }
 
+        [HttpGet]
         public ActionResult NewsFeed()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult NewsFeedPartial()
         {
             var listOfUserFriends = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
@@ -74,6 +81,7 @@ namespace Pastebook.Controllers
             return PartialView("NewsFeedPartialView", postDataAccess.GetUserNewsFeed(listOfUserFriends, (int)Session["user_id"]));
         }
 
+        [HttpGet]
         public ActionResult AddFriendPartial(string username)
         {
             USER user = new USER();
@@ -91,16 +99,19 @@ namespace Pastebook.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult FriendRequest()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult FriendRequestPartial()
         {
             return PartialView("FriendRequestPartialView", friendDataAccess.GetPendingFriends((int)Session["user_id"]));
         }
 
+        [HttpPost]
         public ActionResult UploadPhoto(string username, HttpPostedFileBase file)
         {
             USER user = new USER();
@@ -115,11 +126,13 @@ namespace Pastebook.Controllers
             return RedirectToAction("UserProfile", "Pastebook", new { username = username });
         }
 
+        [HttpGet]
         public ActionResult NotificationPartial()
         {
             return PartialView("NotificationPartialView", notificationDataAccess.GetListOfNotifications((int)Session["user_id"]));
         }
 
+        [HttpGet]
         public ActionResult SearchUser(string name)
         {
             return View(userDataAccess.GetListOfUsers(name, (int)Session["user_id"]));
@@ -144,6 +157,7 @@ namespace Pastebook.Controllers
             });
         }
 
+        [HttpGet]
         public ActionResult EditEmail()
         {
             SettingsViewModel settings = new SettingsViewModel();
@@ -153,6 +167,7 @@ namespace Pastebook.Controllers
             return View(settings);
         }
 
+        [HttpGet]
         public ActionResult EditPassword()
         {
             SettingsViewModel settings = new SettingsViewModel();
@@ -162,6 +177,7 @@ namespace Pastebook.Controllers
             return View(settings);
         }
 
+        [HttpPost]
         public ActionResult UpdateUser(SettingsViewModel model, string Action)
         {
             USER user = new USER();
@@ -184,13 +200,15 @@ namespace Pastebook.Controllers
                     });
 
                     ViewBag.CountryList = countryListItems;
-
-                    Session["username"] = model.USER.USER_NAME;
                 }
                 else
                 {
                     model.USER.PASSWORD = user.PASSWORD;
                     model.USER.SALT = user.SALT;
+                    model.USER.PROFILE_PIC = user.PROFILE_PIC;
+
+                    Session["username"] = model.USER.USER_NAME;
+
                     dataAccessUser.Update(model.USER);
 
                     return RedirectToAction("Index");
@@ -419,6 +437,28 @@ namespace Pastebook.Controllers
             int count = notificationDataAccess.GetListOfNotifications((int)Session["user_id"]).Count;
 
             return Json(new { Count = count }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetProfileInformation(string username)
+        {
+            USER user = new USER();
+            string source = null;
+            string name = null;
+
+            user = userDataAccess.GetUser(null, username);
+
+            if (user.PROFILE_PIC != null)
+            {
+                var base64 = Convert.ToBase64String(user.PROFILE_PIC);
+                source = String.Format("data:image/gif;base64,{0}", base64);
+            }
+            else
+            {
+                source = "/Content/Images/default.jpg";
+            }
+            name = user.FIRST_NAME + ' ' + user.LAST_NAME;
+
+            return Json(new { Source = source, Name = name }, JsonRequestBehavior.AllowGet);
         }
     }
 }

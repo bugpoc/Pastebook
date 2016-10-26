@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using PastebookBusinessLogicLibrary;
 using PastebookEntityLibrary;
 using PastebookDataAccessLibrary;
+using System;
 
 namespace Pastebook.Controllers
 {
@@ -13,6 +14,7 @@ namespace Pastebook.Controllers
         UserDataAccess userDataAccess = new UserDataAccess();
         CountryDataAccess countryDataAccess = new CountryDataAccess();
 
+        [HttpGet]
         public ActionResult Index()
         {
             Session["user_id"] = 1;
@@ -20,6 +22,7 @@ namespace Pastebook.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Register()
         {
             IEnumerable<SelectListItem> countryListItems;
@@ -59,10 +62,14 @@ namespace Pastebook.Controllers
 
                 model.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD, out salt);
                 model.SALT = salt;
-
+                model.DATE_CREATED = DateTime.Now;
+                
                 dataAccessUser.Create(model);
 
-                return RedirectToAction("Register");
+                Session["user_id"] = model.ID;
+                Session["username"] = model.USER_NAME;
+
+                return RedirectToAction("Index","Pastebook");
             }
 
             IEnumerable<SelectListItem> countryListItems;
