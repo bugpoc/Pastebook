@@ -15,7 +15,7 @@
                     CheckUsername(data);
                 },
                 error: function () {
-                    alert('Something went wrong')
+                    $(location).attr('href', errorLink);
                 }
 
             });
@@ -41,7 +41,7 @@
                     CheckEmail(data);
                 },
                 error: function () {
-                    alert('Something went wrong')
+                    $(location).attr('href', errorLink);
                 }
 
             });

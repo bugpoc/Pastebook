@@ -91,7 +91,12 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    listOfUsers = context.USERs.Where(u => (u.FIRST_NAME.Contains(name) || u.LAST_NAME.Contains(name)) && (u.ID!= id)).ToList();
+                    //http://stackoverflow.com/questions/5676040/search-two-columns-in-linq-to-sql
+
+                    listOfUsers = (from user in context.USERs
+                                   let fullname = user.FIRST_NAME + " " + user.LAST_NAME
+                                   where fullname == name || user.FIRST_NAME == name || user.LAST_NAME == name
+                                   select user).ToList(); 
                 }
             }
             catch (Exception)

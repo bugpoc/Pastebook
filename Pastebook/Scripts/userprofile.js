@@ -12,7 +12,7 @@
             content: varContent,
             username: $('#hiddenUsername').val()
         };
-        if (varContent.length != 0) {
+        if (varContent.length != 0 && varContent.length <= 1000) {
             $.ajax({
                 url: savePostUrl,
                 data: data,
@@ -21,9 +21,13 @@
                     CheckResultForPost(data);
                 },
                 error: function () {
-                    alert('Something went wrong')
+                    $(location).attr('href', errorLink);
                 }
             });
+        }
+        else if (varContent.length>1000)
+        {
+            $('#contentMessage').text('The maximum content of post is 1000 characters only.');
         }
         else {
             $('#contentMessage').text('You cannot post an empty content.');
@@ -36,7 +40,7 @@
             aboutMe: varAboutMe,
             username: $('#hiddenUsername').val()
         };
-        if (varAboutMe.length != 0) {
+        if (varAboutMe.length != 0 && varAboutMe.length <= 2000) {
             $.ajax({
                 url: updateAboutMeUrl,
                 data: data,
@@ -45,10 +49,12 @@
                     CheckResultForAboutMe(data);
                 },
                 error: function () {
-                    alert('Something went wrong')
+                    $(location).attr('href', errorLink);
                 }
-
             });
+        }
+        else if (varAboutMe.length > 2000) {
+            $('#aboutMeMessage').text('The maximum content of about me is 2000 characters only.');
         }
         else {
             $('#aboutMeMessage').text('You cannot update about me with an empty content.');
@@ -69,7 +75,7 @@
                 CheckResultForLikeAndComment(data);
             },
             error: function () {
-                alert('Something went wrong')
+                $(location).attr('href', errorLink);
             }
 
         });
@@ -77,23 +83,31 @@
 
     $(document).on('click', ".btnComment", function () {
         var id = $(this).val();
-        var comment = $('#' + id).val();
+        var comment = $.trim($('#' + id).val());
 
         var data = {
             postID: $(this).val(),
             content: comment
         };
-        $.ajax({
-            url: commentToPostUrl,
-            data: data,
-            type: 'GET',
-            success: function (data) {
-                CheckResultForLikeAndComment(data);
-            },
-            error: function () {
-                alert('Something went wrong')
-            }
-        });
+        if (comment.length > 0 && comment.length <= 1000) {
+            $.ajax({
+                url: commentToPostUrl,
+                data: data,
+                type: 'GET',
+                success: function (data) {
+                    CheckResultForLikeAndComment(data);
+                },
+                error: function () {
+                    $(location).attr('href', errorLink);
+                }
+            });
+        }
+        else if (comment.length>1000) {
+            $('#commentMessage').text('The maximum comment is 1000 characters only.');
+        }
+        else {
+            $('#commentMessage').text('You cannot post a comment with an empty content.');
+        }
     });
 
     $('#btnAddFriend').click(function () {
@@ -109,7 +123,7 @@
                 CheckResultForAddFriend(data);
             },
             error: function () {
-                alert('Something went wrong')
+                $(location).attr('href', errorLink);
             }
 
         });
@@ -128,7 +142,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                alert('Something went wrong')
+                $(location).attr('href', errorLink);
             }
 
         });
@@ -147,7 +161,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                alert('Something went wrong')
+                $(location).attr('href', errorLink);
             }
 
         });

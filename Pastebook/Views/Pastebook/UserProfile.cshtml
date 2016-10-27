@@ -94,7 +94,7 @@
                     <div class="x_content">
                         <textarea id="txtAreacontent" class="content-status"></textarea>
                         <div>
-                            <span id="contentMessage"></span>
+                            <span id="contentMessage" class="text-danger"></span>
                         </div>
                         <div class="ln_solid"></div>
                         <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
@@ -119,6 +119,7 @@
         var timelinePartialUrl = '@Url.Action("TimelinePartial","Pastebook")';
         var addfriendPartialUrl = '@Url.Action("AddfriendPartial","Pastebook")';
         var userLink = '@Url.Action("/", "Pastebook.com")';
+        var errorLink = '@Url.Action("Error500", "Error")';
     </script>
     <script src="~/Scripts/userprofile.js"></script>
 }

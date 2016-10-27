@@ -12,7 +12,7 @@
         }
 
         $.ajax({
-            url: urlUserInformation,
+            url: userInformationUrl,
             type: 'GET',
             data: data,
             cache: false,
@@ -27,7 +27,7 @@
 
     function reloadBadge() {
         $.ajax({
-            url: '/Pastebook/GetCountOfNotification',
+            url: getCountOfNotificationUrl,
             type: 'GET',
             success: function (data) {
                 ChangeBadgeCount(data);
@@ -51,7 +51,7 @@
 
     $('#viewNotifications').click(function () {
         $.ajax({
-            url: '/Pastebook/GetCountOfNotification',
+            url: getCountOfNotificationUrl,
             type: 'GET',
             success: function (data) {
                 LoadNotificationContent(data);
@@ -60,12 +60,28 @@
                 alert('Notification went wrong')
             }
         });
+
+        $.ajax({
+            url: updateNotificationsUrl,
+            type: 'GET',
+            success: function (data) {
+                LoadNotificationContent(data);
+            },
+            error: function () {
+                alert('Badge went wrong')
+            }
+        });
     });
 
     function LoadNotificationContent(data) {
-        if (data.Count > 0) {
-            $('#menu1').load('/Pastebook/NotificationPartial');
+        if (data.Count > 0 || data.Result) {
+            $('#menu1').load(notificationPartialUrl);
         }
+    }
+
+    function Check(data)
+    {
+
     }
 
     function ChangeUserInformation(data) {

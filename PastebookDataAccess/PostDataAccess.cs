@@ -83,7 +83,7 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    post = context.POSTs.FirstOrDefault(p => p.ID == postID);
+                    post = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").Include("LIKEs.USER").FirstOrDefault(p => p.ID == postID);
                 }
             }
             catch (Exception)

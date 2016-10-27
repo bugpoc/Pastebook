@@ -35,7 +35,7 @@
                                     <a href="@Url.Action("Index","Pastebook")"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-user"></i> Profile </a>
+                                    <a href="@Url.Action("UserProfile","Pastebook", new { username = Session["username"].ToString()})"><i class="fa fa-user"></i> Profile </a>
                                 </li>
                                 <li>
                                     <a><i class="fa fa-users"></i> Friends <span class="fa fa-chevron-down"></span></a>
@@ -137,8 +137,11 @@
     <script src="~/Scripts/custom.js"></script>
     @RenderSection("scripts", required: false)
     <script>
-        var urlUserInformation = '@Url.Action("GetProfileInformation","Pastebook")';
+        var userInformationUrl = '@Url.Action("GetProfileInformation","Pastebook")';
         var searchUrl = '@Url.Action("SearchUser/","Pastebook.com")';
+        var getCountOfNotificationUrl = '@Url.Action("GetCountOfNotification", "Pastebook")';
+        var notificationPartialUrl = '@Url.Action("NotificationPartial","Pastebook")';
+        var updateNotificationsUrl = '@Url.Action("UpdateNotifications", "Pastebook")';
     </script>
     <script src="~/Scripts/pastebooklayout.js"></script>
 </body>

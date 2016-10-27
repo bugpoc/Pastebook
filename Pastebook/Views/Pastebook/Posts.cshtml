@@ -1,0 +1,90 @@
+﻿@model PastebookEntityLibrary.POST
+
+@if (Model != null)
+{
+    <input type="hidden" id="txtPostID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    @if (Model.PROFILE_OWNER_ID != Model.POSTER_ID)
+                    {
+
+                        <h2>@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</h2>
+                        <h5 class="date-align">@Model.CREATED_DATE</h5>
+                            <div class="clearfix"></div>
+                    }
+                    else
+                    {
+
+                        <h2>@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</h2>
+                        <h5 class="date-align">@Model.CREATED_DATE</h5>
+                            <div class="clearfix"></div>
+                    }
+                </div>
+                <div class="x_content">
+                    <blockquote class="post-content">
+                        <p>@Model.CONTENT</p>
+                    </blockquote>
+                    <a href="javascript:;"><button class="fa fa-thumbs-up showLikeModal" value="@Model.ID"></button> @Model.LIKEs.Count</a>
+                    @if (Model.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == Model.ID))
+                    {
+                        <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@Model.ID"> Unlike</button>
+                    }
+                    else
+                    {
+                        <button id="like" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@Model.ID"> Like</button>
+                    }
+                    @if (Model.LIKEs.Count > 0)
+                    {
+                        <div id="likeModal_@Model.ID" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">People who like this post</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            @foreach (var item in Model.LIKEs)
+                                            {
+                                                <p>@item.USER.FIRST_NAME @item.USER.LAST_NAME</p>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.COMMENTs.Count > 0)
+                    {
+                        <p>Comments:</p>
+                        <div>
+                            @foreach (var item in Model.COMMENTs)
+                            {
+                                <p>@item.USER.FIRST_NAME @item.USER.LAST_NAME : @item.CONTENT</p>
+                            }
+                        </div>
+                    }
+                    <textarea id="@Model.ID"></textarea>
+                    <div class="ln_solid"></div>
+                    <button type="button" class="btnComment btn btn-primary btn-post" value="@Model.ID">Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var likePostUrl = '@Url.Action("LikePost","Pastebook")';
+        var commentToPostUrl = '@Url.Action("CommentToPost","Pastebook")';
+        var postUrl = '@Url.Action("Posts/","Pastebook.com")';
+        var errorLink = '@Url.Action("Error500", "Error")';
+    </script>
+    <script src="~/Scripts/posts.js"></script>
+}

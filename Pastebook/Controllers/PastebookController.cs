@@ -127,18 +127,7 @@ namespace Pastebook.Controllers
         [HttpGet]
         public ActionResult NotificationPartial()
         {
-            List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
-            GenericDataAccess<NOTIFICATION> dataAcessNotification = new GenericDataAccess<NOTIFICATION>();
-            int result = 0;
-
-            listOfNotifications = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true);
-
-            foreach (var item in listOfNotifications)
-            {
-                item.SEEN = "Y";
-                result = dataAcessNotification.Update(item);
-            }
-            return PartialView("NotificationPartialView", listOfNotifications);
+            return PartialView("NotificationPartialView", notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true));
         }
 
         [HttpGet]
@@ -280,16 +269,17 @@ namespace Pastebook.Controllers
         }
 
         [HttpGet]
-        [Route("Pastebook.com/Posts/{id:int}")]
-        public ActionResult Posts(int? id)
+        [Route("Pastebook.com/Posts/{postID:int:min(1)}")]
+        public ActionResult Posts(int postID)
         {
-            return View();
+            return View(postDataAccess.GetPost(postID));
         }
-        
+
         public JsonResult SavePost(string content, string username)
         {
             var user = new USER();
             GenericDataAccess<POST> dataAccessPost = new GenericDataAccess<POST>();
+            int result = 0;
 
             if (username != null)
             {
@@ -300,7 +290,10 @@ namespace Pastebook.Controllers
                 user.ID = (int)Session["user_id"];
             }
 
-            int result = dataAccessPost.Create(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = user.ID, CREATED_DATE = DateTime.Now });
+            if (!string.IsNullOrEmpty(content) && content.Length <= 1000)
+            {
+                result = dataAccessPost.Create(new POST() { CONTENT = content, POSTER_ID = (int)Session["user_id"], PROFILE_OWNER_ID = user.ID, CREATED_DATE = DateTime.Now });
+            }
 
             return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
@@ -310,8 +303,11 @@ namespace Pastebook.Controllers
             var user = new USER();
             GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
 
-            user = userDataAccess.GetUser(null, username);
-            user.ABOUT_ME = aboutMe;
+            if(!string.IsNullOrEmpty(aboutMe) && aboutMe.Length <= 2000)
+            {
+                user = userDataAccess.GetUser(null, username);
+                user.ABOUT_ME = aboutMe;
+            }
 
             int result = dataAccessUser.Update(user);
 
@@ -335,6 +331,7 @@ namespace Pastebook.Controllers
             if (status == "like")
             {
                 result = dataAccessLike.Create(like);
+
                 if (result == 1 && (int)Session["user_id"] != posterID)
                 {
                     NOTIFICATION notification = new NOTIFICATION()
@@ -347,16 +344,16 @@ namespace Pastebook.Controllers
                         SEEN = "N"
                     };
 
-                    //add catcher
                     dataAccessNotification.Create(notification);
                 }
             }
             else
             {
                 result = dataAccessLike.Delete(likeDataAccess.GetLike(like));
+
                 if (result == 1 && (int)Session["user_id"] != posterID)
                 {
-                    //remove notif
+                    dataAccessNotification.Delete(notificationDataAccess.GetNotification(like));
                 }
             }
 
@@ -368,6 +365,7 @@ namespace Pastebook.Controllers
             GenericDataAccess<COMMENT> dataAccessComment = new GenericDataAccess<COMMENT>();
             GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
             int posterID = postDataAccess.GetProfileOwnerID(postID);
+            int result = 0;
 
             COMMENT comment = new COMMENT();
 
@@ -376,7 +374,10 @@ namespace Pastebook.Controllers
             comment.DATE_CREATED = DateTime.Now;
             comment.CONTENT = content;
 
-            int result = dataAccessComment.Create(comment);
+            if (!string.IsNullOrEmpty(content) && content.Length <= 1000)
+            {
+                result = dataAccessComment.Create(comment);
+            }
 
             if (result == 1)
             {
@@ -480,6 +481,23 @@ namespace Pastebook.Controllers
             name = user.FIRST_NAME + ' ' + user.LAST_NAME;
 
             return Json(new { Source = source, Name = name }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult UpdateNotifications()
+        {
+            List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
+            GenericDataAccess<NOTIFICATION> dataAcessNotification = new GenericDataAccess<NOTIFICATION>();
+            int result = 0;
+
+            listOfNotifications = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true);
+
+            foreach (var item in listOfNotifications)
+            {
+                item.SEEN = "Y";
+                result = dataAcessNotification.Update(item);
+            }
+
+            return Json(new { Result = result }, JsonRequestBehavior.AllowGet);
         }
     }
 }

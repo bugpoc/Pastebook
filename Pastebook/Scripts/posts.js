@@ -1,15 +1,19 @@
 ﻿$(document).ready(function () {
-    $(document).on('click', ".btnConfirm", function () {
+
+    var postID = $('#txtPostID').val();
+
+    $(document).on('click', ".btnLike", function () {
+        var likeUnlike = $(this).attr('id');
         var data = {
-            relationshipID: $(this).val(),
-            status: "Confirm"
+            postID: $(this).val(),
+            status: likeUnlike
         };
         $.ajax({
-            url: acceptRejectRequestUrl,
+            url: likePostUrl,
             data: data,
             type: 'GET',
             success: function (data) {
-                CheckResultForRequest(data);
+                CheckResult(data);
             },
             error: function () {
                 $(location).attr('href', errorLink);
@@ -18,28 +22,30 @@
         });
     });
 
-    $(document).on('click', ".btnReject", function () {
+    $(document).on('click', ".btnComment", function () {
+        var id = $(this).val();
+        var comment = $('#' + id).val();
+
         var data = {
-            relationshipID: $(this).val(),
-            status: "Reject"
+            postID: $(this).val(),
+            content: comment
         };
         $.ajax({
-            url: acceptRejectRequestUrl,
+            url: commentToPostUrl,
             data: data,
             type: 'GET',
             success: function (data) {
-                CheckResultForRequest(data);
+                CheckResult(data);
             },
             error: function () {
                 $(location).attr('href', errorLink);
             }
-
         });
     });
 
-    function CheckResultForRequest(data) {
+    function CheckResult(data) {
         if (data.Result == 1) {
-            $('#friendRequestPartial').load(friendRequestPartialUrl);
+            $(location).attr('href', postUrl + postID);
         }
         else {
             alert("Fail Inserting");

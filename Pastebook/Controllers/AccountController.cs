@@ -106,7 +106,7 @@ namespace Pastebook.Controllers
                 }
             }
 
-            ModelState.AddModelError("Username", "Username/Password is incorrect.");
+            ModelState.AddModelError("PASSWORD", "Username/Password is incorrect.");
 
             return View("Index", model);
         }

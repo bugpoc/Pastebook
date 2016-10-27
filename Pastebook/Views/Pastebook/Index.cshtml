@@ -15,7 +15,7 @@
                 <div class="x_content">
                     <textarea id="txtAreacontent" class="content-status"></textarea>
                     <div>
-                        <span id="contentMessage"></span>
+                        <span id="contentMessage" class="text-danger"></span>
                     </div>
                     <div class="ln_solid"></div>
                     <button type="button" id="btnPost" class="btn btn-primary btn-post">Post</button>
@@ -34,6 +34,7 @@
         var likePostUrl = '@Url.Action("LikePost", "Pastebook")';
         var commentToPostUrl = '@Url.Action("CommentToPost", "Pastebook")';
         var newsFeedPartialUrl = '@Url.Action("NewsFeedPartial", "Pastebook")';
+        var errorLink = '@Url.Action("Error500", "Error")';
     </script>
     <script src="~/Scripts/newsfeed.js"></script>
 }

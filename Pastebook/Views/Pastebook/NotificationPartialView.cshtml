@@ -2,30 +2,34 @@
 
 @{
     string message = "";
+    string notifLink = "";
 }
 
 @if (Model != null)
 {
     foreach (var item in Model)
     {
+        if (item.NOTIF_TYPE == "L")
+        {
+            message = "has \'liked\' one of your posts";
+            notifLink = Url.Action("Posts", "Pastebook", new { postID = item.POST_ID });
+        }
+        else if (item.NOTIF_TYPE == "F")
+        {
+            message = "has sent you a friend request";
+            notifLink = Url.Action("UserProfile", "Pastebook", new { username = item.USER1.USER_NAME });
+        }
+        else
+        {
+            message = "has commented on one of your posts";
+            notifLink = Url.Action("Posts", "Pastebook", new { postID = item.POST_ID });
+        }
         <li>
-            <a>
+            <a href="@notifLink">
                 <span>
                     <span>@item.USER1.FIRST_NAME @item.USER1.LAST_NAME</span>
                     <span class="time">@item.CREATED_DATE</span>
                 </span>
-                @if (item.NOTIF_TYPE == "L")
-                {
-                    message = "has \'liked\' one of your posts";
-                }
-                else if (item.NOTIF_TYPE == "F")
-                {
-                    message = "has sent you a friend request";
-                }
-                else
-                {
-                    message = "has commented on one of your posts";
-                }
                 <span class="message">@message</span>
             </a>
         </li>

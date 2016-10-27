@@ -36,3 +36,7 @@ textarea {
 .post-content {
     word-wrap: break-word;
 }
+
+.like-block {
+    display: block;
+}
