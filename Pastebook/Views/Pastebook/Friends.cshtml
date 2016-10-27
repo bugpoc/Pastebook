@@ -13,7 +13,7 @@
     }
     else
     {
-        imgSrc = "/Content/Images/default.jpg";
+        imgSrc = Url.Content("~/Content/Images/default.jpg");
     }
     <div class="row">
         <div class="col-md-12 profile_left">
@@ -30,9 +30,20 @@
                         <div class="col-md-9">
                             <span>@item.FIRST_NAME @item.LAST_NAME</span>
                         </div>
+                        <div>
+                            <button class="btn btn-primary view-profile" value="@item.USER_NAME">View Profile</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var userLink = '@Url.Action("/", "Pastebook.com")';
+    </script>
+    <script src="~/Scripts/friends.js"></script>
 }

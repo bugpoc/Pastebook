@@ -157,7 +157,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PastebookController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -203,6 +202,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\friendrequest.js" />
+    <Content Include="Scripts\friends.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -216,9 +217,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\newsfeed.js" />
+    <Content Include="Scripts\pastebooklayout.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\userprofile.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -230,7 +233,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Pastebook\Index.cshtml" />
@@ -240,7 +242,6 @@
     </Content>
     <Content Include="Views\Pastebook\TimelinePartialView.cshtml" />
     <Content Include="Views\Pastebook\NewsFeedPartialView.cshtml" />
-    <Content Include="Views\Pastebook\NewsFeed.cshtml" />
     <Content Include="Views\Pastebook\CredentialPartialView.cshtml" />
     <Content Include="Views\Pastebook\AddFriendPartialView.cshtml" />
     <Content Include="Views\Pastebook\FriendRequest.cshtml" />
@@ -253,6 +254,7 @@
     <Content Include="Views\Pastebook\EditInformation.cshtml" />
     <Content Include="Views\Pastebook\EditEmail.cshtml" />
     <Content Include="Views\Pastebook\EditPassword.cshtml" />
+    <Content Include="Views\Shared\LikeModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

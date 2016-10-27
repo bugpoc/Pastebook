@@ -22,12 +22,14 @@ namespace Pastebook.Controllers
         private PasswordManager passwordManager = new PasswordManager();
 
         [HttpGet]
+        [Route("Pastebook.com")]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [Route("Pastebook.com/{username}")]
         public ActionResult UserProfile(string username)
         {
             return View(userDataAccess.GetUser(null, username));
@@ -56,6 +58,7 @@ namespace Pastebook.Controllers
         }
 
         [HttpGet]
+        [Route("Pastebook.com/Friends")]
         public ActionResult Friends()
         {
             return View(friendDataAccess.GetListOfFriends((int)Session["user_id"]));
@@ -65,12 +68,6 @@ namespace Pastebook.Controllers
         public ActionResult TimelinePartial(string username)
         {
             return PartialView("TimelinePartialView", postDataAccess.GetUserTimeline(username));
-        }
-
-        [HttpGet]
-        public ActionResult NewsFeed()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -91,6 +88,7 @@ namespace Pastebook.Controllers
 
             if (user.ID == (int)Session["user_id"])
             {
+                friend.USER1 = user;
                 return PartialView("AddFriendPartialView", friend);
             }
             else
@@ -129,16 +127,29 @@ namespace Pastebook.Controllers
         [HttpGet]
         public ActionResult NotificationPartial()
         {
-            return PartialView("NotificationPartialView", notificationDataAccess.GetListOfNotifications((int)Session["user_id"]));
+            List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
+            GenericDataAccess<NOTIFICATION> dataAcessNotification = new GenericDataAccess<NOTIFICATION>();
+            int result = 0;
+
+            listOfNotifications = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true);
+
+            foreach (var item in listOfNotifications)
+            {
+                item.SEEN = "Y";
+                result = dataAcessNotification.Update(item);
+            }
+            return PartialView("NotificationPartialView", listOfNotifications);
         }
 
         [HttpGet]
+        [Route("Pastebook.com/SearchUser/{name}")]
         public ActionResult SearchUser(string name)
         {
             return View(userDataAccess.GetListOfUsers(name, (int)Session["user_id"]));
         }
 
         [HttpGet]
+        [Route("Pastebook.com/EditInformation")]
         public ActionResult EditInformation()
         {
             IEnumerable<SelectListItem> countryListItems;
@@ -158,6 +169,7 @@ namespace Pastebook.Controllers
         }
 
         [HttpGet]
+        [Route("Pastebook.com/EditEmail")]
         public ActionResult EditEmail()
         {
             SettingsViewModel settings = new SettingsViewModel();
@@ -168,6 +180,7 @@ namespace Pastebook.Controllers
         }
 
         [HttpGet]
+        [Route("Pastebook.com/EditPassword")]
         public ActionResult EditPassword()
         {
             SettingsViewModel settings = new SettingsViewModel();
@@ -191,17 +204,8 @@ namespace Pastebook.Controllers
                 {
                     ModelState.AddModelError("USER.USER_NAME", "Username already exists.");
 
-                    IEnumerable<SelectListItem> countryListItems;
-
-                    countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
-                    {
-                        Value = i.ID.ToString(),
-                        Text = i.COUNTRY
-                    });
-
-                    ViewBag.CountryList = countryListItems;
                 }
-                else
+                else if(ModelState.IsValidField("USER.MOBILE_NO"))
                 {
                     model.USER.PASSWORD = user.PASSWORD;
                     model.USER.SALT = user.SALT;
@@ -213,6 +217,15 @@ namespace Pastebook.Controllers
 
                     return RedirectToAction("Index");
                 }
+                IEnumerable<SelectListItem> countryListItems;
+
+                countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
+                {
+                    Value = i.ID.ToString(),
+                    Text = i.COUNTRY
+                });
+
+                ViewBag.CountryList = countryListItems;
             }
             else if(Action=="EditEmail")
             {
@@ -265,6 +278,13 @@ namespace Pastebook.Controllers
 
             return View(Action, model);
         }
+
+        [HttpGet]
+        [Route("Pastebook.com/Posts/{id:int}")]
+        public ActionResult Posts(int? id)
+        {
+            return View();
+        }
         
         public JsonResult SavePost(string content, string username)
         {
@@ -304,7 +324,7 @@ namespace Pastebook.Controllers
 
             GenericDataAccess<LIKE> dataAccessLike = new GenericDataAccess<LIKE>();
             GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
-            int profileOwnerID = postDataAccess.GetProfileOwnerID(postID);
+            int posterID = postDataAccess.GetProfileOwnerID(postID);
 
             LIKE like = new LIKE()
             {
@@ -315,13 +335,13 @@ namespace Pastebook.Controllers
             if (status == "like")
             {
                 result = dataAccessLike.Create(like);
-                if (result == 1 && (int)Session["user_id"] != profileOwnerID)
+                if (result == 1 && (int)Session["user_id"] != posterID)
                 {
                     NOTIFICATION notification = new NOTIFICATION()
                     {
                         NOTIF_TYPE = "L",
                         POST_ID = postID,
-                        RECEIVER_ID = profileOwnerID,
+                        RECEIVER_ID = posterID,
                         SENDER_ID = (int)Session["user_id"],
                         CREATED_DATE = DateTime.Now,
                         SEEN = "N"
@@ -334,7 +354,7 @@ namespace Pastebook.Controllers
             else
             {
                 result = dataAccessLike.Delete(likeDataAccess.GetLike(like));
-                if (result == 1 && (int)Session["user_id"] != profileOwnerID)
+                if (result == 1 && (int)Session["user_id"] != posterID)
                 {
                     //remove notif
                 }
@@ -347,7 +367,7 @@ namespace Pastebook.Controllers
         {
             GenericDataAccess<COMMENT> dataAccessComment = new GenericDataAccess<COMMENT>();
             GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
-            int profileOwnerID = postDataAccess.GetProfileOwnerID(postID);
+            int posterID = postDataAccess.GetProfileOwnerID(postID);
 
             COMMENT comment = new COMMENT();
 
@@ -365,7 +385,7 @@ namespace Pastebook.Controllers
                     NOTIF_TYPE = "C",
                     POST_ID = postID,
                     COMMENT_ID = comment.ID,
-                    RECEIVER_ID = profileOwnerID,
+                    RECEIVER_ID = posterID,
                     SENDER_ID = (int)Session["user_id"],
                     CREATED_DATE = DateTime.Now,
                     SEEN = "N"
@@ -434,7 +454,7 @@ namespace Pastebook.Controllers
 
         public JsonResult GetCountOfNotification()
         {
-            int count = notificationDataAccess.GetListOfNotifications((int)Session["user_id"]).Count;
+            int count = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], false).Count;
 
             return Json(new { Count = count }, JsonRequestBehavior.AllowGet);
         }
@@ -454,7 +474,8 @@ namespace Pastebook.Controllers
             }
             else
             {
-                source = "/Content/Images/default.jpg";
+                //source = "/Content/Images/default.jpg";
+                source = Url.Content("~/Content/Images/default.jpg");
             }
             name = user.FIRST_NAME + ' ' + user.LAST_NAME;
 

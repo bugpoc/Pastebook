@@ -29,68 +29,11 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/newsfeed.js"></script>
     <script>
-        $(document).ready(function () {
-            $(document).on('click', ".btnLike", function () {
-                var likeUnlike = $(this).attr('id');
-                var data = {
-                    postID: $(this).val(),
-                    status: likeUnlike
-                };
-                $.ajax({
-                    url: '/Pastebook/LikePost',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForLike(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            function CheckResultForLike(data) {
-                if (data.Result == 1) {
-                    $('#newsFeedPartial').load('/Pastebook/NewsFeedPartial');
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            $(document).on('click', ".btnComment", function () {
-                var id = $(this).val();
-                var comment = $('#' + id).val();
-
-                var data = {
-                    postID: $(this).val(),
-                    content: comment
-                };
-                $.ajax({
-                    url: '/Pastebook/CommentToPost',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForComment(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            function CheckResultForComment(data) {
-                if (data.Result == 1) {
-                    $('#newsFeedPartial').load('/Pastebook/NewsFeedPartial');
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-        });
+        var savePostUrl = '@Url.Action("SavePost", "Pastebook")';
+        var likePostUrl = '@Url.Action("LikePost", "Pastebook")';
+        var commentToPostUrl = '@Url.Action("CommentToPost", "Pastebook")';
+        var newsFeedPartialUrl = '@Url.Action("NewsFeedPartial", "Pastebook")';
     </script>
+    <script src="~/Scripts/newsfeed.js"></script>
 }

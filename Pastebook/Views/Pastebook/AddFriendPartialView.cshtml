@@ -1,6 +1,6 @@
 ﻿@model PastebookEntityLibrary.FRIEND
 
-@if (Request.QueryString["username"] != Session["username"].ToString())
+@if (Request.Url.Segments.Last() != Session["username"].ToString())
 {
     if (Model == null)
     {

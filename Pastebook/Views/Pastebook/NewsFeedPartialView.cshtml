@@ -1,73 +1,83 @@
 ﻿@model IEnumerable<PastebookEntityLibrary.POST>
 
 
-@{ if (Model != null)
+@if (Model != null)
+{
+    foreach (var item in Model)
     {
-        foreach (var item in Model)
-        {
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            @if (item.PROFILE_OWNER_ID != item.POSTER_ID)
-                            {
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        @if (item.PROFILE_OWNER_ID != item.POSTER_ID)
+                        {
 
-                                <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME posted to @item.USER1.FIRST_NAME @item.USER1.LAST_NAME</h2>
+                            <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME posted to @item.USER1.FIRST_NAME @item.USER1.LAST_NAME</h2>
                                 <h5 class="date-align">@item.CREATED_DATE</h5>
                                 <div class="clearfix"></div>
-                            }
-                            else
-                            {
+                        }
+                        else
+                        {
 
-                                <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME</h2>
+                            <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME</h2>
                                 <h5 class="date-align">@item.CREATED_DATE</h5>
                                 <div class="clearfix"></div>
-                            }
-                        </div>
-                        <div class="x_content">
+                        }
+                    </div>
+                    <div class="x_content">
+                        <blockquote class="post-content">
                             <p>@item.CONTENT</p>
-                            <p><span class="fa fa-thumbs-up"></span> @item.LIKEs.Count</p>
-                            @if (item.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == item.ID))
-                            {
-                                <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
-                            }
-                            else
-                            {
-                                <button id="like" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
-                            }
-                            @if (item.LIKEs.Count > 0)
-                            {
-                                <p>Liked By:</p>
+                        </blockquote>
+                        <a href="javascript:;"><button class="fa fa-thumbs-up showLikeModal" value="@item.ID"></button> @item.LIKEs.Count</a>
+                        @if (item.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == item.ID))
+                        {
+                            <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
+                        }
+                        else
+                        {
+                            <button id="like" type="button" class="btnLike btn btn-primary fa fa-thumbs-up" value="@item.ID"> Like</button>
+                        }
+                        @if (item.LIKEs.Count > 0)
+                        {
+                            <div id="likeModal_@item.ID" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">People who like this post</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                @foreach (var element in item.LIKEs)
+                                                {
+                                                    <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (item.COMMENTs.Count > 0)
+                        {
+                            <p>Comments:</p>
                                 <div>
-                                    @foreach (var element in item.LIKEs)
+                                    @foreach (var element in item.COMMENTs)
                                     {
-                                        <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
+                                        <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME : @element.CONTENT</p>
                                     }
                                 </div>
-                            }
-
-                            @if (item.COMMENTs.Count > 0)
-                            {
-                                <p>Comments:</p>
-                                    <div>
-                                        @foreach (var element in item.COMMENTs)
-                                        {
-                                            <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME : @element.CONTENT</p>
-                                        }
-                                    </div>
-                            }
-                            <textarea id="@item.ID"></textarea>
-                            <div class="ln_solid"></div>
-                            <button type="button" class="btnComment btn btn-primary btn-post" value="@item.ID">Comment</button>
-                        </div>
+                        }
+                        <textarea id="@item.ID"></textarea>
+                        <div class="ln_solid"></div>
+                        <button type="button" class="btnComment btn btn-primary btn-post" value="@item.ID">Comment</button>
                     </div>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div> There are no post.</div>
+        </div>
     }
 }
 

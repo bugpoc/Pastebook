@@ -5,10 +5,11 @@
 @{
     List<USER> listOfUsers = new List<USER>();
     FriendDataAccess friendDataAccess = new FriendDataAccess();
+
     listOfUsers = friendDataAccess.GetListOfFriends((int)Session["user_id"]);
     var sessionUsername = Session["username"].ToString();
-    var queryStringUsername = Request.QueryString["username"];
     string imgSrc = null;
+
     if (Model.PROFILE_PIC != null)
     {
         var base64 = Convert.ToBase64String(Model.PROFILE_PIC);
@@ -16,10 +17,10 @@
     }
     else
     {
-        imgSrc = "/Content/Images/default.jpg";
+        imgSrc = Url.Content("~/Content/Images/default.jpg");
     }
 }
-<input id="hiddenUsername" type="hidden" value="@queryStringUsername" />
+<input id="hiddenUsername" type="hidden" value="@Model.USER_NAME" />
 
 <div>
     <div class="page-title">
@@ -43,11 +44,11 @@
                         <div>
                             <img class="img-responsive avatar-view" src="@imgSrc" alt="Profile Picture" />
                             <div class="ln_solid"></div>
-                            @if (sessionUsername == queryStringUsername)
+                            @if (sessionUsername == Model.USER_NAME)
                             {
                                 using (Html.BeginForm("UploadPhoto", "Pastebook", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
                                 {
-                                    <input type="hidden" name="username" value="@queryStringUsername" />
+                                    <input type="hidden" name="username" value="@Model.USER_NAME" />
                                     <div class="form-group">
                                         <input type="file" name="file" />
                                     </div>
@@ -71,7 +72,7 @@
                 <div class="x_content">
                     <div id="credentialPartial">
                         @{ Html.RenderAction("CredentialPartial", "Pastebook");}
-                        @if (sessionUsername == queryStringUsername)
+                        @if (sessionUsername == Model.USER_NAME)
                         {
                             <button id="btnUpdateAboutMe" type="button" class="btn btn-primary">Update About Me</button>
                         }
@@ -81,7 +82,7 @@
             </div>
         </div>
     </div>
-    @if (listOfUsers.Any(u => u.USER_NAME == Request.QueryString["username"]) || Session["username"].ToString() == Request.QueryString["username"])
+    @if (listOfUsers.Any(u => u.USER_NAME == Model.USER_NAME || Session["username"].ToString() == Model.USER_NAME))
     {
         <div class="row">
             <div class="col-md-8 col-sm-8 col-xs-12 pull-right">
@@ -109,218 +110,16 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function () {
-
-            var hiddenUsername = $('#hiddenUsername').val();
-
-            $('#btnUpdateAboutMe').click(function () {
-                $('#myModal').modal('show');
-            })
-
-            $('#btnPost').click(function () {
-                var varContent = $.trim($('#txtAreacontent').val());
-                var data = {
-                    content: varContent,
-                    username: $('#hiddenUsername').val()
-                };
-                if (varContent.length != 0) {
-                    $.ajax({
-                        url: '/Pastebook/SavePost',
-                        data: data,
-                        type: 'GET',
-                        success: function (data) {
-                            CheckResultForPost(data);
-                        },
-                        error: function () {
-                            alert('Something went wrong')
-                        }
-                    });
-                }
-                else {
-                    $('#contentMessage').text('You cannot post an empty content.');
-                }
-            });
-
-            $('#btnAboutMe').click(function () {
-                var varAboutMe = $.trim($('#txtAreaAboutMe').val());
-                var data = {
-                    aboutMe: varAboutMe,
-                    username: $('#hiddenUsername').val()
-                };
-                if (varAboutMe.length != 0) {
-                    $.ajax({
-                        url: '/Pastebook/UpdateAboutMe',
-                        data: data,
-                        type: 'GET',
-                        success: function (data) {
-                            CheckResultForAboutMe(data);
-                        },
-                        error: function () {
-                            alert('Something went wrong')
-                        }
-
-                    });
-                }
-                else {
-                    $('#aboutMeMessage').text('You cannot update about me with an empty content.');
-                }
-            });
-
-            $(document).on('click', ".btnLike", function () {
-                var likeUnlike = $(this).attr('id');
-                var data = {
-                    postID: $(this).val(),
-                    status: likeUnlike
-                };
-                $.ajax({
-                    url: '/Pastebook/LikePost',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForLike(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            $(document).on('click', ".btnComment", function () {
-                var id = $(this).val();
-                var comment = $('#' + id).val();
-
-                var data = {
-                    postID: $(this).val(),
-                    content: comment
-                };
-                $.ajax({
-                    url: '/Pastebook/CommentToPost',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForComment(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            $('#btnAddFriend').click(function () {
-                var varAboutMe = $.trim($('#txtAreaAboutMe').val());
-                var data = {
-                    username: $('#hiddenUsername').val()
-                };
-                $.ajax({
-                    url: '/Pastebook/AddFriend',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForAddFriend(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            $(document).on('click', ".btnConfirm", function () {
-                var data = {
-                    relationshipID: $(this).val(),
-                    status: "Confirm"
-                };
-                $.ajax({
-                    url: '/Pastebook/AcceptRejectRequest',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForRequest(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            $(document).on('click', ".btnReject", function () {
-                var data = {
-                    relationshipID: $(this).val(),
-                    status: "Reject"
-                };
-                $.ajax({
-                    url: '/Pastebook/AcceptRejectRequest',
-                    data: data,
-                    type: 'GET',
-                    success: function (data) {
-                        CheckResultForRequest(data);
-                    },
-                    error: function () {
-                        alert('Something went wrong')
-                    }
-
-                });
-            });
-
-            function CheckResultForAboutMe(data) {
-                if (data.Result == 1) {
-                    $(location).attr('href', '/Pastebook/Userprofile?username=' + hiddenUsername);
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            function CheckResultForPost(data) {
-                if (data.Result == 1) {
-                    $('#timelinePartial').load('/Pastebook/TimelinePartial?username=' + hiddenUsername);
-                    $('#txtAreacontent').val('');
-                    $('#contentMessage').text('');
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            function CheckResultForLike(data) {
-                if (data.Result == 1) {
-                    $('#timelinePartial').load('/Pastebook/TimelinePartial?username=' + hiddenUsername);
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            function CheckResultForComment(data) {
-                if (data.Result == 1) {
-                    $('#timelinePartial').load('/Pastebook/TimelinePartial?username=' + hiddenUsername);
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            function CheckResultForAddFriend(data) {
-                if (data.Result == 1) {
-                    $('#addFriendPartial').load('/Pastebook/AddfriendPartial?username=' + hiddenUsername);
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-
-            function CheckResultForRequest(data) {
-                if (data.Result == 1) {
-                    $(location).attr('href', '/Pastebook/UserProfile/?username=' + hiddenUsername);
-                }
-                else {
-                    alert("Fail Inserting");
-                }
-            };
-        });
+        var savePostUrl = '@Url.Action("SavePost", "Pastebook")';
+        var updateAboutMeUrl = '@Url.Action("UpdateAboutMe","Pastebook")';
+        var likePostUrl = '@Url.Action("LikePost","Pastebook")';
+        var commentToPostUrl = '@Url.Action("CommentToPost","Pastebook")';
+        var addFriendUrl = '@Url.Action("AddFriend", "Pastebook")';
+        var acceptRejectRequestUrl = '@Url.Action("AcceptRejectRequest","Pastebook")';
+        var timelinePartialUrl = '@Url.Action("TimelinePartial","Pastebook")';
+        var addfriendPartialUrl = '@Url.Action("AddfriendPartial","Pastebook")';
+        var userLink = '@Url.Action("/", "Pastebook.com")';
     </script>
+    <script src="~/Scripts/userprofile.js"></script>
 }
 
