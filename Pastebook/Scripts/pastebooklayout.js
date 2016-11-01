@@ -4,17 +4,12 @@
 
     setInterval(reloadBadge, 1000);
 
-    
-
     function reloadBadge() {
         $.ajax({
             url: getCountOfNotificationUrl,
             type: 'GET',
             success: function (data) {
                 ChangeBadgeCount(data);
-            },
-            error: function () {
-                //add error
             }
         });
     }
@@ -36,9 +31,6 @@
             type: 'GET',
             success: function (data) {
                 LoadNotificationContent(data);
-            },
-            error: function () {
-                //add error
             }
         });
 
@@ -47,9 +39,6 @@
             type: 'GET',
             success: function (data) {
                 LoadNotificationContent(data);
-            },
-            error: function () {
-                //add error
             }
         });
     });

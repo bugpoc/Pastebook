@@ -10,15 +10,15 @@
                     @if (Model.PROFILE_OWNER_ID != Model.POSTER_ID)
                     {
 
-                        <p class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</p>
-                        <p class="date-align replace-h5">@Model.CREATED_DATE</p>
+                        <span class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</span>
+                        <p class="date-align replace-h5">@Model.CREATED_DATE.ToString("MM/dd/yyyy hh:mm:ss tt")</p>
                             <div class="clearfix"></div>
                     }
                     else
                     {
 
-                        <p class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</p>
-                        <p class="date-align replace-h5">@Model.CREATED_DATE</p>
+                        <span class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</span>
+                        <p class="date-align replace-h5">@Model.CREATED_DATE.ToString("MM/dd/yyyy hh:mm:ss tt")</p>
                             <div class="clearfix"></div>
                     }
                 </div>
@@ -29,7 +29,7 @@
                     <span class="like-block"><button class="fa fa-thumbs-up showLikeModal btn btn-primary" value="@Model.ID"> No.</button> @Model.LIKEs.Count</span>
                     @if (Model.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == Model.ID))
                     {
-                        <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@Model.ID"> Dislike</button>
+                        <button id="unlike" type="button" class="btnLike btn btn-danger" value="@Model.ID"> Unlike</button>
                     }
                     else
                     {
@@ -65,11 +65,14 @@
                         <div>
                             @foreach (var item in Model.COMMENTs)
                             {
-                                <p class="replace-h5"><strong>@item.USER.FIRST_NAME @item.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(item.CONTENT)</p>
+                                <p class="replace-h5 post-content"><strong>@item.USER.FIRST_NAME @item.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(item.CONTENT)</p>
                             }
                         </div>
                     }
                     <textarea id="@Model.ID"></textarea>
+                    <div>
+                        <span id="commentMessage" class="text-danger"></span>
+                    </div>
                     <div class="ln_solid"></div>
                     <button type="button" class="btnComment btn btn-primary btn-post" value="@Model.ID">Comment</button>
                 </div>

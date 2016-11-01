@@ -21,12 +21,12 @@
                     CheckResultForPost(data);
                 },
                 error: function () {
-                    //add error
+                    $('#messageError').text('Failed to post.');
+                    $('#errorModal').modal('show');
                 }
             });
         }
-        else if (varContent.length>1000)
-        {
+        else if (varContent.length > 1000) {
             $('#contentMessage').text('The maximum content of post is 1000 characters only.');
         }
         else {
@@ -40,7 +40,7 @@
             aboutMe: varAboutMe,
             username: $('#hiddenUsername').val()
         };
-        if (varAboutMe.length != 0 && varAboutMe.length <= 2000) {
+        if (varAboutMe.length <= 2000) {
             $.ajax({
                 url: updateAboutMeUrl,
                 data: data,
@@ -49,15 +49,14 @@
                     CheckResultForAboutMe(data);
                 },
                 error: function () {
-                    //add error
+                    $('#myModal').modal('hide');
+                    $('#messageError').text('Failed to update about me.');
+                    $('#errorModal').modal('show');
                 }
             });
         }
-        else if (varAboutMe.length > 2000) {
-            $('#aboutMeMessage').text('The maximum content of about me is 2000 characters only.');
-        }
         else {
-            $('#aboutMeMessage').text('You cannot update about me with an empty content.');
+            $('#aboutMeMessage').text('The maximum content of about me is 2000 characters only.');
         }
     });
 
@@ -75,9 +74,9 @@
                 CheckResultForLikeAndComment(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to like/comment to the post.');
+                $('#errorModal').modal('show');
             }
-
         });
     });
 
@@ -98,15 +97,16 @@
                     CheckResultForLikeAndComment(data);
                 },
                 error: function () {
-                    //add error
+                    $('#messageError').text('Failed to like/comment to the post.');
+                    $('#errorModal').modal('show');
                 }
             });
         }
-        else if (comment.length>1000) {
-            $('#commentMessage').text('The maximum comment is 1000 characters only.');
+        else if (comment.length > 1000) {
+            $('#commentMessage_' + id).text('The maximum comment is 1000 characters only.');
         }
         else {
-            $('#commentMessage').text('You cannot post a comment with an empty content.');
+            $('#commentMessage_' + id).text('You cannot post a comment with an empty content.');
         }
     });
 
@@ -122,9 +122,9 @@
                 CheckResultForAddFriend(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to add this user.');
+                $('#errorModal').modal('show');
             }
-
         });
     });
 
@@ -141,9 +141,9 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to accept/reject this user.');
+                $('#errorModal').modal('show');
             }
-
         });
     });
 
@@ -160,9 +160,9 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to accept/reject this user.');
+                $('#errorModal').modal('show');
             }
-
         });
     });
 
@@ -199,8 +199,7 @@
             $('#messageImageType').text("Allowed file size is only 2 mb.");
             submitEvent.preventDefault();
         }
-        else
-        {
+        else {
             switch (extension) {
                 case 'jpg':
                 case 'jpeg':
@@ -220,7 +219,9 @@
             $(location).attr('href', userLink + hiddenUsername);
         }
         else {
-            //add fail inserting
+            $('#myModal').modal('hide');
+            $('#messageError').text('Failed to update about me.');
+            $('#errorModal').modal('show');
         }
     };
 
@@ -240,7 +241,8 @@
             $('#timelinePartial').load(timelinePartialUrl + '?username=' + hiddenUsername);
         }
         else {
-            //add fail inserting
+            $('#messageError').text('Failed to like/comment to the post.');
+            $('#errorModal').modal('show');
         }
     };
 
@@ -249,7 +251,8 @@
             $('#addFriendPartial').load(addfriendPartialUrl + '?username=' + hiddenUsername);
         }
         else {
-            //add fail inserting
+            $('#messageError').text('Failed to add this user.');
+            $('#errorModal').modal('show');
         }
     };
 
@@ -258,7 +261,8 @@
             $(location).attr('href', userLink + hiddenUsername);
         }
         else {
-            //add fail inserting
+            $('#messageError').text('Failed to accept/reject this user.');
+            $('#errorModal').modal('show');
         }
     };
 });

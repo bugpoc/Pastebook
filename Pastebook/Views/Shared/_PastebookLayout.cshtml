@@ -64,7 +64,7 @@
                                 </li>
                             </ul>
                         </div>
-                        
+
                     </div>
                     <!-- /sidebar menu -->
                 </div>
@@ -102,7 +102,7 @@
                                 <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                                     @{ Html.RenderAction("NotificationPartial", "Pastebook");}
                                 </ul>
-</li>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -110,6 +110,7 @@
             <!-- /top navigation -->
             <!-- page content -->
             <div class="right_col" role="main">
+                @Html.Partial("ErrorModal")
                 <input id="hiddenSessionUsername" type="hidden" value="@Session["username"].ToString()" />
                 @RenderBody()
             </div>

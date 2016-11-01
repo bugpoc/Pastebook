@@ -2,12 +2,10 @@
 
     setInterval(ReloadNewsFeed, 60000);
 
-    function ReloadNewsFeed()
-    {
+    function ReloadNewsFeed() {
         $('#newsFeedPartial').load(newsFeedPartialUrl);
     }
 
-    //http://stackoverflow.com/questions/12045634/disable-html-tag-php-script-from-input-field
     $('#btnPost').click(function () {
         var varContent = $.trim(escapeHtml($('#txtAreacontent').val()));
         var data = {
@@ -23,7 +21,8 @@
                     CheckResult(data);
                 },
                 error: function () {
-                    //add error
+                    $('#messageError').text('Failed to post.');
+                    $('#errorModal').modal('show');
                 }
             });
         }
@@ -49,7 +48,8 @@
                 CheckResult(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to like/comment to the post.');
+                $('#errorModal').modal('show');
             }
 
         });
@@ -72,15 +72,16 @@
                     CheckResult(data);
                 },
                 error: function () {
-                    //add error
+                    $('#messageError').text('Failed to like/comment to the post.');
+                    $('#errorModal').modal('show');
                 }
             });
         }
         else if (comment.length > 1000) {
-            $('#commentMessage').text('The maximum comment is 1000 characters only.');
+            $('#commentMessage_' + id).text('The maximum comment is 1000 characters only.');
         }
         else {
-            $('#commentMessage').text('You cannot post a comment with an empty content.');
+            $('#commentMessage_' + id).text('You cannot post a comment with an empty content.');
         }
     });
 
@@ -96,7 +97,8 @@
             $('#contentMessage').text('');
         }
         else {
-            // add fail inserting
+            $('#messageError').text('Failed to commit your request.');
+            $('#errorModal').modal('show');
         }
     };
 });

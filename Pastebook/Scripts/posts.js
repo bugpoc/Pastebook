@@ -16,7 +16,8 @@
                 CheckResult(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to like/comment to the post.');
+                $('#errorModal').modal('show');
             }
 
         });
@@ -30,17 +31,26 @@
             postID: $(this).val(),
             content: comment
         };
-        $.ajax({
-            url: commentToPostUrl,
-            data: data,
-            type: 'GET',
-            success: function (data) {
-                CheckResult(data);
-            },
-            error: function () {
-                //add error
-            }
-        });
+        if (comment.length > 0 && comment.length <= 1000) {
+            $.ajax({
+                url: commentToPostUrl,
+                data: data,
+                type: 'GET',
+                success: function (data) {
+                    CheckResult(data);
+                },
+                error: function () {
+                    $('#messageError').text('Failed to like/comment to the post.');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+        else if (comment.length > 1000) {
+            $('#commentMessage').text('The maximum comment is 1000 characters only.');
+        }
+        else {
+            $('#commentMessage').text('You cannot post a comment with an empty content.');
+        }
     });
 
     $(document).on('click', ".showLikeModal", function () {
@@ -53,7 +63,8 @@
             $(location).attr('href', postUrl + postID);
         }
         else {
-            //add fail inserting
+            $('#messageError').text('Failed to like/comment to the post.');
+            $('#errorModal').modal('show');
         }
     };
 });

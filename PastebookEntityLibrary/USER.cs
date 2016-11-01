@@ -32,7 +32,8 @@ namespace PastebookEntityLibrary
 
         [Required(ErrorMessage = "The Username field is required")]
         [Display(Name = "Username")]
-        [StringLength(50, ErrorMessage = "The Userame maximum length is 50 characters only")]
+        [StringLength(50, ErrorMessage = "The Username maximum length is 50 characters only")]
+        [RegularExpression(@"^([a-zA-Z\d ]+[-_.']?)+$", ErrorMessage = "The Username must start in letters or numbers and contain only letters, numbers, spaces, \".\", \"-\", \"'\", \"_\" and numbers.")]
         public string USER_NAME { get; set; }
 
         [Required(ErrorMessage = "The Password field is required")]
@@ -45,13 +46,13 @@ namespace PastebookEntityLibrary
 
         [Required(ErrorMessage = "The First Name field is required")]
         [Display(Name = "First Name")]
-        [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The First Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
+        [RegularExpression(@"^(([a-zA-Z ]+[-.']?)+[\d]?)+$", ErrorMessage = "The First Name must start in letters and contain only letters, spaces, \".\", \"-\", \"'\" and number.")]
         [StringLength(50, ErrorMessage = "The First Name maximum length is 50 characters only")]
         public string FIRST_NAME { get; set; }
 
         [Required(ErrorMessage = "The Last Name field is required")]
         [Display(Name = "Last Name")]
-        [RegularExpression(@"[a-zA-Z\s,.'-]+", ErrorMessage = "The Last Name must contain only letters, spaces, \",\", \".\" and \"-\"")]
+        [RegularExpression(@"^(([a-zA-Z ]+[-.']?)+[\d]?)+$", ErrorMessage = "The Last Name must start in letters and contain only letters, spaces, \".\", \"-\", \"'\" and number.")]
         [StringLength(50, ErrorMessage = "The Last Name maximum length is 50 characters only")]
         public string LAST_NAME { get; set; }
 

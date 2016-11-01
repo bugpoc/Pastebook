@@ -158,8 +158,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PastebookController.cs" />
-    <Compile Include="CustomAuthetication.cs" />
+    <Compile Include="Authorize\CustomAuthetication.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,7 +258,7 @@
     <Content Include="Views\Pastebook\EditInformation.cshtml" />
     <Content Include="Views\Pastebook\EditEmail.cshtml" />
     <Content Include="Views\Pastebook\EditPassword.cshtml" />
-    <Content Include="Views\Shared\LikeModal.cshtml" />
+    <Content Include="Views\Shared\ErrorModal.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\Error\Error500.cshtml" />
@@ -266,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

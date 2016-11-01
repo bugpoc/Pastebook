@@ -106,7 +106,7 @@ namespace Pastebook.Controllers
 
             if (file.ContentLength > 0 && file.ContentLength < 2097152)
             {
-                if(file.ContentType == "image/jpg" || file.ContentType == "image/jpeg" || file.ContentType == "image/png")
+                if (file.ContentType == "image/jpg" || file.ContentType == "image/jpeg" || file.ContentType == "image/png")
                 {
                     user.PROFILE_PIC = new byte[file.ContentLength];
                     file.InputStream.Read(user.PROFILE_PIC, 0, file.ContentLength);
@@ -118,7 +118,6 @@ namespace Pastebook.Controllers
             return RedirectToAction("UserProfile", "Pastebook", new { username = username });
         }
 
-        [HttpGet]
         public ActionResult NotificationPartial()
         {
             return PartialView("NotificationPartialView", notificationDataAccess.GetTopSixListOfNotifications((int)Session["user_id"]));
@@ -132,38 +131,115 @@ namespace Pastebook.Controllers
         }
 
         [HttpGet]
-        [Route("EditInformation")]
         public ActionResult EditInformation()
         {
             IEnumerable<SelectListItem> countryListItems;
+            IEnumerable<SelectListItem> genderListItems;
 
             countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
             {
                 Value = i.ID.ToString(),
                 Text = i.COUNTRY
             });
+            genderListItems = new List<SelectListItem>() {
+                    new SelectListItem {Text = "Select Gender",   Value = "U"},
+                    new SelectListItem {Text = "Male",   Value = "M"},
+                    new SelectListItem {Text = "Female", Value = "F"} };
 
+            ViewBag.GenderList = genderListItems;
             ViewBag.CountryList = countryListItems;
 
-            return View(new SettingsViewModel
+            return View(userDataAccess.GetUser(null, Session["username"].ToString()));
+        }
+
+        [HttpPost]
+        public ActionResult EditInformation(USER model)
+        {
+            var user = new USER();
+            GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+
+            user = userDataAccess.GetUser(model.EMAIL_ADDRESS, null);
+
+            if (userDataAccess.CheckUsername(model.USER_NAME) && user.USER_NAME != model.USER_NAME)
             {
-                USER = userDataAccess.GetUser(null, Session["username"].ToString())
+                ModelState.AddModelError("USER_NAME", "Username already exists.");
+
+            }
+
+            ModelState["PASSWORD"].Errors.Clear();
+
+            if (ModelState.IsValid)
+            {
+                model.PASSWORD = user.PASSWORD;
+                model.SALT = user.SALT;
+                model.PROFILE_PIC = user.PROFILE_PIC;
+
+                Session["username"] = model.USER_NAME;
+
+                dataAccessUser.Update(model);
+
+                return RedirectToAction("Index");
+            }
+
+            IEnumerable<SelectListItem> countryListItems;
+            IEnumerable<SelectListItem> genderListItems;
+
+            countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
+            {
+                Value = i.ID.ToString(),
+                Text = i.COUNTRY
             });
+            genderListItems = new List<SelectListItem>() {
+                    new SelectListItem {Text = "Select Gender",   Value = "U"},
+                    new SelectListItem {Text = "Male",   Value = "M"},
+                    new SelectListItem {Text = "Female", Value = "F"} };
+
+            ViewBag.GenderList = genderListItems;
+            ViewBag.CountryList = countryListItems;
+
+            return View(model);
         }
 
         [HttpGet]
-        [Route("EditEmail")]
         public ActionResult EditEmail()
         {
-            SettingsViewModel settings = new SettingsViewModel();
-            settings.USER = userDataAccess.GetUser(null, Session["username"].ToString());
-            settings.USER.PASSWORD = null;
+            var user = new USER();
+            user = userDataAccess.GetUser(null, Session["username"].ToString());
+            user.PASSWORD = null;
 
-            return View(settings);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditEmail(USER model)
+        {
+            USER user = new USER();
+            GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
+
+            user = userDataAccess.GetUser(null, model.USER_NAME);
+
+            if (userDataAccess.CheckEmail(model.EMAIL_ADDRESS) && user.EMAIL_ADDRESS != model.EMAIL_ADDRESS)
+            {
+                ModelState.AddModelError("EMAIL_ADDRESS", "Email Address already exists.");
+            }
+
+            if (!passwordManager.IsPasswordMatch(model.PASSWORD, user.SALT, user.PASSWORD))
+            {
+                ModelState.AddModelError("PASSWORD", "Password is incorrect.");
+            }
+
+            if (ModelState.IsValidField("EMAIL_ADDRESS") && ModelState.IsValidField("PASSWORD"))
+            {
+                user.EMAIL_ADDRESS = model.EMAIL_ADDRESS;
+                dataAccessUser.Update(user);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
         [HttpGet]
-        [Route("EditPassword")]
         public ActionResult EditPassword()
         {
             SettingsViewModel settings = new SettingsViewModel();
@@ -174,92 +250,36 @@ namespace Pastebook.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateUser(SettingsViewModel model, string Action)
+        public ActionResult EditPassword(SettingsViewModel model)
         {
             USER user = new USER();
             GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
 
-            if (Action == "EditInformation")
+            user = userDataAccess.GetUser(model.USER.EMAIL_ADDRESS, null);
+
+            if (passwordManager.IsPasswordMatch(model.PASSWORD.NewPassword, user.SALT, user.PASSWORD))
             {
-                user = userDataAccess.GetUser(model.USER.EMAIL_ADDRESS, null);
-
-                if (userDataAccess.CheckUsername(model.USER.USER_NAME) && user.USER_NAME != model.USER.USER_NAME)
-                {
-                    ModelState.AddModelError("USER.USER_NAME", "Username already exists.");
-
-                }
-                else if (ModelState.IsValidField("USER.MOBILE_NO"))
-                {
-                    model.USER.PASSWORD = user.PASSWORD;
-                    model.USER.SALT = user.SALT;
-                    model.USER.PROFILE_PIC = user.PROFILE_PIC;
-
-                    Session["username"] = model.USER.USER_NAME;
-
-                    dataAccessUser.Update(model.USER);
-
-                    return RedirectToAction("Index");
-                }
-                IEnumerable<SelectListItem> countryListItems;
-
-                countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
-                {
-                    Value = i.ID.ToString(),
-                    Text = i.COUNTRY
-                });
-
-                ViewBag.CountryList = countryListItems;
-            }
-            else if (Action == "EditEmail")
-            {
-                user = userDataAccess.GetUser(null, model.USER.USER_NAME);
-
-                if (userDataAccess.CheckEmail(model.USER.EMAIL_ADDRESS) && user.EMAIL_ADDRESS != model.USER.EMAIL_ADDRESS)
-                {
-                    ModelState.AddModelError("USER.EMAIL_ADDRESS", "Email Address already exists.");
-                }
-
-                if (!passwordManager.IsPasswordMatch(model.USER.PASSWORD, user.SALT, user.PASSWORD))
-                {
-                    ModelState.AddModelError("USER.PASSWORD", "Password is incorrect.");
-                }
-
-                if (ModelState.IsValidField("USER.EMAIL_ADDRESS") && ModelState.IsValidField("USER.PASSWORD"))
-                {
-                    user.EMAIL_ADDRESS = model.USER.EMAIL_ADDRESS;
-                    dataAccessUser.Update(user);
-
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                user = userDataAccess.GetUser(model.USER.EMAIL_ADDRESS, null);
-
-                if (passwordManager.IsPasswordMatch(model.PASSWORD.NewPassword, user.SALT, user.PASSWORD))
-                {
-                    ModelState.AddModelError("PASSWORD.NewPassword", "Password and New Password is still the same.");
-                }
-
-                if (!passwordManager.IsPasswordMatch(model.USER.PASSWORD, user.SALT, user.PASSWORD))
-                {
-                    ModelState.AddModelError("USER.PASSWORD", "Password is incorrect.");
-                }
-
-                if (ModelState.IsValidField("PASSWORD.NewPassword") && ModelState.IsValidField("USER.PASSWORD"))
-                {
-                    string salt = null;
-
-                    user.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD.NewPassword, out salt);
-                    user.SALT = salt;
-
-                    dataAccessUser.Update(user);
-
-                    return RedirectToAction("Index");
-                }
+                ModelState.AddModelError("PASSWORD.NewPassword", "Password and New Password are still the same.");
             }
 
-            return View(Action, model);
+            if (!passwordManager.IsPasswordMatch(model.USER.PASSWORD, user.SALT, user.PASSWORD))
+            {
+                ModelState.AddModelError("USER.PASSWORD", "Password is incorrect.");
+            }
+
+            if (ModelState.IsValidField("PASSWORD.NewPassword") && ModelState.IsValidField("USER.PASSWORD"))
+            {
+                string salt = null;
+
+                user.PASSWORD = passwordManager.GeneratePasswordHash(model.PASSWORD.NewPassword, out salt);
+                user.SALT = salt;
+
+                dataAccessUser.Update(user);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
 
         [HttpGet]

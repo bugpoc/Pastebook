@@ -53,13 +53,25 @@ namespace PastebookDataAccessLibrary
             return listOfNotifications;
         }
 
-        public NOTIFICATION GetNotification(LIKE like)
+        public NOTIFICATION GetNotificationForLike(LIKE like)
         {
             NOTIFICATION notification = new NOTIFICATION();
 
             using (var context = new PastebookEntities())
             {
-                notification = context.NOTIFICATIONs.FirstOrDefault(n => n.POST_ID == like.POST_ID && n.SENDER_ID == like.LIKED_BY);
+                notification = context.NOTIFICATIONs.FirstOrDefault(n => n.POST_ID == like.POST_ID && n.SENDER_ID == like.LIKED_BY && n.NOTIF_TYPE == "L");
+            }
+
+            return notification;
+        }
+
+        public NOTIFICATION GetNotificationForFriendRequest(FRIEND friend)
+        {
+            NOTIFICATION notification = new NOTIFICATION();
+
+            using (var context = new PastebookEntities())
+            {
+                notification = context.NOTIFICATIONs.FirstOrDefault(n => n.SENDER_ID == friend.USER_ID && n.RECEIVER_ID == friend.FRIEND_ID && n.NOTIF_TYPE == "F");    
             }
 
             return notification;

@@ -12,7 +12,8 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to accept/reject this user.');
+                $('#errorModal').modal('show');
             }
 
         });
@@ -31,7 +32,8 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                //add error
+                $('#messageError').text('Failed to accept/reject this user.');
+                $('#errorModal').modal('show');
             }
 
         });
@@ -42,7 +44,8 @@
             $('#friendRequestPartial').load(friendRequestPartialUrl);
         }
         else {
-            //add fail inserting
+            $('#messageError').text('Failed to accept/reject this user.');
+            $('#errorModal').modal('show');
         }
     };
 });

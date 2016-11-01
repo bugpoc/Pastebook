@@ -8,16 +8,12 @@
 
         if ($(this).valid()) {
             $.ajax({
-                url: '/Account/CheckUsername',
+                url: checkUsernameUrl,
                 data: data,
                 type: 'GET',
                 success: function (data) {
                     CheckUsername(data);
-                },
-                error: function () {
-                    //add error
                 }
-
             });
         }
         else {
@@ -34,16 +30,12 @@
 
         if ($(this).valid()) {
             $.ajax({
-                url: '/Account/CheckEmail',
+                url: checkEmailUrl,
                 data: data,
                 type: 'GET',
                 success: function (data) {
                     CheckEmail(data);
-                },
-                error: function () {
-                    //add error
                 }
-
             });
         }
         else {

@@ -1,4 +1,4 @@
-﻿@model Pastebook.ViewModels.SettingsViewModel
+﻿@model PastebookEntityLibrary.USER
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -8,71 +8,66 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                @using (Html.BeginForm("UpdateUser", "Pastebook", FormMethod.Post, new { @class = "form-horizontal form-label-left" }))
+                @using (Html.BeginForm("EditInformation", "Pastebook", FormMethod.Post, new { @class = "form-horizontal form-label-left" }))
                 {
-                    @Html.Hidden("Action", "EditInformation")
-                    @Html.HiddenFor(model => model.USER.ID)
-                    @Html.HiddenFor(model => model.USER.EMAIL_ADDRESS)
-                    @Html.HiddenFor(model => model.USER.DATE_CREATED)
-                    @Html.HiddenFor(model => model.USER.ABOUT_ME)
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.EMAIL_ADDRESS)
+                    @Html.HiddenFor(model => model.DATE_CREATED)
+                    @Html.HiddenFor(model => model.ABOUT_ME)
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.USER.USER_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                        @Html.LabelFor(model => model.USER_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            @Html.EditorFor(model => model.USER.USER_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
-                            @Html.ValidationMessageFor(model => model.USER.USER_NAME, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.USER_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                            @Html.ValidationMessageFor(model => model.USER_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.USER.FIRST_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                        @Html.LabelFor(model => model.FIRST_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            @Html.EditorFor(model => model.USER.FIRST_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
-                            @Html.ValidationMessageFor(model => model.USER.FIRST_NAME, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.FIRST_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                            @Html.ValidationMessageFor(model => model.FIRST_NAME, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.USER.LAST_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            @Html.LabelFor(model => model.LAST_NAME, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.EditorFor(model => model.USER.LAST_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
-                                @Html.ValidationMessageFor(model => model.USER.LAST_NAME, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.LAST_NAME, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                                @Html.ValidationMessageFor(model => model.LAST_NAME, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.USER.BIRTHDAY, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            @Html.LabelFor(model => model.BIRTHDAY, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.EditorFor(model => model.USER.BIRTHDAY, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", max = DateTime.Now.ToString("yyyy-MM-dd") } })
-                                @Html.ValidationMessageFor(model => model.USER.BIRTHDAY, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.BIRTHDAY, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", max = DateTime.Now.ToString("yyyy-MM-dd") } })
+                                @Html.ValidationMessageFor(model => model.BIRTHDAY, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.USER.COUNTRY_ID, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            @Html.LabelFor(model => model.COUNTRY_ID, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.DropDownListFor(model => model.USER.COUNTRY_ID, (IEnumerable<SelectListItem>)ViewBag.CountryList, "Select Country", new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(model => model.USER.COUNTRY_ID, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.COUNTRY_ID, (IEnumerable<SelectListItem>)ViewBag.CountryList, "Select Country", new { @class = "form-control col-md-7 col-xs-12" })
+                                @Html.ValidationMessageFor(model => model.COUNTRY_ID, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.USER.MOBILE_NO, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            @Html.LabelFor(model => model.MOBILE_NO, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.EditorFor(model => model.USER.MOBILE_NO, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
-                                @Html.ValidationMessageFor(model => model.USER.MOBILE_NO, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.MOBILE_NO, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                                @Html.ValidationMessageFor(model => model.MOBILE_NO, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.USER.GENDER, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            @Html.LabelFor(model => model.GENDER, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.DropDownListFor(model => model.USER.GENDER, new List<SelectListItem>() {
-                    new SelectListItem {Text = "Select Gender",   Value = "U"},
-                    new SelectListItem {Text = "Male",   Value = "M"},
-                    new SelectListItem {Text = "Female", Value = "F"}
-               }, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(model => model.USER.GENDER, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.GENDER, (IEnumerable<SelectListItem>)ViewBag.GenderList, new { @class = "form-control col-md-7 col-xs-12" })
+                                @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })
                             </div>
                         </div>
 

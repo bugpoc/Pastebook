@@ -61,7 +61,7 @@ namespace PastebookBusinessLogicLibrary
             GenericDataAccess<USER> dataAccessUser = new GenericDataAccess<USER>();
             int result = 0;
 
-            if (!string.IsNullOrEmpty(aboutMe) && !string.IsNullOrWhiteSpace(aboutMe) && aboutMe.Length <= 2000)
+            if (aboutMe.Length <= 2000)
             {
                 user = userDataAccess.GetUser(null, username);
                 user.ABOUT_ME = aboutMe.Trim();
@@ -111,7 +111,7 @@ namespace PastebookBusinessLogicLibrary
 
                 if (result == 1 && userID != posterID)
                 {
-                    dataAccessNotification.Delete(notificationDataAccess.GetNotification(like));
+                    dataAccessNotification.Delete(notificationDataAccess.GetNotificationForLike(like));
                 }
             }
 
@@ -198,6 +198,7 @@ namespace PastebookBusinessLogicLibrary
         {
             var friend = new FRIEND();
             GenericDataAccess<FRIEND> dataAccessFriend = new GenericDataAccess<FRIEND>();
+            GenericDataAccess<NOTIFICATION> dataAccessNotification = new GenericDataAccess<NOTIFICATION>();
             int result;
 
             friend = friendDataAccess.GetFriendRelationship(relationshipID);
@@ -222,6 +223,8 @@ namespace PastebookBusinessLogicLibrary
             else
             {
                 result = dataAccessFriend.Delete(friend);
+
+                dataAccessNotification.Delete(notificationDataAccess.GetNotificationForFriendRequest(friend));
             }
 
             return result;
