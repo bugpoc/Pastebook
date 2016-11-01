@@ -16,21 +16,7 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    var listOfFriends = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id || f.FRIEND_ID == id).ToList();
-                    foreach (var item in listOfFriends)
-                    {
-                        if (item.REQUEST == "N")
-                        {
-                            if (item.USER_ID == id)
-                            {
-                                listOfFriendsInformation.Add(item.USER);
-                            }
-                            else
-                            {
-                                listOfFriendsInformation.Add(item.USER1);
-                            }
-                        }
-                    }
+                    listOfFriendsInformation = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.USER).ToList();
                 }
             }
             catch (Exception)
@@ -39,6 +25,26 @@ namespace PastebookDataAccessLibrary
                 throw;
             }
             return listOfFriendsInformation;
+        }
+
+        public List<int> GetListOfFriendsID(int id)
+        {
+            List<int> listOfFriendsID = new List<int>();
+
+            try
+            {
+                using (var context = new PastebookEntities())
+                {
+                    listOfFriendsID = context.FRIENDs.Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.FRIEND_ID).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return listOfFriendsID;
         }
 
         public List<FRIEND> GetPendingFriends(int id)

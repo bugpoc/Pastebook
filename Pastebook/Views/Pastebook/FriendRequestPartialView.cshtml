@@ -1,8 +1,46 @@
 ﻿@model IEnumerable<PastebookEntityLibrary.FRIEND>
 
+@{
+    string imgSrc = null;
+}
+
 @foreach (var item in Model)
 {
-    <p>
-        @item.USER1.FIRST_NAME @item.USER1.LAST_NAME <button class="btnConfirm" value="@item.ID">Accept</button><button class="btnReject" value="@item.ID">Reject</button>
-    </p>
+    if (item.USER1.PROFILE_PIC != null)
+    {
+        var base64 = Convert.ToBase64String(item.USER1.PROFILE_PIC);
+        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+    }
+    else
+    {
+        imgSrc = Url.Content("~/Content/Images/default.jpg");
+    }
+    <div class="row">
+        <div class="col-md-12 profile_left">
+            <div class="x_panel">
+                <div class="x_title">
+                    <p class="h2">Profile Information</p>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="profile-img">
+                        <div class="col-md-3">
+                            <img class="img-responsive avatar-view" src="@imgSrc" alt="Profile Picture" />
+                        </div>
+                        <div class="col-md-9">
+                            <p class="h2">@item.USER1.FIRST_NAME @item.USER1.LAST_NAME</p>
+                        </div>
+                        <div>
+                            <button class="btnConfirm btn btn-primary" value="@item.ID">Accept</button><button class="btnReject btn btn-danger" value="@item.ID">Reject</button>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary view-profile" value="@item.USER1.USER_NAME">View Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
+
+

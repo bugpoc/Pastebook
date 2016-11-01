@@ -1,4 +1,12 @@
 ﻿$(document).ready(function () {
+
+    setInterval(ReloadNewsFeed, 60000);
+
+    function ReloadNewsFeed()
+    {
+        $('#newsFeedPartial').load(newsFeedPartialUrl);
+    }
+
     $('#btnPost').click(function () {
         var varContent = $.trim($('#txtAreacontent').val());
         var data = {
@@ -14,7 +22,7 @@
                     CheckResult(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
             });
         }
@@ -37,10 +45,10 @@
             data: data,
             type: 'GET',
             success: function (data) {
-                CheckResultForLikeAndComment(data);
+                CheckResult(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -60,10 +68,10 @@
                 data: data,
                 type: 'GET',
                 success: function (data) {
-                    CheckResultForLikeAndComment(data);
+                    CheckResult(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
             });
         }
@@ -87,7 +95,7 @@
             $('#contentMessage').text('');
         }
         else {
-            alert("Fail Inserting");
+            // add fail inserting
         }
     };
 });

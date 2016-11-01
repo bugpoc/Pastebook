@@ -12,15 +12,15 @@
                         @if (item.PROFILE_OWNER_ID != item.POSTER_ID)
                         {
 
-                            <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME posted to @item.USER1.FIRST_NAME @item.USER1.LAST_NAME</h2>
-                                <h5 class="date-align">@item.CREATED_DATE</h5>
+                            <span class="h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME posted to @item.USER1.FIRST_NAME @item.USER1.LAST_NAME</span>
+                                <p class="date-align h5">@item.CREATED_DATE</p>
                                 <div class="clearfix"></div>
                         }
                         else
                         {
 
-                            <h2>@item.USER.FIRST_NAME @item.USER.LAST_NAME</h2>
-                                <h5 class="date-align">@item.CREATED_DATE</h5>
+                            <span class="h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME</span>
+                                <p class="date-align h5">@item.CREATED_DATE</p>
                                 <div class="clearfix"></div>
                         }
                     </div>
@@ -44,13 +44,13 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">People who like this post</h4>
+                                            <p class="modal-title h4">People who like this post</p>
                                         </div>
                                         <div class="modal-body">
                                             <div>
                                                 @foreach (var element in item.LIKEs)
                                                 {
-                                                    <p>@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
+                                                    <p class="h2">@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
                                                 }
                                             </div>
                                         </div>
@@ -63,11 +63,11 @@
 
                         @if (item.COMMENTs.Count > 0)
                         {
-                            <h4>Comments:</h4>
+                            <p class="h4">Comments:</p>
                                 <div>
                                     @foreach (var element in item.COMMENTs)
                                     {
-                                        <h5><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @element.CONTENT</h5>
+                                        <p class="h5"><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @element.CONTENT</p>
                                     }
                                 </div>
                         }

@@ -19,7 +19,7 @@
         <div class="col-md-12 profile_left">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Profile Information</h2>
+                    <p class="h2">Profile Information</p>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -28,7 +28,7 @@
                             <img class="img-responsive avatar-view" src="@imgSrc" alt="Profile Picture" />
                         </div>
                         <div class="col-md-9">
-                            <h2>@item.FIRST_NAME @item.LAST_NAME</h2>
+                            <p class="h2">@item.FIRST_NAME @item.LAST_NAME</p>
                         </div>
                         <div>
                             <button class="btn btn-primary view-profile" value="@item.USER_NAME">View Profile</button>
@@ -43,7 +43,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        var userLink = '@Url.Action("/", "Pastebook.com")';
+        var userLink = '/Pastebook.com/';
     </script>
     <script src="~/Scripts/friends.js"></script>
 }

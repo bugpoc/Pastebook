@@ -15,7 +15,7 @@
                     CheckUsername(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
 
             });
@@ -41,7 +41,7 @@
                     CheckEmail(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
 
             });
@@ -59,6 +59,13 @@
         }
         else {
             $('#confirmPasswordMessage').text("");
+        }
+    });
+
+    $('#formRegister').submit(function () {
+        if($('#txtConfirmPassword').val()=="")
+        {
+            $('#confirmPasswordMessage').text("The Confirm Password field is required");
         }
     });
 

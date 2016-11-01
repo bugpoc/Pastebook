@@ -16,7 +16,7 @@
                 CheckResult(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -38,9 +38,14 @@
                 CheckResult(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
         });
+    });
+
+    $(document).on('click', ".showLikeModal", function () {
+        var id = $(this).val();
+        $('#likeModal_' + id).modal('show');
     });
 
     function CheckResult(data) {
@@ -48,7 +53,7 @@
             $(location).attr('href', postUrl + postID);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 });

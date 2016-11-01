@@ -5,7 +5,7 @@
     string notifLink = "";
 }
 
-@if (Model != null)
+@if (Model.Count() > 0)
 {
     foreach (var item in Model)
     {
@@ -34,4 +34,24 @@
             </a>
         </li>
     }
+    if (Model.Count() == 6)
+    {
+        <li>
+            <div class="text-center">
+                <a href="@Url.Action("ViewAllNotifications","Pastebook")">
+                    <strong>See All Notifications</strong>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </li>
+    }
 }
+else
+{
+    <li>
+        <a>
+            <span class="message">No Notifications</span>
+        </a>
+    </li>
+}
+

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<PastebookEntityLibrary.NOTIFICATION>
+
+@{
+    string message = "";
+    string notifLink = "";
+}
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <p class="h2">List of Notifications</p>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    @foreach (var item in Model)
+                    {
+                        if (item.NOTIF_TYPE == "L")
+                        {
+                            message = "has \'liked\' one of your posts";
+                            notifLink = Url.Action("Posts", "Pastebook", new { postID = item.POST_ID });
+                        }
+                        else if (item.NOTIF_TYPE == "F")
+                        {
+                            message = "has sent you a friend request";
+                            notifLink = Url.Action("UserProfile", "Pastebook", new { username = item.USER1.USER_NAME });
+                        }
+                        else
+                        {
+                            message = "has commented on one of your posts";
+                            notifLink = Url.Action("Posts", "Pastebook", new { postID = item.POST_ID });
+                        }
+                        <div>
+                            <a href="@notifLink">
+                                <span>
+                                    <span>@item.USER1.FIRST_NAME @item.USER1.LAST_NAME</span>
+                                    <span class="time">@message</span>
+                                </span>
+                                <span class="message">@item.CREATED_DATE</span>
+                            </a>
+                        </div>
+                        <div class="ln_solid"></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

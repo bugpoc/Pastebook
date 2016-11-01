@@ -27,7 +27,9 @@ C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookBusinessLogicLibrary.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookDataAccess.dll
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookEntityLibrary.dll
+C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookDataAccess.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\PastebookEntityLibrary.pdb
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.xml
 C:\Users\Bootcamp\Source\Repos\Pastebook\PastebookBusinessLogicLibrary\bin\Debug\EntityFramework.SqlServer.xml

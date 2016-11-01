@@ -12,7 +12,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -31,7 +31,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -42,7 +42,7 @@
             $('#friendRequestPartial').load(friendRequestPartialUrl);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 });

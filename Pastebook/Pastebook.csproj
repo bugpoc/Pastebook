@@ -159,6 +159,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\PastebookController.cs" />
+    <Compile Include="CustomAuthetication.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,7 +237,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Pastebook\Index.cshtml" />
     <Content Include="Views\Pastebook\Friends.cshtml" />
     <Content Include="Views\Pastebook\UserProfile.cshtml">
@@ -261,6 +262,7 @@
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\Error\Error500.cshtml" />
     <Content Include="Views\Pastebook\Posts.cshtml" />
+    <Content Include="Views\Pastebook\ViewAllNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

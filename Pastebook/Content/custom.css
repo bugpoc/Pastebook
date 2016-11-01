@@ -132,7 +132,7 @@
   line-height: 30px;
   color: #BAB8B8; }
 
-.profile_info h2 {
+.profile_info {
   font-size: 14px;
   color: #ECF0F1;
   margin: 0;
@@ -229,7 +229,7 @@ body .container.body .right_col {
   .right_col {
     padding: 10px !important; } }
 @media (max-width: 1200px) {
-  .x_title h2 {
+  .x_title {
     width: 62%;
     font-size: 17px; }
 
@@ -837,7 +837,7 @@ h2 {
   margin-left: 10px; }
 
 .x_title span {
-  color: #BDBDBD; }
+  color: #73879C; }
 
 .x_content {
   padding: 0 5px 6px;
@@ -1245,7 +1245,6 @@ ul.msg_list li a .time {
   font-size: 11px;
   font-style: italic;
   font-weight: bold;
-  position: absolute;
   right: 35px; }
 
 ul.msg_list li a .message {
@@ -3201,7 +3200,7 @@ a.hiddenanchor {
   position: relative;
   text-align: center;
   text-shadow: 0 1px 0 #fff;
-  min-width: 280px; }
+  min-width: 390px; }
 
 .login_content a,
 .login_content .btn-default:hover {

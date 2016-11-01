@@ -15,10 +15,8 @@ namespace Pastebook.Controllers
         CountryDataAccess countryDataAccess = new CountryDataAccess();
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Login()
         {
-            Session["user_id"] = 1;
-            Session["username"] = "jayquiambao";
             return View();
         }
 
@@ -26,6 +24,7 @@ namespace Pastebook.Controllers
         public ActionResult Register()
         {
             IEnumerable<SelectListItem> countryListItems;
+            IEnumerable<SelectListItem> genderListItems;
 
             countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
             {
@@ -33,6 +32,12 @@ namespace Pastebook.Controllers
                 Text = i.COUNTRY
             });
 
+            genderListItems = new List<SelectListItem>() {
+                    new SelectListItem {Text = "Select Gender",   Value = "U"},
+                    new SelectListItem {Text = "Male",   Value = "M"},
+                    new SelectListItem {Text = "Female", Value = "F"} };
+
+            ViewBag.GenderList = genderListItems;
             ViewBag.CountryList = countryListItems;
             return View();
         }
@@ -73,6 +78,7 @@ namespace Pastebook.Controllers
             }
 
             IEnumerable<SelectListItem> countryListItems;
+            IEnumerable<SelectListItem> genderListItems;
 
             countryListItems = countryDataAccess.GetCountryList().Select(i => new SelectListItem()
             {
@@ -81,17 +87,24 @@ namespace Pastebook.Controllers
             });
 
             model.PASSWORD = null;
+
+            genderListItems = new List<SelectListItem>() {
+                    new SelectListItem {Text = "Select Gender",   Value = "U"},
+                    new SelectListItem {Text = "Male",   Value = "M"},
+                    new SelectListItem {Text = "Female", Value = "F"} };
+            
+            ViewBag.GenderList = genderListItems;
             ViewBag.CountryList = countryListItems;
 
             return View("Register", model);
         }
 
         [HttpPost]
-        public ActionResult Login(USER model)
+        public ActionResult LoginUser(USER model)
         {
             var user = new USER();
 
-            if (model.EMAIL_ADDRESS!=null && model.PASSWORD!=null)
+            if (ModelState.IsValidField("EMAIL_ADDRESS") && ModelState.IsValidField("PASSWORD"))
             {
                 user = userDataAccess.GetUser(model.EMAIL_ADDRESS, null);
                 if (user != null)
@@ -108,7 +121,7 @@ namespace Pastebook.Controllers
 
             ModelState.AddModelError("PASSWORD", "Username/Password is incorrect.");
 
-            return View("Index", model);
+            return View("Login", model);
         }
 
         public JsonResult CheckUsername(string username)

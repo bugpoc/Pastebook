@@ -9,6 +9,7 @@
 
 .register-form {
     min-width: 500px;
+    left: -85px;
 }
 
 textarea {
@@ -39,4 +40,13 @@ textarea {
 
 .like-block {
     display: block;
+}
+
+.required:before { 
+    content:"* ";
+    color: #a94442;
+}
+
+.text-required {
+    padding-top: 15px;
 }

@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Register";
 }
 
 <div>
@@ -12,9 +12,12 @@
                 @using (Html.BeginForm("RegisterUser", "Account", FormMethod.Post, new { id = "formRegister" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h1 class="form-title">Registration Form</h1>
+                    <span class="form-title h3">Registration Form</span>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.USER_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        <span class="text-danger col-md-12 text-center text-required">* Required Fields</span>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.USER_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.USER_NAME, new { htmlAttributes = new { @class = "form-control", id = "txtUsername" } })
                             @Html.ValidationMessageFor(model => model.USER_NAME, "", new { @class = "text-danger" })
@@ -23,7 +26,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.FIRST_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        @Html.LabelFor(model => model.FIRST_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.FIRST_NAME, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.FIRST_NAME, "", new { @class = "text-danger" })
@@ -31,7 +34,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.LAST_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        @Html.LabelFor(model => model.LAST_NAME, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.LAST_NAME, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.LAST_NAME, "", new { @class = "text-danger" })
@@ -39,7 +42,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.EMAIL_ADDRESS, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        @Html.LabelFor(model => model.EMAIL_ADDRESS, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.EMAIL_ADDRESS, new { htmlAttributes = new { @class = "form-control", id = "txtEmail" } })
                             @Html.ValidationMessageFor(model => model.EMAIL_ADDRESS, "", new { @class = "text-danger" })
@@ -48,7 +51,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.PASSWORD, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        @Html.LabelFor(model => model.PASSWORD, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.PASSWORD, new { htmlAttributes = new { @class = "form-control", id = "txtPassword" } })
                             @Html.ValidationMessageFor(model => model.PASSWORD, "", new { @class = "text-danger" })
@@ -56,7 +59,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="ConfirmPassword" class="control-label col-md-4 align-label">ConfirmPassword</label>
+                        <label for="ConfirmPassword" class="control-label col-md-4 align-label required">ConfirmPassword</label>
                         <div class="col-md-8">
                             <input id="txtConfirmPassword" name="CONFIRM_PASSWORD" type="password" class="form-control" />
                             <span id="confirmPasswordMessage" class="text-danger"></span>
@@ -64,9 +67,9 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.BIRTHDAY, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
+                        @Html.LabelFor(model => model.BIRTHDAY, htmlAttributes: new { @class = "control-label col-md-4 align-label required" })
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.BIRTHDAY, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.BIRTHDAY, new { htmlAttributes = new { @class = "form-control", max = DateTime.Now.ToString("yyyy-MM-dd") } })
                             @Html.ValidationMessageFor(model => model.BIRTHDAY, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -74,11 +77,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.GENDER, htmlAttributes: new { @class = "control-label col-md-4 align-label" })
                         <div class="col-md-8">
-                            @Html.DropDownListFor(model => model.GENDER, new List<SelectListItem>() {
-                    new SelectListItem {Text = "Select Gender",   Value = "U"},
-                    new SelectListItem {Text = "Male",   Value = "M"},
-                    new SelectListItem {Text = "Female", Value = "F"}
-               }, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.GENDER, (IEnumerable<SelectListItem>)ViewBag.GenderList, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -100,6 +99,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-8">
                                 <input type="submit" value="Register" class="btn btn-primary" />
+                                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Login", "Account")'">Login</button>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -118,8 +118,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        var errorLink = '@Url.Action("Error500", "Error")';
-    </script>
     <script src="~/Scripts/register.js"></script>
 }

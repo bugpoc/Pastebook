@@ -21,7 +21,7 @@
                     CheckResultForPost(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
             });
         }
@@ -49,7 +49,7 @@
                     CheckResultForAboutMe(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
             });
         }
@@ -75,7 +75,7 @@
                 CheckResultForLikeAndComment(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -98,7 +98,7 @@
                     CheckResultForLikeAndComment(data);
                 },
                 error: function () {
-                    $(location).attr('href', errorLink);
+                    //add error
                 }
             });
         }
@@ -123,7 +123,7 @@
                 CheckResultForAddFriend(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -142,7 +142,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -161,7 +161,7 @@
                 CheckResultForRequest(data);
             },
             error: function () {
-                $(location).attr('href', errorLink);
+                //add error
             }
 
         });
@@ -172,12 +172,56 @@
         $('#likeModal_' + id).modal('show');
     });
 
+    //http://stackoverflow.com/questions/14852090/jquery-check-for-file-extension-before-uploading
+    $("#formUploadPicture").submit(function (submitEvent) {
+
+        var imageSize = $('#imageType')[0].files[0].size;
+
+        // get the file name, possibly with path (depends on browser)
+        var filename = $("#imageType").val();
+
+        // Use a regular expression to trim everything before final dot
+        var extension = filename.replace(/^.*\./, '');
+
+        // Iff there is no dot anywhere in filename, we would have extension == filename,
+        // so we account for this possibility now
+        if (extension == filename) {
+            extension = '';
+        }
+        else {
+            // if there is an extension, we convert to lower case
+            // (N.B. this conversion will not effect the value of the extension
+            // on the file upload.)
+            extension = extension.toLowerCase();
+        }
+
+
+        if (imageSize > 2097152) {
+            $('#messageImageType').text("Allowed file size is only 2 mb.");
+            submitEvent.preventDefault();
+        }
+        else
+        {
+            switch (extension) {
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                    break;
+
+                default:
+                    $('#messageImageType').text(".jpg, .jpeg and .png are the only allowed extension.");
+                    // Cancel the form submission
+                    submitEvent.preventDefault();
+            }
+        }
+    });
+
     function CheckResultForAboutMe(data) {
         if (data.Result == 1) {
             $(location).attr('href', userLink + hiddenUsername);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 
@@ -188,7 +232,7 @@
             $('#contentMessage').text('');
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 
@@ -197,7 +241,7 @@
             $('#timelinePartial').load(timelinePartialUrl + '?username=' + hiddenUsername);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 
@@ -206,7 +250,7 @@
             $('#addFriendPartial').load(addfriendPartialUrl + '?username=' + hiddenUsername);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 
@@ -215,7 +259,7 @@
             $(location).attr('href', userLink + hiddenUsername);
         }
         else {
-            alert("Fail Inserting");
+            //add fail inserting
         }
     };
 });

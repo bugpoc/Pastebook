@@ -27,7 +27,7 @@ namespace PastebookDataAccessLibrary
             return listOfPosts;
         }
 
-        public List<POST> GetUserNewsFeed(List<USER> listOfUserFriends, int id)
+        public List<POST> GetUserNewsFeed(List<int> listOfFriendsID)
         {
             var listOfPosts = new List<POST>();
 
@@ -35,15 +35,7 @@ namespace PastebookDataAccessLibrary
             {
                 using (var context = new PastebookEntities())
                 {
-                    var result = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").Include("LIKEs.USER").OrderByDescending(d => d.CREATED_DATE).ToList();
-
-                    foreach (var item in result)
-                    {
-                        if (listOfUserFriends.Any(u => u.ID == item.POSTER_ID || item.PROFILE_OWNER_ID == id))
-                        {
-                            listOfPosts.Add(item);
-                        }
-                    }
+                    listOfPosts = context.POSTs.Include("LIKEs").Include("COMMENTs").Include("USER").Include("USER1").Include("COMMENTs.USER").Include("LIKEs.USER").Where(p => listOfFriendsID.Contains(p.POSTER_ID)).OrderByDescending(d => d.CREATED_DATE).ToList();
                 }
             }
             catch (Exception)

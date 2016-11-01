@@ -10,15 +10,15 @@
                     @if (Model.PROFILE_OWNER_ID != Model.POSTER_ID)
                     {
 
-                        <h2>@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</h2>
-                        <h5 class="date-align">@Model.CREATED_DATE</h5>
+                        <p class="h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</p>
+                        <p class="date-align h5">@Model.CREATED_DATE</p>
                             <div class="clearfix"></div>
                     }
                     else
                     {
 
-                        <h2>@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</h2>
-                        <h5 class="date-align">@Model.CREATED_DATE</h5>
+                        <p class="h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</p>
+                        <p class="date-align h5">@Model.CREATED_DATE</p>
                             <div class="clearfix"></div>
                     }
                 </div>
@@ -26,7 +26,7 @@
                     <blockquote class="post-content">
                         <p>@Model.CONTENT</p>
                     </blockquote>
-                    <a href="javascript:;"><button class="fa fa-thumbs-up showLikeModal" value="@Model.ID"></button> @Model.LIKEs.Count</a>
+                    <span class="like-block"><button class="fa fa-thumbs-up showLikeModal btn btn-primary" value="@Model.ID"> No.</button> @Model.LIKEs.Count</span>
                     @if (Model.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == Model.ID))
                     {
                         <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@Model.ID"> Unlike</button>
@@ -42,7 +42,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">People who like this post</h4>
+                                        <p class="modal-title h4">People who like this post</p>
                                     </div>
                                     <div class="modal-body">
                                         <div>
@@ -83,8 +83,7 @@
     <script>
         var likePostUrl = '@Url.Action("LikePost","Pastebook")';
         var commentToPostUrl = '@Url.Action("CommentToPost","Pastebook")';
-        var postUrl = '@Url.Action("Posts/","Pastebook.com")';
-        var errorLink = '@Url.Action("Error500", "Error")';
+        var postUrl = '/Pastebook.com/Posts/';
     </script>
     <script src="~/Scripts/posts.js"></script>
 }

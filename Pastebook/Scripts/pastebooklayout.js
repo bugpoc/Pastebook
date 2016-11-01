@@ -1,29 +1,10 @@
 ﻿$(document).ready(function () {
 
     window.onload = reloadBadge;
-    window.onload = UserInformation;
 
     setInterval(reloadBadge, 1000);
 
-    function UserInformation()
-    {
-        var data = {
-            username: $('#hiddenUsername').val()
-        }
-
-        $.ajax({
-            url: userInformationUrl,
-            type: 'GET',
-            data: data,
-            cache: false,
-            success: function (data) {
-                ChangeUserInformation(data);
-            },
-            error: function () {
-                alert('Badge went wrong')
-            }
-        });
-    }
+    
 
     function reloadBadge() {
         $.ajax({
@@ -33,7 +14,7 @@
                 ChangeBadgeCount(data);
             },
             error: function () {
-                //alert('Badge went wrong')
+                //add error
             }
         });
     }
@@ -57,7 +38,7 @@
                 LoadNotificationContent(data);
             },
             error: function () {
-                alert('Notification went wrong')
+                //add error
             }
         });
 
@@ -68,7 +49,7 @@
                 LoadNotificationContent(data);
             },
             error: function () {
-                alert('Badge went wrong')
+                //add error
             }
         });
     });
@@ -77,16 +58,6 @@
         if (data.Count > 0 || data.Result) {
             $('#menu1').load(notificationPartialUrl);
         }
-    }
-
-    function Check(data)
-    {
-
-    }
-
-    function ChangeUserInformation(data) {
-        $('.imageSource').attr('src', data.Source);
-        $('.name').text(data.Name);
     }
 
     $('#searchUser').click(function () {
