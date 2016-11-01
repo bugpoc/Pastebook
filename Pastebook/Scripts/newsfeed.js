@@ -7,8 +7,9 @@
         $('#newsFeedPartial').load(newsFeedPartialUrl);
     }
 
+    //http://stackoverflow.com/questions/12045634/disable-html-tag-php-script-from-input-field
     $('#btnPost').click(function () {
-        var varContent = $.trim($('#txtAreacontent').val());
+        var varContent = $.trim(escapeHtml($('#txtAreacontent').val()));
         var data = {
             content: varContent,
             username: $('#hiddenUsername').val()
@@ -56,7 +57,7 @@
 
     $(document).on('click', ".btnComment", function () {
         var id = $(this).val();
-        var comment = $.trim($('#' + id).val());
+        var comment = $.trim(escapeHtml($('#' + id).val()));
 
         var data = {
             postID: $(this).val(),

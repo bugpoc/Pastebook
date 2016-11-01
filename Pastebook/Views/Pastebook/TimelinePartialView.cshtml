@@ -14,12 +14,12 @@
                     </div>
                     <div class="x_content">
                         <blockquote class="post-content">
-                            <p>@item.CONTENT</p>
+                            <p>@WebUtility.HtmlDecode(item.CONTENT)</p>
                         </blockquote>
                         <span class="like-block"><button class="fa fa-thumbs-up showLikeModal btn btn-primary" value="@item.ID"> No.</button> @item.LIKEs.Count</span>
                         @if (item.LIKEs.Any(l => l.LIKED_BY == (int)Session["user_id"] && l.POST_ID == item.ID))
                         {
-                            <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Unlike</button>
+                            <button id="unlike" type="button" class="btnLike btn btn-danger fa fa-thumbs-down" value="@item.ID"> Dislike</button>
                         }
                         else
                         {
@@ -54,7 +54,7 @@
                                 <div>
                                     @foreach (var element in item.COMMENTs)
                                     {
-                                        <p class="h5"><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @element.CONTENT</p>
+                                        <p class="h5"><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(element.CONTENT)</p>
                                     }
                                 </div>
                         }

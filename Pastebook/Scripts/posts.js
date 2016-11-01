@@ -24,7 +24,7 @@
 
     $(document).on('click', ".btnComment", function () {
         var id = $(this).val();
-        var comment = $('#' + id).val();
+        var comment = $.trim(escapeHtml($('#' + id).val()));
 
         var data = {
             postID: $(this).val(),

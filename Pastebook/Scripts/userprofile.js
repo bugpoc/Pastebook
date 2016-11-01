@@ -7,7 +7,7 @@
     })
 
     $('#btnPost').click(function () {
-        var varContent = $.trim($('#txtAreacontent').val());
+        var varContent = $.trim(escapeHtml($('#txtAreacontent').val()));
         var data = {
             content: varContent,
             username: $('#hiddenUsername').val()
@@ -35,7 +35,7 @@
     });
 
     $('#btnAboutMe').click(function () {
-        var varAboutMe = $.trim($('#txtAreaAboutMe').val());
+        var varAboutMe = $.trim(escapeHtml($('#txtAreaAboutMe').val()));
         var data = {
             aboutMe: varAboutMe,
             username: $('#hiddenUsername').val()
@@ -83,7 +83,7 @@
 
     $(document).on('click', ".btnComment", function () {
         var id = $(this).val();
-        var comment = $.trim($('#' + id).val());
+        var comment = $.trim(escapeHtml($('#' + id).val()));
 
         var data = {
             postID: $(this).val(),
@@ -111,7 +111,6 @@
     });
 
     $('#btnAddFriend').click(function () {
-        var varAboutMe = $.trim($('#txtAreaAboutMe').val());
         var data = {
             username: $('#hiddenUsername').val()
         };
