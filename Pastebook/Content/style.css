@@ -13,12 +13,12 @@
 }
 
 textarea {
-   resize: none;
-   width: 100%;
+    resize: none;
+    width: 100%;
 }
 
 .btn-post {
-   float: right;
+    float: right;
 }
 
 .date-align {
@@ -42,11 +42,23 @@ textarea {
     display: block;
 }
 
-.required:before { 
-    content:"* ";
+.required:before {
+    content: "* ";
     color: #a94442;
 }
 
 .text-required {
     padding-top: 15px;
+}
+
+.replace-h2 {
+    font-size: 18px;
+}
+
+.replace-h3 {
+    font-size: 24px;
+}
+
+.replace-h5 {
+    font-size: 14px;
 }

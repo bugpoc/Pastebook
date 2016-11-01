@@ -8,8 +8,8 @@
             <div class="col-md-8 col-sm-8 col-xs-12 pull-right">
                 <div class="x_panel">
                     <div class="x_title">
-                        <span class="h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME</span>
-                        <p class="date-align h5">@item.CREATED_DATE</p>
+                        <span class="replace-h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME</span>
+                        <p class="date-align replace-h5">@item.CREATED_DATE</p>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -38,7 +38,7 @@
                                             <div>
                                                 @foreach (var element in item.LIKEs)
                                                 {
-                                                    <p class="h2">@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
+                                                    <p class="replace-h2">@element.USER.FIRST_NAME @element.USER.LAST_NAME</p>
                                                 }
                                             </div>
                                         </div>
@@ -54,7 +54,7 @@
                                 <div>
                                     @foreach (var element in item.COMMENTs)
                                     {
-                                        <p class="h5"><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(element.CONTENT)</p>
+                                        <p class="replace-h5"><strong>@element.USER.FIRST_NAME @element.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(element.CONTENT)</p>
                                     }
                                 </div>
                         }

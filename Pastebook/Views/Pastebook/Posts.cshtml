@@ -10,15 +10,15 @@
                     @if (Model.PROFILE_OWNER_ID != Model.POSTER_ID)
                     {
 
-                        <p class="h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</p>
-                        <p class="date-align h5">@Model.CREATED_DATE</p>
+                        <p class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME posted to @Model.USER1.FIRST_NAME @Model.USER1.LAST_NAME</p>
+                        <p class="date-align replace-h5">@Model.CREATED_DATE</p>
                             <div class="clearfix"></div>
                     }
                     else
                     {
 
-                        <p class="h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</p>
-                        <p class="date-align h5">@Model.CREATED_DATE</p>
+                        <p class="replace-h2">@Model.USER.FIRST_NAME @Model.USER.LAST_NAME</p>
+                        <p class="date-align replace-h5">@Model.CREATED_DATE</p>
                             <div class="clearfix"></div>
                     }
                 </div>
@@ -48,7 +48,7 @@
                                         <div>
                                             @foreach (var item in Model.LIKEs)
                                             {
-                                                <p class="h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME</p>
+                                                <p class="replace-h2">@item.USER.FIRST_NAME @item.USER.LAST_NAME</p>
                                             }
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                         <div>
                             @foreach (var item in Model.COMMENTs)
                             {
-                                <p class="h5"><strong>@item.USER.FIRST_NAME @item.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(item.CONTENT)</p>
+                                <p class="replace-h5"><strong>@item.USER.FIRST_NAME @item.USER.LAST_NAME</strong> : @WebUtility.HtmlDecode(item.CONTENT)</p>
                             }
                         </div>
                     }
