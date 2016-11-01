@@ -121,7 +121,7 @@ namespace Pastebook.Controllers
         [HttpGet]
         public ActionResult NotificationPartial()
         {
-            return PartialView("NotificationPartialView", notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true, false));
+            return PartialView("NotificationPartialView", notificationDataAccess.GetTopSixListOfNotifications((int)Session["user_id"]));
         }
 
         [HttpGet]
@@ -273,7 +273,7 @@ namespace Pastebook.Controllers
         [Route("ViewAllNotifications")]
         public ActionResult ViewAllNotifications()
         {
-            return View(notificationDataAccess.GetListOfNotifications((int)Session["user_id"], false, true));
+            return View(notificationDataAccess.GetListOfNotifications((int)Session["user_id"]));
         }
 
         [HttpGet]
@@ -338,7 +338,7 @@ namespace Pastebook.Controllers
 
         public JsonResult GetCountOfNotification()
         {
-            int count = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], false, false).Count;
+            int count = notificationDataAccess.GetCountOfNotSeenNotifications((int)Session["user_id"]);
 
             return Json(new { Count = count }, JsonRequestBehavior.AllowGet);
         }
@@ -371,7 +371,7 @@ namespace Pastebook.Controllers
             GenericDataAccess<NOTIFICATION> dataAcessNotification = new GenericDataAccess<NOTIFICATION>();
             int result = 0;
 
-            listOfNotifications = notificationDataAccess.GetListOfNotifications((int)Session["user_id"], true, false);
+            listOfNotifications = notificationDataAccess.GetListOfNotSeenNotifications((int)Session["user_id"]);
 
             foreach (var item in listOfNotifications)
             {

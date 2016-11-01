@@ -1,5 +1,4 @@
 ﻿using PastebookEntityLibrary;
-using System;
 using System.Linq;
 
 namespace PastebookDataAccessLibrary
@@ -10,17 +9,9 @@ namespace PastebookDataAccessLibrary
         {
             LIKE specificLike = new LIKE();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    specificLike = context.LIKEs.FirstOrDefault(l => l.LIKED_BY == like.LIKED_BY && l.POST_ID == like.POST_ID);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                specificLike = context.LIKEs.FirstOrDefault(l => l.LIKED_BY == like.LIKED_BY && l.POST_ID == like.POST_ID);
             }
 
             return specificLike;

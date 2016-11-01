@@ -1,5 +1,4 @@
 ﻿using PastebookEntityLibrary;
-using System;
 using System.Data.Entity;
 
 namespace PastebookDataAccessLibrary
@@ -10,17 +9,10 @@ namespace PastebookDataAccessLibrary
         {
             int result = 0;
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    context.Entry(items).State = EntityState.Added;
-                    result = context.SaveChanges();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                context.Entry(items).State = EntityState.Added;
+                result = context.SaveChanges();
             }
 
             return result;
@@ -30,17 +22,10 @@ namespace PastebookDataAccessLibrary
         {
             int result = 0;
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    context.Entry(items).State = EntityState.Modified;
-                    result = context.SaveChanges();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                context.Entry(items).State = EntityState.Modified;
+                result = context.SaveChanges();
             }
 
             return result;
@@ -50,17 +35,10 @@ namespace PastebookDataAccessLibrary
         {
             int result = 0;
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    context.Entry(items).State = EntityState.Deleted;
-                    result = context.SaveChanges();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                context.Entry(items).State = EntityState.Deleted;
+                result = context.SaveChanges();
             }
 
             return result;

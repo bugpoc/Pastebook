@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PastebookEntityLibrary;
-using System.Data.Entity;
 
 namespace PastebookDataAccessLibrary
 {
@@ -19,17 +15,9 @@ namespace PastebookDataAccessLibrary
         {
             var selectedUser = new USER();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    selectedUser = context.USERs.Include("REF_COUNTRY").FirstOrDefault(u => u.EMAIL_ADDRESS == email || u.USER_NAME == username);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                selectedUser = context.USERs.Include("REF_COUNTRY").FirstOrDefault(u => u.EMAIL_ADDRESS == email || u.USER_NAME == username);
             }
 
             return selectedUser;
@@ -43,17 +31,10 @@ namespace PastebookDataAccessLibrary
         public bool CheckUsername(string username)
         {
             bool result = false;
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    result = context.USERs.Any(u => u.USER_NAME == username);
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var context = new PastebookEntities())
+            {
+                result = context.USERs.Any(u => u.USER_NAME == username);
             }
 
             return result;
@@ -67,17 +48,10 @@ namespace PastebookDataAccessLibrary
         public bool CheckEmail(string email)
         {
             bool result = false;
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    result = context.USERs.Any(u => u.EMAIL_ADDRESS == email);
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var context = new PastebookEntities())
+            {
+                result = context.USERs.Any(u => u.EMAIL_ADDRESS == email);
             }
 
             return result;
@@ -87,22 +61,14 @@ namespace PastebookDataAccessLibrary
         {
             List<USER> listOfUsers = new List<USER>();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    //http://stackoverflow.com/questions/5676040/search-two-columns-in-linq-to-sql
+                //http://stackoverflow.com/questions/5676040/search-two-columns-in-linq-to-sql
 
-                    listOfUsers = (from user in context.USERs
-                                   let fullname = user.FIRST_NAME + " " + user.LAST_NAME
-                                   where fullname == name || user.FIRST_NAME == name || user.LAST_NAME == name
-                                   select user).ToList(); 
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                listOfUsers = (from user in context.USERs
+                               let fullname = user.FIRST_NAME + " " + user.LAST_NAME
+                               where fullname == name || user.FIRST_NAME == name || user.LAST_NAME == name
+                               select user).ToList();
             }
 
             return listOfUsers;

@@ -1,9 +1,6 @@
 ﻿using PastebookEntityLibrary;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PastebookDataAccessLibrary
 {
@@ -12,18 +9,12 @@ namespace PastebookDataAccessLibrary
         public List<USER> GetListOfFriends(int id)
         {
             var listOfFriendsInformation = new List<USER>();
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    listOfFriendsInformation = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.USER).ToList();
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var context = new PastebookEntities())
+            {
+                listOfFriendsInformation = context.FRIENDs.Include("USER1").Include("USER").Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.USER).ToList();
             }
+
             return listOfFriendsInformation;
         }
 
@@ -31,17 +22,9 @@ namespace PastebookDataAccessLibrary
         {
             List<int> listOfFriendsID = new List<int>();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    listOfFriendsID = context.FRIENDs.Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.FRIEND_ID).ToList();
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                listOfFriendsID = context.FRIENDs.Where(f => f.USER_ID == id && f.REQUEST == "N").Select(f => f.FRIEND_ID).ToList();
             }
 
             return listOfFriendsID;
@@ -50,36 +33,24 @@ namespace PastebookDataAccessLibrary
         public List<FRIEND> GetPendingFriends(int id)
         {
             var listOfFriendsInformation = new List<FRIEND>();
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                     listOfFriendsInformation = context.FRIENDs.Include("USER1").Where(f => f.FRIEND_ID == id && f.REQUEST == "Y").ToList();
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var context = new PastebookEntities())
+            {
+                listOfFriendsInformation = context.FRIENDs.Include("USER1").Where(f => f.FRIEND_ID == id && f.REQUEST == "Y").ToList();
             }
+
             return listOfFriendsInformation;
         }
 
         public FRIEND GetPendingAndApprovedFriends(int userID, int friendID)
         {
             var friend = new FRIEND();
-            try
-            {
-                using (var context = new PastebookEntities())
-                {
-                    friend = context.FRIENDs.Include("USER1").Include("USER").FirstOrDefault(f => (f.USER_ID == userID && f.FRIEND_ID == friendID) || (f.USER_ID == friendID && f.FRIEND_ID == userID));
-                }
-            }
-            catch (Exception)
-            {
 
-                throw;
+            using (var context = new PastebookEntities())
+            {
+                friend = context.FRIENDs.Include("USER1").Include("USER").FirstOrDefault(f => (f.USER_ID == userID && f.FRIEND_ID == friendID) || (f.USER_ID == friendID && f.FRIEND_ID == userID));
             }
+
             return friend;
         }
 
@@ -87,18 +58,11 @@ namespace PastebookDataAccessLibrary
         {
             FRIEND getSpecificFriend = new FRIEND();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    getSpecificFriend = context.FRIENDs.FirstOrDefault(f => f.ID == id);
-                }
+                getSpecificFriend = context.FRIENDs.FirstOrDefault(f => f.ID == id);
             }
-            catch (Exception)
-            {
 
-                throw;
-            }
             return getSpecificFriend;
         }
     }

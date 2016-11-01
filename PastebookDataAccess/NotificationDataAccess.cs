@@ -1,5 +1,4 @@
 ﻿using PastebookEntityLibrary;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,32 +6,48 @@ namespace PastebookDataAccessLibrary
 {
     public class NotificationDataAccess
     {
-        public List<NOTIFICATION> GetListOfNotifications(int id, bool isGetList, bool isAllList)
+        public List<NOTIFICATION> GetListOfNotifications(int id)
+        {
+            List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
+            using (var context = new PastebookEntities())
+            {
+                listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id).OrderByDescending(n => n.CREATED_DATE).ToList();
+            }
+
+            return listOfNotifications;
+        }
+
+        public List<NOTIFICATION> GetTopSixListOfNotifications(int id)
         {
             List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    if (isGetList)
-                    {
-                        listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id).OrderByDescending(n => n.CREATED_DATE).Take(6).ToList();
-                    }
-                    else if(isAllList)
-                    {
-                        listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id).OrderByDescending(n => n.CREATED_DATE).ToList();
-                    }
-                    else
-                    {
-                        listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id && n.SEEN == "N").OrderByDescending(n => n.CREATED_DATE).ToList();
-                    }
-                }
+                listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id).OrderByDescending(n => n.CREATED_DATE).Take(6).ToList();
             }
-            catch (Exception)
-            {
 
-                throw;
+            return listOfNotifications;
+        }
+
+        public int GetCountOfNotSeenNotifications(int id)
+        {
+            int count = 0;
+
+            using (var context = new PastebookEntities())
+            {
+                count = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id && n.SEEN == "N").ToList().Count;
+            }
+
+            return count;
+        }
+
+        public List<NOTIFICATION> GetListOfNotSeenNotifications(int id)
+        {
+            List<NOTIFICATION> listOfNotifications = new List<NOTIFICATION>();
+
+            using (var context = new PastebookEntities())
+            {
+                listOfNotifications = context.NOTIFICATIONs.Include("USER").Include("USER1").Where(n => n.RECEIVER_ID == id && n.SEEN == "N").ToList();
             }
 
             return listOfNotifications;
@@ -42,17 +57,9 @@ namespace PastebookDataAccessLibrary
         {
             NOTIFICATION notification = new NOTIFICATION();
 
-            try
+            using (var context = new PastebookEntities())
             {
-                using (var context = new PastebookEntities())
-                {
-                    notification = context.NOTIFICATIONs.FirstOrDefault(n => n.POST_ID == like.POST_ID && n.SENDER_ID == like.LIKED_BY);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                notification = context.NOTIFICATIONs.FirstOrDefault(n => n.POST_ID == like.POST_ID && n.SENDER_ID == like.LIKED_BY);
             }
 
             return notification;
