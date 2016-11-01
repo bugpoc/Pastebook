@@ -19,6 +19,9 @@ namespace Pastebook
                       "~/Scripts/respond.js",
                       "~/Scripts/custom.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/pastebook").Include(
+                      "~/Scripts/pastebooklayout.js"));
+
             bundles.Add(new StyleBundle("~/Content/gentelella").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",

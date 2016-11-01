@@ -127,7 +127,10 @@ namespace Pastebook.Controllers
         [Route("SearchUser/{name}")]
         public ActionResult SearchUser(string name)
         {
-            return View(userDataAccess.GetListOfUsers(name, (int)Session["user_id"]));
+            var listOfUsers = new List<USER>();
+            listOfUsers = userDataAccess.GetListOfUsers(name, (int)Session["user_id"]);
+
+            return View(listOfUsers);
         }
 
         [HttpGet]
@@ -142,8 +145,8 @@ namespace Pastebook.Controllers
                 Text = i.COUNTRY
             });
             genderListItems = new List<SelectListItem>() {
-                    new SelectListItem {Text = "Select Gender",   Value = "U"},
-                    new SelectListItem {Text = "Male",   Value = "M"},
+                    new SelectListItem {Text = "Select Gender", Value = "U"},
+                    new SelectListItem {Text = "Male", Value = "M"},
                     new SelectListItem {Text = "Female", Value = "F"} };
 
             ViewBag.GenderList = genderListItems;

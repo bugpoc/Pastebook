@@ -39,6 +39,11 @@
         });
     });
 
+    $('.view-profile').click(function () {
+        var username = $(this).val();
+        $(location).attr('href', userLink + username)
+    });
+
     function CheckResultForRequest(data) {
         if (data.Result == 1) {
             $('#friendRequestPartial').load(friendRequestPartialUrl);

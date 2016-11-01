@@ -1,4 +1,42 @@
-﻿$(document).ready(function () {
+﻿window.onload = UserInformation;
+
+function UserInformation() {
+    var data = {
+        username: $('#hiddenSessionUsername').val()
+    }
+
+    $.ajax({
+        url: userInformationUrl,
+        type: 'GET',
+        data: data,
+        cache: false,
+        success: function (data) {
+            ChangeUserInformation(data);
+        }
+    });
+}
+
+
+
+function ChangeUserInformation(data) {
+    $('.imageSource').attr('src', data.Source);
+    $('.name').text(data.Name);
+}
+
+//http://stackoverflow.com/questions/1787322/htmlspecialchars-equivalent-in-javascript
+function escapeHtml(text) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+
+    return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+}
+
+$(document).ready(function () {
 
     window.onload = reloadBadge;
 
@@ -50,6 +88,10 @@
     }
 
     $('#searchUser').click(function () {
-        $(location).attr('href', searchUrl + $('#txtName').val());
+        var name = $.trim($('#txtName').val());
+        if (name.length > 0)
+        {
+            $(location).attr('href', searchUrl + name);
+        }
     });
 });

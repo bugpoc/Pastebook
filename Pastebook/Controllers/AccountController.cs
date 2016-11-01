@@ -17,6 +17,10 @@ namespace Pastebook.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if(Session["user_id"]!=null)
+            {
+                return RedirectToAction("Index", "Pastebook");
+            }
             return View();
         }
 
